@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori
+package com.harshnandwani.digitaltijori.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.harshnandwani.digitaltijori.ui.theme.DigitalTijoriTheme
+import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.ui.theme
+package com.harshnandwani.digitaltijori.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

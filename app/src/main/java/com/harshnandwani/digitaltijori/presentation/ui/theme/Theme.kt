@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.ui.theme
+package com.harshnandwani.digitaltijori.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
