@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.data.repository
 
+import com.harshnandwani.digitaltijori.data.local.CredentialDao
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 * This repository will then contain more data logic
 * and will act as single source of truth
 * */
-class CredentialRepositoryImpl(private val dao: CredentialRepository): CredentialRepository {
+class CredentialRepositoryImpl(private val dao: CredentialDao): CredentialRepository {
 
     override suspend fun add(credential: Credential) {
         dao.add(credential)
