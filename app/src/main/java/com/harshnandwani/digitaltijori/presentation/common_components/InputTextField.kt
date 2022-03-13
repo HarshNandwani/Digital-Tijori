@@ -34,9 +34,6 @@ fun InputTextField(
             label = {
                 Text(text = label)
             },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White
-            ),
             singleLine = true,
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(
