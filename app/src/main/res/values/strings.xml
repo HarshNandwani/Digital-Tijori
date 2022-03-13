@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Digital Tijori</string>
+    <string name="title_activity_bottom_navigation">HomeActivity</string>
 </resources>
