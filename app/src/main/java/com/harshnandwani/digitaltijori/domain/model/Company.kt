@@ -10,5 +10,7 @@ data class Company(
     val name: String,
     val isABank: Boolean,
     val issuesCards: Boolean,
-    val hasCredentials: Boolean
+    val hasCredentials: Boolean,
+    val iconResId: Int = -1,
+    val logoResId: Int = -1
 )
