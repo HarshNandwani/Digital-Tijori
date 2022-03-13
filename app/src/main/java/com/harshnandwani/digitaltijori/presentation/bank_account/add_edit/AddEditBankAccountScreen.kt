@@ -1,5 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -7,8 +9,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -16,12 +20,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
+import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
+    val activity = LocalContext.current as Activity
     val state = viewModel.state.value
 
     Scaffold(topBar = { TopAppBarWithBackButton(title = "Provide account details") }) {
@@ -101,7 +108,8 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
             TextButton(
                 onClick = {
-                    viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+                     //TODO: enable this after select bank feature
+                    //viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
                 },
                 content = {
                     Text(text = "Submit")
@@ -109,4 +117,19 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             )
         }
     }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when(event) {
+                is BankAccountSubmitResultEvent.BankAccountSaved -> {
+                    Toast.makeText(activity,"Bank Account saved!", Toast.LENGTH_SHORT).show()
+                    activity.onBackPressed()
+                }
+                is BankAccountSubmitResultEvent.ShowError -> {
+                    Toast.makeText(activity,event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 }
