@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 
 @Composable
-fun AddEditBankAccountScreen() {
+fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
     Scaffold(topBar = { TopAppBarWithBackButton(title = "Provide account details") }) {
 
     }
