@@ -3,6 +3,8 @@ package com.harshnandwani.digitaltijori.domain.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
+import kotlin.jvm.Throws
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -21,4 +23,19 @@ data class BankAccount(
     val ifsc: String,
     val phoneNumber: String?,
     val alias: String?
-)
+) {
+
+    @Throws(InvalidBankAccountException::class)
+    fun isValidBankAccount(): Boolean {
+        if(this.accountNumber.isEmpty() || this.accountNumber.length < 8){
+            throw InvalidBankAccountException("Enter at least 8 digit account number")
+        }
+        if(this.ifsc.isEmpty()){
+            throw InvalidBankAccountException("IFSC cannot be empty")
+        }
+        if(this.holderName.isEmpty()){
+            throw InvalidBankAccountException("Holder name cannot be empty")
+        }
+        return true
+    }
+}
