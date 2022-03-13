@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Airtel Payments Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": false
+  },
+  {
+    "name": "Axis Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "ICICI Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "HDFC Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "Paytm Payments Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": false
+  }
+]
