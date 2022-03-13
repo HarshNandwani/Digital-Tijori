@@ -12,13 +12,13 @@
     "hasCredentials": true
   },
   {
-    "name": "ICICI Bank",
+    "name": "HDFC Bank",
     "isABank": true,
     "issuesCards": true,
     "hasCredentials": true
   },
   {
-    "name": "HDFC Bank",
+    "name": "ICICI Bank",
     "isABank": true,
     "issuesCards": true,
     "hasCredentials": true
@@ -28,5 +28,11 @@
     "isABank": true,
     "issuesCards": true,
     "hasCredentials": false
+  },
+  {
+    "name": "State Bank of India",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
   }
 ]
