@@ -17,7 +17,7 @@ import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
-import com.harshnandwani.digitaltijori.domain.use_case.ConvertJsonToCompanies
+import com.harshnandwani.digitaltijori.domain.use_case.company.ConvertJsonToCompaniesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +44,7 @@ object AppModule {
 
                 Executors.newSingleThreadExecutor().execute {
 
-                    val convertJsonToCompanies = ConvertJsonToCompanies()
+                    val convertJsonToCompanies = ConvertJsonToCompaniesUseCase()
                     convertJsonToCompanies(companiesJson).forEach { company ->
                         val contentValues = ContentValues()
                         contentValues.put("name", company.name)
