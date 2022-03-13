@@ -15,4 +15,5 @@ interface CompanyRepository {
 
     fun getAllCompaniesWithCredentials(): Flow<List<Company>>
 
+    suspend fun update(company: Company)
 }
