@@ -17,7 +17,9 @@ import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.ConvertJsonToCompaniesUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -71,8 +73,20 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetAllBanksUseCase(repository: CompanyRepository): GetAllBanksUseCase {
+        return GetAllBanksUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideBankAccountRepository(db: DigitalTijoriDatabase): BankAccountRepository {
         return BankAccountRepositoryImpl(db.bankAccountDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddBankAccountUseCase(repository: BankAccountRepository): AddBankAccountUseCase {
+        return AddBankAccountUseCase(repository)
     }
 
     @Provides
