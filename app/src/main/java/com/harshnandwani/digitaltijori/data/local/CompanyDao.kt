@@ -14,7 +14,7 @@ interface CompanyDao {
     suspend fun add(company: Company)
 
     @Query("SELECT * FROM Company")
-    fun getAll(): Flow<List<Company>>
+    suspend fun getAll(): List<Company>
 
     @Query("SELECT * FROM Company WHERE isABank = 1")
     fun getAllBanks(): Flow<List<Company>>

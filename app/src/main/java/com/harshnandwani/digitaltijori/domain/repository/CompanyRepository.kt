@@ -7,7 +7,7 @@ interface CompanyRepository {
 
     suspend fun add(company: Company)
 
-    fun getAll(): Flow<List<Company>>
+    suspend fun getAll(): List<Company>
 
     fun getAllBanks(): Flow<List<Company>>
 
