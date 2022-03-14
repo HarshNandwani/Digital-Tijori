@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/airtel_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/axis_bank_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/hdfc_bank_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/hdfc_bank_logo.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_axis_bank_logo.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_axis_bank_logo_1.xml" value="0.1574074074074074" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_hdfc_bank_logo.xml" value="0.1574074074074074" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_hdfc_stamp.xml" value="0.1574074074074074" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_pinpng_com_bank_png_718802.xml" value="0.1574074074074074" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/ic_state_bank_of_india_logo.xml" value="0.1" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/icici_bank_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/icici_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/icici_logo.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/paytm_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/sbi_icon.xml" value="0.15648148148148147" />
+        <entry key="..\:/Users/Harsh/AndroidStudioProjects/DigitalTijori/app/src/main/res/drawable/sbi_logo.xml" value="0.15648148148148147" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
