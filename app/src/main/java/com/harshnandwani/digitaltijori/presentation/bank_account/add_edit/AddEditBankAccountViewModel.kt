@@ -12,8 +12,11 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.B
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,11 +26,17 @@ class AddEditBankAccountViewModel @Inject constructor(
     private val addBankAccountUseCase: AddBankAccountUseCase
 ) : ViewModel() {
 
+    private var getAllBanksJob: Job? = null
+
     private val _state = mutableStateOf(BankAccountState())
     val state: State<BankAccountState> = _state
 
     private val _eventFlow = MutableSharedFlow<BankAccountSubmitResultEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    init {
+        getAllBanks()
+    }
 
     fun onEvent(event: BankAccountEvent) {
         when (event) {
@@ -82,6 +91,17 @@ class AddEditBankAccountViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getAllBanks(){
+        getAllBanksJob?.cancel()
+        getAllBanksJob = getAllBanksUseCase()
+            .onEach {  banks ->
+                _state.value = state.value.copy(
+                    allBanks = banks
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
 }
