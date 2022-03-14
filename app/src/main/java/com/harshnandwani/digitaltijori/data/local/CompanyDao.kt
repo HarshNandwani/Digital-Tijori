@@ -3,6 +3,7 @@ package com.harshnandwani.digitaltijori.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.harshnandwani.digitaltijori.domain.model.Company
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +24,8 @@ interface CompanyDao {
 
     @Query("SELECT * FROM Company WHERE hasCredentials = 1")
     fun getAllCompaniesWithCredentials(): Flow<List<Company>>
+
+    @Update
+    suspend fun update(company: Company)
+
 }
