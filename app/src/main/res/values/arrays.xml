@@ -2,7 +2,9 @@
 <resources>
 
     <!-- Everytime a company is added in assets/companies.json add
-        the icon resource id in this array at bottom -->
+        the icon resource id in this array at bottom
+        IF NOT ADDED there will be ArrayIndexOutOfBoundException
+        on app start -->
     <integer-array name="company_icons">
         <item>@drawable/airtel_icon</item>
         <item>@drawable/axis_bank_icon</item>
@@ -13,7 +15,10 @@
     </integer-array>
 
     <!-- Everytime a company is added in assets/companies.json add
-    the logo resource id in this array at bottom, if it doesn't have a logo then -1 -->
+    the logo resource id in this array at bottom,
+    if it doesn't have a logo then -1
+    IF NOT ADDED there will be ArrayIndexOutOfBoundException
+    on app start -->
     <integer-array name="company_logos">
         <item>-1</item>
         <item>@drawable/axis_bank_logo</item>
