@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.BankAccountDao
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +26,10 @@ class BankAccountRepositoryImpl(private val dao: BankAccountDao): BankAccountRep
 
     override suspend fun get(id: Int): BankAccount? {
         return dao.get(id)
+    }
+
+    override fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>> {
+        return dao.getAccountsWithBankDetails()
     }
 
     override suspend fun update(account: BankAccount) {
