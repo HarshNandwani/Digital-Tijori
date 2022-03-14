@@ -8,6 +8,6 @@ class GetAllBanksUseCase(
     private val repository: CompanyRepository
 ) {
     operator fun invoke(): Flow<List<Company>> {
-        return repository.getAll()
+        return repository.getAllBanks()
     }
 }
