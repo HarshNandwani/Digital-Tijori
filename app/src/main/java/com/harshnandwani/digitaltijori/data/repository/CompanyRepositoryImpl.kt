@@ -19,7 +19,7 @@ class CompanyRepositoryImpl(private val dao: CompanyDao): CompanyRepository {
         dao.add(company)
     }
 
-    override fun getAll(): Flow<List<Company>> {
+    override suspend fun getAll(): List<Company> {
         return dao.getAll()
     }
 
