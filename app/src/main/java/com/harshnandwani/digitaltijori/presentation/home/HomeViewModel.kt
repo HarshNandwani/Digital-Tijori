@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
+import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -34,6 +35,33 @@ class HomeViewModel @Inject constructor(
                     currentPage = event.page
                 )
             }
+            is HomeScreenEvent.OnSearchTextChanged -> {
+                _state.value = state.value.copy(
+                    searchText = event.searchText
+                )
+                when (_state.value.currentPage) {
+                    HomeScreens.BankAccountsList.route -> {
+                        _state.value = state.value.copy(
+                            filteredBankAccounts = state.value.bankAccounts.filter { entry ->
+                                entry.value.holderName.contains(event.searchText, ignoreCase = true)
+                                        || entry.value.alias?.contains(event.searchText, ignoreCase = true)?: false
+                            }
+                        )
+                    }
+                }
+            }
+            is HomeScreenEvent.OnSearchDone -> {
+                _state.value = state.value.copy(
+                    searchText = ""
+                )
+                when (_state.value.currentPage) {
+                    HomeScreens.BankAccountsList.route -> {
+                        _state.value = state.value.copy(
+                            filteredBankAccounts = state.value.bankAccounts
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -42,7 +70,8 @@ class HomeViewModel @Inject constructor(
         getAllAccountsJob = getAllAccountsWithBankDetails()
             .onEach { accounts ->
                 _state.value = state.value.copy(
-                    bankAccounts = accounts
+                    bankAccounts = accounts,
+                    filteredBankAccounts = accounts
                 )
             }
             .launchIn(viewModelScope)
