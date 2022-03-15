@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
+import java.io.Serializable
 import kotlin.jvm.Throws
 
 @Entity(
@@ -23,7 +24,7 @@ data class BankAccount(
     val ifsc: String,
     val phoneNumber: String?,
     val alias: String?
-) {
+) : Serializable {
 
     @Throws(InvalidBankAccountException::class)
     fun isValidBankAccount(): Boolean {
