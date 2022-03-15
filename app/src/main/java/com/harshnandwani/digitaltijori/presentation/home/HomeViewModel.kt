@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllBankAccountsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllBankAccountsUseCase: GetAllBankAccountsUseCase,
-    ) : ViewModel() {
+    private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase
+) : ViewModel() {
 
     private val _state = mutableStateOf(HomeScreenState())
     val state: State<HomeScreenState> = _state
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getAllBankAccounts(){
         getAllAccountsJob?.cancel()
-        getAllAccountsJob = getAllBankAccountsUseCase()
+        getAllAccountsJob = getAllAccountsWithBankDetails()
             .onEach { accounts ->
                 _state.value = state.value.copy(
                     bankAccounts = accounts

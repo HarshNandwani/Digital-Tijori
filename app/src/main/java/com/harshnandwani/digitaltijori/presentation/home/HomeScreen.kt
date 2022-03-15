@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
-import com.harshnandwani.digitaltijori.presentation.home.util.BottomHomeBar
-import com.harshnandwani.digitaltijori.presentation.home.util.HomeNavGraph
+import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBar
+import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel) {
     val navController = rememberNavController()
     val context = LocalContext.current
     Scaffold(
@@ -39,6 +39,6 @@ fun HomeScreen() {
             }
         }
     ) {
-        HomeNavGraph(navController)
+        HomeNavGraph(viewModel, navController)
     }
 }
