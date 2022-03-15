@@ -14,6 +14,7 @@ import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.UpdateBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
@@ -74,6 +75,13 @@ object AppModule {
     fun provideAddBankAccountUseCase(repository: BankAccountRepository): AddBankAccountUseCase {
         return AddBankAccountUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetBankAccountUseCase(repository: BankAccountRepository): GetBankAccountUseCase {
+        return GetBankAccountUseCase(repository)
+    }
+
 
     @Provides
     @Singleton
