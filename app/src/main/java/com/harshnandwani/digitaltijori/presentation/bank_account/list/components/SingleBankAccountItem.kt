@@ -3,6 +3,7 @@ package com.harshnandwani.digitaltijori.presentation.bank_account.list.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,12 +27,18 @@ fun SingleBankAccountItem(linkedBank: Company, account: BankAccount, onClick: ()
         Image(
             painter = painterResource(id = linkedBank.iconResId),
             contentDescription = "Bank Icon",
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(36.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))
         Column {
-            Text(text = if (account.alias.isNullOrEmpty()) account.holderName else account.alias)
-            Text(text = "XXXXXXXX${account.accountNumber.takeLast(4)}")
+            Text(
+                text = if (account.alias.isNullOrEmpty()) account.holderName else account.alias,
+                style = MaterialTheme.typography.body2
+            )
+            Text(
+                text = "XXXXXXXX${account.accountNumber.takeLast(4)}",
+                style = MaterialTheme.typography.body2
+            )
         }
     }
 }
