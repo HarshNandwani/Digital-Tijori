@@ -1,6 +1,8 @@
 package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -16,6 +18,8 @@ import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val navController = rememberNavController()
