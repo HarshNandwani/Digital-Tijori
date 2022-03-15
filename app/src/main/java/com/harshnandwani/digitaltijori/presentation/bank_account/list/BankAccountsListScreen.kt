@@ -11,7 +11,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
     val state = viewModel.state.value
 
     LazyColumn {
-        for ((linkedBank, bankAccount) in state.bankAccounts) {
+        for ((linkedBank, bankAccount) in state.filteredBankAccounts) {
             item {
                 SingleBankAccountItem(
                     linkedBank = linkedBank,
