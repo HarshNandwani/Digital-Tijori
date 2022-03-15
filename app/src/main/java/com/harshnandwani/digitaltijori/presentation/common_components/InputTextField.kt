@@ -25,7 +25,7 @@ fun InputTextField(
     val focusManager = LocalFocusManager.current
 
     Column {
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(12.dp))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
