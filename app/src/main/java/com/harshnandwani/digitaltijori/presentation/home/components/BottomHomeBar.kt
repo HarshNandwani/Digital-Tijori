@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.presentation.home.util
+package com.harshnandwani.digitaltijori.presentation.home.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
@@ -9,6 +9,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 
 @Composable
 fun BottomHomeBar(navHostController: NavHostController) {

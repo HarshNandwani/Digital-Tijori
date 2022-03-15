@@ -1,17 +1,26 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.list
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.SingleBankAccountItem
+import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 
 @Composable
-fun BankAccountsListScreen() {
-    Box(Modifier.fillMaxSize().background(color = Color.Red),contentAlignment = Alignment.Center) {
-        Text(text = "BankAccountsList Under construction")
+fun BankAccountsListScreen(viewModel: HomeViewModel) {
+
+    val state = viewModel.state.value
+
+    LazyColumn {
+        for ((linkedBank, bankAccount) in state.bankAccounts) {
+            item {
+                SingleBankAccountItem(
+                    linkedBank = linkedBank,
+                    account = bankAccount,
+                    onClick = {
+                        //TODO: Show BankAccount complete details
+                    }
+                )
+            }
+        }
     }
 }
