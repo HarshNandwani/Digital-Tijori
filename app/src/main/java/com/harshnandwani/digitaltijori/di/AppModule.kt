@@ -12,10 +12,7 @@ import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.UpdateBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
@@ -87,6 +84,12 @@ object AppModule {
     @Singleton
     fun provideUpdateBankAccountUseCase(repository: BankAccountRepository): UpdateBankAccountUseCase {
         return UpdateBankAccountUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteBankAccountUseCase(repository: BankAccountRepository): DeleteBankAccountUseCase {
+        return DeleteBankAccountUseCase(repository)
     }
 
     @Provides
