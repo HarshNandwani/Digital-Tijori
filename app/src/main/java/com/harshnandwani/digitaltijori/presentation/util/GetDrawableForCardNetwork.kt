@@ -10,6 +10,6 @@ fun getDrawableIdForCardNetwork(cardNetwork: CardNetwork): Int {
         CardNetwork.Rupay -> R.drawable.rupay_logo
         CardNetwork.AmEx -> R.drawable.american_express_logo
         CardNetwork.DinersClub -> R.drawable.diners_club_logo
-        CardNetwork.Unknown -> -1
+        CardNetwork.Unknown -> -1 //TODO handle this
     }
 }
