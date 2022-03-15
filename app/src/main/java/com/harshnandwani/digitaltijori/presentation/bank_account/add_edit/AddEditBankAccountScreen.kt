@@ -3,13 +3,13 @@ package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,25 +22,54 @@ import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
-import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
+import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi //TODO: As its Experimental keep looking into changes
 @Composable
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
     val activity = LocalContext.current as Activity
     val state = viewModel.state.value
 
-    Scaffold(topBar = { TopAppBarWithBackButton(title = "Provide account details") }) {
-        Column(Modifier.padding(16.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val coroutineScope = rememberCoroutineScope()
+
+    ModalBottomSheetLayout(
+        sheetContent = {
+            CompaniesList(
+                titleText = "Select a bank",
+                companies = state.allBanks,
+                onSelect = {
+                    viewModel.onEvent(BankAccountEvent.SelectBank(it))
+                    coroutineScope.launch {
+                        bottomSheetState.hide()
+                    }
+                }
+            )
+        },
+        sheetState = bottomSheetState
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    coroutineScope.launch { bottomSheetState.show() }
+                }
+            ) {
                 Image(
-                    painter = painterResource(id = R.drawable.default_bank), //TODO: Show bank logo
+                    painter = painterResource(id = state.selectedBank?.iconResId ?: R.drawable.default_bank),
                     contentDescription = "Bank Icon",
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = "Bank Name") // TODO: Show bank name
+                Text(text = state.selectedBank?.name ?: "Select bank")
             }
             val account = state.bankAccount.value
             InputTextField(
@@ -83,7 +112,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
             InputTextField(
                 label = "Linked phone number (optional)",
-                value = account.phoneNumber?: "",
+                value = account.phoneNumber ?: "",
                 onValueChange = {
                     viewModel.onEvent(BankAccountEvent.EnteredPhoneNumber(it))
                 },
@@ -95,7 +124,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
             InputTextField(
                 label = "Alias for this account (optional)",
-                value = account.alias?: "",
+                value = account.alias ?: "",
                 onValueChange = {
                     viewModel.onEvent(BankAccountEvent.EnteredAlias(it))
                 },
@@ -108,8 +137,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
             TextButton(
                 onClick = {
-                     //TODO: enable this after select bank feature
-                    //viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+                    viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
                 },
                 content = {
                     Text(text = "Submit")
@@ -120,13 +148,13 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when(event) {
+            when (event) {
                 is BankAccountSubmitResultEvent.BankAccountSaved -> {
-                    Toast.makeText(activity,"Bank Account saved!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Bank Account saved!", Toast.LENGTH_SHORT).show()
                     activity.onBackPressed()
                 }
                 is BankAccountSubmitResultEvent.ShowError -> {
-                    Toast.makeText(activity,event.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
