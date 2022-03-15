@@ -5,8 +5,8 @@ import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
 
 data class HomeScreenState(
-    private val bankAccounts: List<BankAccount> = emptyList(),
-    private val cards: List<Card> = emptyList(),
-    private val credentials: List<Credential> = emptyList(),
+    val bankAccounts: List<BankAccount> = emptyList(),
+    val cards: List<Card> = emptyList(),
+    val credentials: List<Credential> = emptyList(),
     val currentPage: String = HomeScreens.BankAccountsList.route
 )
