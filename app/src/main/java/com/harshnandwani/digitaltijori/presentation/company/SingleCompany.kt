@@ -1,10 +1,8 @@
 package com.harshnandwani.digitaltijori.presentation.company
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -17,13 +15,22 @@ import com.harshnandwani.digitaltijori.domain.model.Company
 
 @Composable
 fun SingleCompany(
-    company: Company
+    company: Company,
+    onSelect: (Company) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 12.dp)
+        modifier = Modifier
+            .clickable {
+                onSelect(company)
+            }
+            .padding(vertical = 12.dp, horizontal = 32.dp)
+            .fillMaxWidth()
     ) {
-        Card(elevation = 4.dp, shape = RoundedCornerShape(12.dp)) {
+        Card(
+            elevation = 4.dp,
+            shape = RoundedCornerShape(12.dp)
+        ) {
             Image(
                 painter = painterResource(id = company.iconResId),
                 contentDescription = "",
