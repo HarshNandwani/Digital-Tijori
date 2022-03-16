@@ -11,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DigitalTijori">
         <activity
+            android:name=".presentation.card.add_edit.AddEditCardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_edit_card"
+            android:theme="@style/Theme.DigitalTijori.NoActionBar" />
+        <activity
             android:name=".presentation.bank_account.add_edit.AddEditBankAccountActivity"
             android:exported="false"
             android:label="@string/title_activity_add_edit_bank_account"
