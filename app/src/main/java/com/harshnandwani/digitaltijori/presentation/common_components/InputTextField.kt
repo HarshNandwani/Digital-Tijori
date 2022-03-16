@@ -8,11 +8,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 
+@ExperimentalComposeUiApi
 @Composable
 fun InputTextField(
     label: String,
@@ -23,6 +26,7 @@ fun InputTextField(
 ) {
 
     val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column {
         Spacer(modifier = Modifier.size(12.dp))
@@ -36,7 +40,7 @@ fun InputTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
-                onDone = { /*TODO: Hide keyboard*/ }
+                onDone = { keyboardController?.hide() }
             ),
             modifier = modifier
         )

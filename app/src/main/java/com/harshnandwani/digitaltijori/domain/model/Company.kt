@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class Company(
@@ -13,4 +14,4 @@ data class Company(
     val hasCredentials: Boolean,
     val iconResId: Int = -1,
     val logoResId: Int = -1
-)
+) : Serializable

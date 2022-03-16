@@ -4,7 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase
+    private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
+    private val getBankAccountUseCase: GetBankAccountUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeScreenState())
@@ -75,6 +78,10 @@ class HomeViewModel @Inject constructor(
                 )
             }
             .launchIn(viewModelScope)
+    }
+
+    suspend fun getBankAccount(id: Int): BankAccount? {
+        return getBankAccountUseCase(id)
     }
 
 }

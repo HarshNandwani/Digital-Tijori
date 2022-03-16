@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.UpdateBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditBankAccountViewModel @Inject constructor(
     private val getAllBanksUseCase: GetAllBanksUseCase,
-    private val addBankAccountUseCase: AddBankAccountUseCase
+    private val addBankAccountUseCase: AddBankAccountUseCase,
+    private val updateBankAccountUseCase: UpdateBankAccountUseCase
 ) : ViewModel() {
 
     private var getAllBanksJob: Job? = null
@@ -80,6 +82,17 @@ class AddEditBankAccountViewModel @Inject constructor(
                         if(_state.value.mode == Parameters.VAL_MODE_ADD){
                             addBankAccountUseCase(account)
                             _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved)
+                        } else{
+                            if(_state.value.previouslyEnteredBankAccount == account){
+                                _eventFlow.emit(
+                                    BankAccountSubmitResultEvent.ShowError(
+                                        message = "No values changed"
+                                    )
+                                )
+                                return@launch
+                            }
+                            updateBankAccountUseCase(account)
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved)
                         }
                     }catch (e: InvalidBankAccountException){
                         _eventFlow.emit(
@@ -89,6 +102,15 @@ class AddEditBankAccountViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+            is BankAccountEvent.ChangeToEditMode -> {
+                getAllBanksJob?.cancel()
+                _state.value = state.value.copy(
+                    selectedBank = event.linkedBank,
+                    mode = Parameters.VAL_MODE_EDIT
+                )
+                _state.value.bankAccount.value = event.account
+                _state.value.previouslyEnteredBankAccount = event.account
             }
         }
     }

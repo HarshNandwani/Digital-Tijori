@@ -12,5 +12,4 @@ data class BankAccountState(
     val mode: String = Parameters.VAL_MODE_ADD,
     val bankAccount: MutableState<BankAccount> = mutableStateOf(BankAccount(0,-1,"","","","","")),
     var previouslyEnteredBankAccount: BankAccount = BankAccount(0,-1,"","","","","")
-
 )
