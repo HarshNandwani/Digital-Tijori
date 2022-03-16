@@ -14,7 +14,11 @@ import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
 
 @Composable
-fun SingleBankAccountItem(linkedBank: Company, account: BankAccount, onClick: () -> Unit) {
+fun SingleBankAccountItem(
+    linkedBank: Company,
+    account: BankAccount,
+    onClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

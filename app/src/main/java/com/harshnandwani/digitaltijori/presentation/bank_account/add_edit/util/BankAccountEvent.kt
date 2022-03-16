@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util
 
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
 
 sealed class BankAccountEvent {
@@ -10,4 +11,5 @@ sealed class BankAccountEvent {
     data class EnteredPhoneNumber(val phoneNumber :String): BankAccountEvent()
     data class EnteredAlias(val alias :String): BankAccountEvent()
     object BankAccountSubmit: BankAccountEvent()
+    data class ChangeToEditMode(val linkedBank: Company, val account: BankAccount): BankAccountEvent()
 }

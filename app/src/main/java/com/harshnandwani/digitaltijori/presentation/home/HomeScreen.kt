@@ -1,6 +1,8 @@
 package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -15,7 +17,10 @@ import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBa
 import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
+import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val navController = rememberNavController()
@@ -43,6 +48,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     when (navController.currentBackStackEntry?.destination?.route) {
                         HomeScreens.BankAccountsList.route -> {
                             Intent(context, AddEditBankAccountActivity::class.java).apply {
+                                putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                                 context.startActivity(this)
                             }
                         }
