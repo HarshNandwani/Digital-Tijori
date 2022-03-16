@@ -1,11 +1,77 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
+import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
+import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
+import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardState
+import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
+import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditCardViewModel @Inject constructor(
-
+    private val getAllCardIssuersUseCase: GetAllCardIssuersUseCase,
+    private val addCardUseCase: AddCardUseCase
 ) : ViewModel() {
+
+    private var getAllCardIssuersJob: Job? = null
+
+    private val _state = mutableStateOf(CardState())
+    val state: State<CardState> = _state
+
+    private val _eventFlow = MutableSharedFlow<CardSubmitResultEvent>()
+    private val eventFlow = _eventFlow.asSharedFlow()
+
+    init {
+        getAllCardIssuers()
+    }
+
+    fun onEvent(event: CardEvent) {
+        when (event) {
+            is CardEvent.SelectIssuer -> {
+                _state.value = state.value.copy(
+                    selectedIssuer = event.issuer
+                )
+            }
+            is CardEvent.CardSubmit -> {
+                viewModelScope.launch {
+                    val card = _state.value.card.value
+                    try {
+                        if (_state.value.mode == Parameters.VAL_MODE_ADD) {
+                            addCardUseCase(card)
+                        }
+                        _eventFlow.emit(CardSubmitResultEvent.CardSaved)
+                    } catch (e: InvalidCardException) {
+                        _eventFlow.emit(
+                            CardSubmitResultEvent.ShowError(e.message ?: "Cannot save card")
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getAllCardIssuers() {
+        getAllCardIssuersJob?.cancel()
+        getAllCardIssuersJob = getAllCardIssuersUseCase()
+            .onEach { cardIssuers ->
+                _state.value = state.value.copy(
+                    allCardIssuers = cardIssuers
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
 }
