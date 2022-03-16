@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
@@ -15,6 +16,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@OptIn(ExperimentalComposeUiApi::class)
 class AddEditBankAccountActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterialApi::class) //TODO: As its Experimental keep looking into changes
     override fun onCreate(savedInstanceState: Bundle?) {
