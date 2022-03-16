@@ -26,6 +26,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.B
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
+import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -66,8 +67,10 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
-                    keyboardController?.hide()
-                    coroutineScope.launch { bottomSheetState.show() }
+                    if (state.mode == Parameters.VAL_MODE_ADD) {
+                        keyboardController?.hide()
+                        coroutineScope.launch { bottomSheetState.show() }
+                    }
                 }
             ) {
                 Image(
