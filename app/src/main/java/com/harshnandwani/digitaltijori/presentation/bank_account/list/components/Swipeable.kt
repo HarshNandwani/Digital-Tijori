@@ -12,13 +12,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Swipe
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import java.lang.Math.random
 
 @ExperimentalMaterialApi
 @Composable
@@ -34,6 +38,7 @@ fun Swipeable(
     content: @Composable () -> Unit
 ) {
 
+    val coroutineScope = rememberCoroutineScope()
     val dismissState = rememberDismissState(
         confirmStateChange = { dismissValue ->
             when (dismissValue) {
@@ -54,6 +59,13 @@ fun Swipeable(
             false
         }
     )
+
+    //random() coz we need to run it everytime to remove elevation due to dismissState
+    LaunchedEffect(key1 = random()) {
+        coroutineScope.launch {
+            dismissState.reset()
+        }
+    }
 
     SwipeToDismiss(
         state = dismissState,
