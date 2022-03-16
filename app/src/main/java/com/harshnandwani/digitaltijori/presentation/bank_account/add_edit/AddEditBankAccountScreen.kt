@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -27,6 +29,7 @@ import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi //TODO: As its Experimental keep looking into changes
 @Composable
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
@@ -36,6 +39,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -62,6 +66,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
+                    keyboardController?.hide()
                     coroutineScope.launch { bottomSheetState.show() }
                 }
             ) {
