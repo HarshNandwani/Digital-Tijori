@@ -52,6 +52,12 @@ fun HomeScreen(viewModel: HomeViewModel) {
                                 context.startActivity(this)
                             }
                         }
+                        HomeScreens.CardsList.route -> {
+                            Intent(context, AddEditBankAccountActivity::class.java).apply {
+                                putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                                context.startActivity(this)
+                            }
+                        }
                     }
                 }
             ) {
