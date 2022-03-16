@@ -5,7 +5,9 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
+import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import java.io.Serializable
+import kotlin.jvm.Throws
 
 @Entity(
     foreignKeys = [
@@ -60,4 +62,26 @@ data class Card(
 
     }
 
+    @Throws(InvalidCardException::class)
+    fun isValidCard(): Boolean {
+        if (this.bankAccountId == null && this.companyId == null) {
+            throw InvalidCardException("Please link card")
+        }
+        if (this.cardNumber.isEmpty()) {
+            throw InvalidCardException("Enter full card number")
+        }
+        if (this.expiryMonth < 1 || this.expiryMonth > 12) {
+            throw InvalidCardException("Enter valid expiry month")
+        }
+        if (this.expiryYear.toString().length < 2) {
+            throw InvalidCardException("Enter valid expiry year")
+        }
+        if (this.cvv.toString().length < 3) {
+            throw InvalidCardException("Enter valid cvv")
+        }
+        if (this.nameOnCard.isEmpty()) {
+            throw InvalidCardException("Enter name")
+        }
+        return true
+    }
 }
