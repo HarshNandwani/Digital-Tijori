@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
+import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.DetailedBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.SingleBankAccountItem
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
@@ -100,7 +101,11 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                         linkedBank = linkedBank,
                         account = bankAccount,
                         onClick = {
-                            //TODO: Show BankAccount complete details
+                            Intent(context, DetailedBankAccountActivity::class.java).apply {
+                                putExtra(Parameters.KEY_BANK, linkedBank)
+                                putExtra(Parameters.KEY_BANK_ACCOUNT, bankAccount)
+                                startActivity(context, this, null)
+                            }
                         }
                     )
                 }
