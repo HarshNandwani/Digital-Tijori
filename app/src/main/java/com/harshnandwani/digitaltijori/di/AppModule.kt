@@ -14,7 +14,10 @@ import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.EditCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
 import dagger.Provides
@@ -64,6 +67,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetAllCardIssuersUseCase(repository: CompanyRepository): GetAllCardIssuersUseCase {
+        return GetAllCardIssuersUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideBankAccountRepository(db: DigitalTijoriDatabase): BankAccountRepository {
         return BankAccountRepositoryImpl(db.bankAccountDao)
     }
@@ -84,6 +93,18 @@ object AppModule {
     @Singleton
     fun provideCardRepository(db: DigitalTijoriDatabase): CardRepository {
         return CardRepositoryImpl(db.cardDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddCardUseCase(repository: CardRepository): AddCardUseCase {
+        return AddCardUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEditCardUseCase(repository: CardRepository): EditCardUseCase {
+        return EditCardUseCase(repository)
     }
 
     @Provides
