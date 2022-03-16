@@ -101,9 +101,6 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                         account = bankAccount,
                         onClick = {
                             //TODO: Show BankAccount complete details
-                        },
-                        onLongClick = {
-                            //TODO: Delete Account
                         }
                     )
                 }
