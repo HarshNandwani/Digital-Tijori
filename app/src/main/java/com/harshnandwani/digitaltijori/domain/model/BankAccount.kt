@@ -28,16 +28,16 @@ data class BankAccount(
 
     @Throws(InvalidBankAccountException::class)
     fun isValidBankAccount(): Boolean {
-        if (this.bankId == -1) {
+        if (bankId == -1) {
             throw InvalidBankAccountException("Select bank")
         }
-        if (this.accountNumber.isEmpty() || this.accountNumber.length < 8) {
+        if (accountNumber.isEmpty() || accountNumber.length < 8) {
             throw InvalidBankAccountException("Enter at least 8 digit account number")
         }
-        if (this.ifsc.isEmpty()) {
+        if (ifsc.isEmpty()) {
             throw InvalidBankAccountException("IFSC cannot be empty")
         }
-        if (this.holderName.isEmpty()) {
+        if (holderName.isEmpty()) {
             throw InvalidBankAccountException("Holder name cannot be empty")
         }
         return true

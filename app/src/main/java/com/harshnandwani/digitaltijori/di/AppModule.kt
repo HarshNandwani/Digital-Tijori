@@ -14,6 +14,10 @@ import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.AddCredentialUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredentialUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.UpdateCredentialUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
 import dagger.Provides
@@ -59,6 +63,12 @@ object AppModule {
     @Singleton
     fun provideGetAllBanksUseCase(repository: CompanyRepository): GetAllBanksUseCase {
         return GetAllBanksUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCompaniesHavingCredentialsUseCase(repository: CompanyRepository): GetCompaniesHavingCredentialsUseCase {
+        return GetCompaniesHavingCredentialsUseCase(repository)
     }
 
     @Provides
@@ -110,4 +120,21 @@ object AppModule {
         return CredentialRepositoryImpl(db.credentialDao)
     }
 
+    @Provides
+    @Singleton
+    fun provideAddCredentialUseCase(repository: CredentialRepository): AddCredentialUseCase {
+        return AddCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateCredentialUseCase(repository: CredentialRepository): UpdateCredentialUseCase {
+        return UpdateCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteCredentialUseCase(repository: CredentialRepository): DeleteCredentialUseCase {
+        return DeleteCredentialUseCase(repository)
+    }
 }
