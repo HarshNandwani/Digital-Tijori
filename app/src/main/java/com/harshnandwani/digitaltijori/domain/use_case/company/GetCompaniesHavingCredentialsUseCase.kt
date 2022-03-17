@@ -10,7 +10,7 @@ class GetCompaniesHavingCredentialsUseCase(
 ) {
 
     operator fun invoke(): Flow<List<Company>> {
-        return repository.getAllCompaniesWithCredentials();
+        return repository.getAllCompaniesWithCredentials()
     }
 
 }
