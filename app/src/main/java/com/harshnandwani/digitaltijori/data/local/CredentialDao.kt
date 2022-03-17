@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.data.local
 
 import androidx.room.*
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +16,9 @@ interface CredentialDao {
 
     @Query("SELECT * FROM Credential WHERE id = :id")
     fun get(id: Int): Credential?
+
+    @Query("SELECT * FROM Company JOIN Credential ON Company.id = Credential.companyId")
+    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>>
 
     @Update
     suspend fun update(credential: Credential)

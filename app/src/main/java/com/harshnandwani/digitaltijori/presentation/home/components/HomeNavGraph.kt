@@ -27,7 +27,7 @@ fun HomeNavGraph(viewModel: HomeViewModel, navController: NavHostController) {
             CardsListScreen()
         }
         composable(route = HomeScreens.CredentialsList.route) {
-            CredentialsListScreen()
+            CredentialsListScreen(viewModel)
         }
     }
 }
