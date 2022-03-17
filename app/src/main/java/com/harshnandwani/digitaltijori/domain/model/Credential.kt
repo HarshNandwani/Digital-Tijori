@@ -3,6 +3,8 @@ package com.harshnandwani.digitaltijori.domain.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.harshnandwani.digitaltijori.domain.util.InvalidCredentialException
+import kotlin.jvm.Throws
 
 @Entity(
     foreignKeys = [
@@ -28,4 +30,23 @@ data class Credential(
     val isLinkedToBank : Boolean,
     val bankAccountId : Int?,
     val companyId: Int?
-)
+) {
+
+    @Throws(InvalidCredentialException::class)
+    fun isValid(): Boolean {
+        if (isLinkedToBank && (bankAccountId == null || bankAccountId == -1)) {
+            throw InvalidCredentialException("Select entity")
+        }
+        if (!isLinkedToBank && (companyId == null || companyId == -1)) {
+            throw InvalidCredentialException("Select entity")
+        }
+        if (username.isEmpty()) {
+            throw InvalidCredentialException("Enter username")
+        }
+        if (password.isEmpty()) {
+            throw InvalidCredentialException("Enter password")
+        }
+        return true
+    }
+
+}
