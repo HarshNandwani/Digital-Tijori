@@ -21,14 +21,15 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
-import com.harshnandwani.digitaltijori.presentation.util.getDrawableIdForCardNetwork
+import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 
 @Composable
 fun CardLayout(
     variant: String,
-    company: Company,
+    company: Company?,
     nameText: String,
     cardNumber: String,
     expiryNumber: String,
@@ -79,7 +80,7 @@ fun CardLayout(
                 )
 
                 Image(
-                    painter = painterResource(id = company.logoResId),
+                    painter = painterResource(id = company?.logoResId ?: R.drawable.default_bank),
                     contentDescription = "Issuer Logo",
                     modifier = Modifier
                         .constrainAs(issuerLogo) {
@@ -128,7 +129,7 @@ fun CardLayout(
                 )
 
                 Image(
-                    painter = painterResource(id = getDrawableIdForCardNetwork(cardNetwork)),
+                    painter = painterResource(id = CardHelperFunctions.getDrawableIdForCardNetwork(cardNetwork)),
                     contentDescription = "Card Network",
                     modifier = Modifier.constrainAs(cardNetworkLogo) {
                         end.linkTo(parent.end)
