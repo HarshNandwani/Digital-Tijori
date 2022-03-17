@@ -14,6 +14,7 @@ import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
 import dagger.Provides
@@ -59,6 +60,12 @@ object AppModule {
     @Singleton
     fun provideGetAllBanksUseCase(repository: CompanyRepository): GetAllBanksUseCase {
         return GetAllBanksUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCompaniesHavingCredentialsUseCase(repository: CompanyRepository): GetCompaniesHavingCredentialsUseCase {
+        return GetCompaniesHavingCredentialsUseCase(repository)
     }
 
     @Provides
