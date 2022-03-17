@@ -17,6 +17,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCas
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.AddCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredentialUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.UpdateCredentialUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
@@ -137,4 +138,11 @@ object AppModule {
     fun provideDeleteCredentialUseCase(repository: CredentialRepository): DeleteCredentialUseCase {
         return DeleteCredentialUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetAllCredentialsWithEntityDetailsUseCase(repository: CredentialRepository): GetAllCredentialsWithEntityDetailsUseCase {
+        return GetAllCredentialsWithEntityDetailsUseCase(repository)
+    }
+
 }

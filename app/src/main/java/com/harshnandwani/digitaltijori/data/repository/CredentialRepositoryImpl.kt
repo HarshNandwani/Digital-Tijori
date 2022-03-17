@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.CredentialDao
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,6 +26,10 @@ class CredentialRepositoryImpl(private val dao: CredentialDao): CredentialReposi
 
     override fun get(id: Int): Credential? {
         return dao.get(id)
+    }
+
+    override fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>> {
+        return dao.getAllCredentialsWithEntityDetails()
     }
 
     override suspend fun update(credential: Credential) {

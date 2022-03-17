@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.domain.repository
 
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import kotlinx.coroutines.flow.Flow
 
@@ -10,6 +11,8 @@ interface CredentialRepository {
     fun getAll(): Flow<List<Credential>>
 
     fun get(id: Int): Credential?
+
+    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>>
 
     suspend fun update(credential: Credential)
 

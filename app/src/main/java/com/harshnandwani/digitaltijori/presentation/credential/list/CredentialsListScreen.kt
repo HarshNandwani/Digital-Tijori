@@ -1,17 +1,25 @@
 package com.harshnandwani.digitaltijori.presentation.credential.list
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.harshnandwani.digitaltijori.presentation.credential.list.components.SingleCredentialItem
+import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 
 @Composable
-fun CredentialsListScreen() {
-    Box(Modifier.fillMaxSize().background(color = Color.Green),contentAlignment = Alignment.Center) {
-        Text(text = "CredentialsList Under construction")
+fun CredentialsListScreen(viewModel: HomeViewModel) {
+
+    val state = viewModel.state.value
+
+    LazyColumn {
+        for((entity, credential) in state.credentials) {
+            item {
+                SingleCredentialItem(
+                    linkedEntity = entity,
+                    credential = credential,
+                    onClick = {  }
+                )
+            }
+        }
     }
+
 }

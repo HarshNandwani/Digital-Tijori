@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
@@ -19,16 +20,19 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
-    private val getBankAccountUseCase: GetBankAccountUseCase
+    private val getBankAccountUseCase: GetBankAccountUseCase,
+    private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeScreenState())
     val state: State<HomeScreenState> = _state
 
     private var getAllAccountsJob: Job? = null
+    private var getAllCredentialsJob: Job? = null
 
     init {
         getAllBankAccounts()
+        getAllCredentials()
     }
 
     fun onEvent(event: HomeScreenEvent) {
@@ -75,6 +79,17 @@ class HomeViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     bankAccounts = accounts,
                     filteredBankAccounts = accounts
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getAllCredentials() {
+        getAllCredentialsJob?.cancel()
+        getAllCredentialsJob = getAllCredentialsWithEntityDetails()
+            .onEach { credentials ->
+                _state.value = state.value.copy(
+                    credentials = credentials
                 )
             }
             .launchIn(viewModelScope)
