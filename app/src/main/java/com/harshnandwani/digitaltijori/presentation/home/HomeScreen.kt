@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
+import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.home.components.AppBarWithSearchView
 import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBar
 import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
@@ -53,7 +54,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                             }
                         }
                         HomeScreens.CardsList.route -> {
-                            Intent(context, AddEditBankAccountActivity::class.java).apply {
+                            Intent(context, AddEditCardActivity::class.java).apply {
                                 putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                                 context.startActivity(this)
                             }
