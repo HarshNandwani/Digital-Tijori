@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,9 +47,54 @@ class AddEditCardViewModel @Inject constructor(
                     selectedIssuer = event.issuer
                 )
             }
+            is CardEvent.EnteredCardNumber -> {
+                _state.value = state.value.copy(
+                    cardNumber = event.cardNumber
+                )
+            }
+            is CardEvent.EnteredCardExpiry -> {
+                try {
+                    _state.value = state.value.copy(
+                        expiryMonth = event.expiry
+                    )
+                } catch (e: NumberFormatException) {
+                    viewModelScope.launch {
+                        _eventFlow.emit(CardSubmitResultEvent.InvalidExpiry)
+                    }
+                }
+            }
+            is CardEvent.EnteredCvv -> {
+                try {
+                    _state.value = state.value.copy(
+                        cvv = event.cvv
+                    )
+                } catch (e: NumberFormatException) {
+                    viewModelScope.launch {
+                        _eventFlow.emit(CardSubmitResultEvent.InvalidCvv)
+                    }
+                }
+            }
+            is CardEvent.EnteredNameOnCard -> {
+                _state.value = state.value.copy(
+                    nameOnCard = event.name
+                )
+            }
             is CardEvent.CardSubmit -> {
                 viewModelScope.launch {
-                    val card = _state.value.card.value
+                    val card = Card(
+                        -1,
+                        false,
+                        null,
+                        _state.value.selectedIssuer?.id,
+                        _state.value.cardNumber,
+                        _state.value.expiryMonth.toByte(),
+                        _state.value.expiryYear.toByte(),
+                        _state.value.cvv.toShort(),
+                        _state.value.nameOnCard,
+                        _state.value.cardNetwork,
+                        _state.value.cardAlias,
+                        _state.value.cardType
+                    )
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {
                             addCardUseCase(card)
