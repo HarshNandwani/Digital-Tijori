@@ -32,6 +32,18 @@ data class Credential(
     val companyId: Int?
 ) {
 
+    companion object {
+        fun emptyCredential(): Credential {
+            return Credential(
+                username = "",
+                password = "",
+                isLinkedToBank = false,
+                bankAccountId = null,
+                companyId = null
+            )
+        }
+    }
+
     @Throws(InvalidCredentialException::class)
     fun isValid(): Boolean {
         if (isLinkedToBank && (bankAccountId == null || bankAccountId == -1)) {
