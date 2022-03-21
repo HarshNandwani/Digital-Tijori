@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.AddCredentialUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.UpdateCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.util.InvalidCredentialException
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialEvent
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialState
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditCredentialViewModel @Inject constructor(
     private val getCompaniesHavingCredentialsUseCase: GetCompaniesHavingCredentialsUseCase,
-    private val addCredentialUseCase: AddCredentialUseCase
+    private val addCredentialUseCase: AddCredentialUseCase,
+    private val updateCredentialUseCase: UpdateCredentialUseCase
 ) : ViewModel() {
 
     private var getAllEntitiesJob: Job? = null
@@ -65,6 +67,12 @@ class AddEditCredentialViewModel @Inject constructor(
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {
                             addCredentialUseCase(credential)
+                        } else {
+                            if (_state.value.previouslyEnteredCredential == credential) {
+                                _eventFlow.emit(CredentialSubmitResultEvent.ShowError("No values changed"))
+                                return@launch
+                            }
+                            updateCredentialUseCase(credential)
                         }
                         _eventFlow.emit(CredentialSubmitResultEvent.CredentialSaved)
                     } catch (e: InvalidCredentialException) {
@@ -75,6 +83,15 @@ class AddEditCredentialViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+            is CredentialEvent.ChangeToEditMode -> {
+                getAllEntitiesJob?.cancel()
+                _state.value = state.value.copy(
+                    mode = Parameters.VAL_MODE_EDIT,
+                    selectedEntity = event.linkedEntity
+                )
+                _state.value.credential.value = event.credential
+                _state.value.previouslyEnteredCredential = event.credential
             }
         }
     }

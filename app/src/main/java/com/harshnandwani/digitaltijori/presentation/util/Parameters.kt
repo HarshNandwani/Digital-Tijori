@@ -7,5 +7,7 @@ class Parameters {
         const val VAL_MODE_EDIT = "mode_edit"
         const val KEY_BANK = "bank"
         const val KEY_BANK_ACCOUNT = "bank_account"
+        const val KEY_ENTITY = "entity"
+        const val KEY_Credential = "credential"
     }
 }
