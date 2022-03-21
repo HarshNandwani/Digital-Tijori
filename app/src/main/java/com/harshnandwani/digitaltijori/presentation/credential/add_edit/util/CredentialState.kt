@@ -10,5 +10,6 @@ data class CredentialState(
     val allEntities: List<Company> = emptyList(),
     val selectedEntity: Company? = null,
     val mode: String = Parameters.VAL_MODE_ADD,
-    val credential: MutableState<Credential> = mutableStateOf(Credential.emptyCredential())
+    val credential: MutableState<Credential> = mutableStateOf(Credential.emptyCredential()),
+    var previouslyEnteredCredential: Credential = Credential.emptyCredential()
 )
