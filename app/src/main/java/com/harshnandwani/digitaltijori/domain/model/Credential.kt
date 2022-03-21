@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.InvalidCredentialException
+import java.io.Serializable
 import kotlin.jvm.Throws
 
 @Entity(
@@ -30,7 +31,7 @@ data class Credential(
     val isLinkedToBank : Boolean,
     val bankAccountId : Int?,
     val companyId: Int?
-) {
+) : Serializable {
 
     companion object {
         fun emptyCredential(): Credential {
