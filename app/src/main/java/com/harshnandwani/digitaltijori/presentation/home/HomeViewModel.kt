@@ -58,6 +58,13 @@ class HomeViewModel @Inject constructor(
                             }
                         )
                     }
+                    HomeScreens.CredentialsList.route -> {
+                        _state.value = state.value.copy(
+                            filteredCredentials = state.value.credentials.filter { entry ->
+                                entry.value.username.contains(event.searchText, ignoreCase = true)
+                            }
+                        )
+                    }
                 }
             }
             is HomeScreenEvent.OnSearchDone -> {
@@ -68,6 +75,11 @@ class HomeViewModel @Inject constructor(
                     HomeScreens.BankAccountsList.route -> {
                         _state.value = state.value.copy(
                             filteredBankAccounts = state.value.bankAccounts
+                        )
+                    }
+                    HomeScreens.CredentialsList.route -> {
+                        _state.value = state.value.copy(
+                            filteredCredentials = state.value.credentials
                         )
                     }
                 }
@@ -92,7 +104,8 @@ class HomeViewModel @Inject constructor(
         getAllCredentialsJob = getAllCredentialsWithEntityDetails()
             .onEach { credentials ->
                 _state.value = state.value.copy(
-                    credentials = credentials
+                    credentials = credentials,
+                    filteredCredentials = credentials
                 )
             }
             .launchIn(viewModelScope)

@@ -10,6 +10,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.list.BankAccoun
 import com.harshnandwani.digitaltijori.presentation.card.list.CardsListScreen
 import com.harshnandwani.digitaltijori.presentation.credential.list.CredentialsListScreen
 import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
+import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 
 @ExperimentalFoundationApi
@@ -21,12 +22,15 @@ fun HomeNavGraph(viewModel: HomeViewModel, navController: NavHostController) {
         startDestination = HomeScreens.BankAccountsList.route
     ) {
         composable(route = HomeScreens.BankAccountsList.route) {
+            viewModel.onEvent(HomeScreenEvent.OnPageChanged(HomeScreens.BankAccountsList.route))
             BankAccountsListScreen(viewModel)
         }
         composable(route = HomeScreens.CardsList.route) {
+            viewModel.onEvent(HomeScreenEvent.OnPageChanged(HomeScreens.CardsList.route))
             CardsListScreen()
         }
         composable(route = HomeScreens.CredentialsList.route) {
+            viewModel.onEvent(HomeScreenEvent.OnPageChanged(HomeScreens.CredentialsList.route))
             CredentialsListScreen(viewModel)
         }
     }
