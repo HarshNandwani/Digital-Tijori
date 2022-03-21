@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
+import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.list.components.SingleCredentialItem
 import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -86,7 +87,13 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                     SingleCredentialItem(
                         linkedEntity = entity,
                         credential = credential,
-                        onClick = {  }
+                        onClick = {
+                            Intent(context, DetailedCredentialActivity::class.java).apply {
+                                putExtra(Parameters.KEY_ENTITY, entity)
+                                putExtra(Parameters.KEY_Credential, credential)
+                                ContextCompat.startActivity(context, this, null)
+                            }
+                        }
                     )
                 }
             }

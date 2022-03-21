@@ -4,4 +4,5 @@
     <string name="title_activity_add_edit_bank_account">AddEditBankAccountActivity</string>
     <string name="title_activity_detailed_bank_account">DetailedBankAccount</string>
     <string name="title_activity_add_edit_credential">AddEditCredentialActivity</string>
+    <string name="title_activity_detailed_credential">DetailedCredentialActivity</string>
 </resources>
