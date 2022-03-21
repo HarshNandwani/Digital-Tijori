@@ -35,7 +35,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn {
-        for((entity, credential) in state.credentials) {
+        for((entity, credential) in state.filteredCredentials) {
             item {
                 Swipeable(
                     swipeToLeftEnabled = true,

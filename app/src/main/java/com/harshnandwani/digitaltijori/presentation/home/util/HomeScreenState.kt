@@ -10,6 +10,7 @@ data class HomeScreenState(
     val filteredBankAccounts: Map<Company, BankAccount> = emptyMap(),
     val cards: List<Card> = emptyList(),
     val credentials: Map<Company, Credential> = emptyMap(),
+    val filteredCredentials: Map<Company, Credential> = emptyMap(),
     val currentPage: String = HomeScreens.BankAccountsList.route,
     val searchText: String = ""
 )
