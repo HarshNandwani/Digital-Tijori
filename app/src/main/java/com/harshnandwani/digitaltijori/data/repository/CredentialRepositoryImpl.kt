@@ -24,7 +24,7 @@ class CredentialRepositoryImpl(private val dao: CredentialDao): CredentialReposi
         return dao.getAll()
     }
 
-    override fun get(id: Int): Credential? {
+    override suspend fun get(id: Int): Credential? {
         return dao.get(id)
     }
 
