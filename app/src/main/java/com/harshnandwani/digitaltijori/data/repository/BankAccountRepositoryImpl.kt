@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.Flow
 * */
 class BankAccountRepositoryImpl(private val dao: BankAccountDao): BankAccountRepository {
 
-    override suspend fun add(account: BankAccount) {
-        dao.add(account)
+    override suspend fun add(account: BankAccount): Long {
+        return dao.add(account)
     }
 
     override fun getAll(): Flow<List<BankAccount>> {

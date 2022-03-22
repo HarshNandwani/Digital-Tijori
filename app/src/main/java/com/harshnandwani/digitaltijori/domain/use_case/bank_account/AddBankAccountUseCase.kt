@@ -9,9 +9,10 @@ class AddBankAccountUseCase(
     private val repository: BankAccountRepository
 ) {
     @Throws(InvalidBankAccountException::class)
-    suspend operator fun invoke(account: BankAccount){
+    suspend operator fun invoke(account: BankAccount): Long {
         if(account.isValidBankAccount()){
-            repository.add(account)
+            return repository.add(account)
         }
+        return -1L
     }
 }
