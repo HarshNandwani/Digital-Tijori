@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.credential.detailed_view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
@@ -29,7 +30,15 @@ class DetailedCredentialActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    DetailedCredentialScreen(viewModel)
+                    DetailedCredentialScreen(
+                        entity = viewModel.state.value.entity,
+                        credential = viewModel.state.value.credential,
+                        onDeleteClick = {
+                            viewModel.onEvent(DetailedCredentialEvent.DeleteCredential)
+                            Toast.makeText(this, "Credential deleted!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    )
                 }
             }
         }
