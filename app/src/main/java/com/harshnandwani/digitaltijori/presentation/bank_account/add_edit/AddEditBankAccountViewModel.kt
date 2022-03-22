@@ -90,7 +90,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                         }
                         val accountId = data.await()
                         if (accountId != -1L) {
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(accountId))
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, accountId))
                         }
                     } else {
                         if (_state.value.previouslyEnteredBankAccount == account) {
@@ -99,7 +99,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                         }
                         try {
                             updateBankAccountUseCase(account)
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(account.id.toLong()))
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.id.toLong()))
                         } catch (e: InvalidBankAccountException) {
                             _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(e.message ?: "Cannot save bank account"))
                         }

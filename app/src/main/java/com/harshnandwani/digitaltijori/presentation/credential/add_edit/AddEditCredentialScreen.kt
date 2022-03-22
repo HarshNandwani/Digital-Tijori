@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
 
     val state = viewModel.state.value
+    val credential = state.credential.value
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -72,7 +73,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
-                    if (state.mode == Parameters.VAL_MODE_ADD) {
+                    if (state.mode == Parameters.VAL_MODE_ADD && !credential.isLinkedToBank) {
                         keyboardController?.hide()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
@@ -86,8 +87,6 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(text = state.selectedEntity?.name ?: "Select entity")
             }
-
-            val credential = state.credential.value
 
             InputTextField(
                 label = "Username",

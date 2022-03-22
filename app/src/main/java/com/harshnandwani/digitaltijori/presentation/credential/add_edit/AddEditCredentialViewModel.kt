@@ -51,6 +51,12 @@ class AddEditCredentialViewModel @Inject constructor(
                     companyId = event.entity.id
                 )
             }
+            is CredentialEvent.LinkToAccount -> {
+                _state.value.credential.value = state.value.credential.value.copy(
+                    isLinkedToBank = true,
+                    bankAccountId = event.linkedAccountId.toInt()
+                )
+            }
             is CredentialEvent.EnteredUsername -> {
                 _state.value.credential.value = state.value.credential.value.copy(
                     username = event.username
