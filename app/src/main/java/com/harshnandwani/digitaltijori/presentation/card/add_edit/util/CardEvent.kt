@@ -8,5 +8,6 @@ sealed class CardEvent {
     data class EnteredNameOnCard(val name: String) : CardEvent()
     data class EnteredCardExpiry(val expiry: String) : CardEvent()
     data class EnteredCvv(val cvv: String) : CardEvent()
+    data class EnteredCardAlias(val alias: String) : CardEvent()
     object CardSubmit : CardEvent()
 }

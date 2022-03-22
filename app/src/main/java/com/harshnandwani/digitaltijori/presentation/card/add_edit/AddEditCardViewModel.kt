@@ -79,6 +79,11 @@ class AddEditCardViewModel @Inject constructor(
                     nameOnCard = event.name
                 )
             }
+            is CardEvent.EnteredCardAlias -> {
+                _state.value = state.value.copy(
+                    cardAlias = event.alias
+                )
+            }
             is CardEvent.CardSubmit -> {
                 viewModelScope.launch {
                     val card = Card(

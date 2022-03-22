@@ -109,6 +109,16 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 )
             )
 
+            InputTextField(
+                label = "Alias for card",
+                value = state.cardAlias,
+                onValueChange = { viewModel.onEvent(CardEvent.EnteredCardAlias(it)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                )
+            )
+
         }
     }
 }
