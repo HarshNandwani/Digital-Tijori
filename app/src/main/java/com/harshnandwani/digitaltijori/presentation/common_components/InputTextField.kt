@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @ExperimentalComposeUiApi
@@ -22,7 +23,9 @@ fun InputTextField(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    trailingIcon: @Composable () -> Unit = {},
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -42,7 +45,9 @@ fun InputTextField(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
                 onDone = { keyboardController?.hide() }
             ),
-            modifier = modifier
+            modifier = modifier,
+            trailingIcon = trailingIcon,
+            visualTransformation = visualTransformation
         )
     }
 }

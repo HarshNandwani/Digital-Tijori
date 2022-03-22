@@ -7,9 +7,10 @@ import com.harshnandwani.digitaltijori.domain.model.Credential
 
 data class HomeScreenState(
     val bankAccounts: Map<Company, BankAccount> = emptyMap(),
-    val cards: List<Card> = emptyList(),
-    val credentials: List<Credential> = emptyList(),
-    val currentPage: String = HomeScreens.BankAccountsList.route,
     val filteredBankAccounts: Map<Company, BankAccount> = emptyMap(),
+    val cards: List<Card> = emptyList(),
+    val credentials: Map<Company, Credential> = emptyMap(),
+    val filteredCredentials: Map<Company, Credential> = emptyMap(),
+    val currentPage: String = HomeScreens.BankAccountsList.route,
     val searchText: String = ""
 )

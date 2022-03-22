@@ -19,6 +19,8 @@ import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.EditCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.*
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
 import dagger.Provides
@@ -70,6 +72,12 @@ object AppModule {
     @Singleton
     fun provideGetAllCardIssuersUseCase(repository: CompanyRepository): GetAllCardIssuersUseCase {
         return GetAllCardIssuersUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCompaniesHavingCredentialsUseCase(repository: CompanyRepository): GetCompaniesHavingCredentialsUseCase {
+        return GetCompaniesHavingCredentialsUseCase(repository)
     }
 
     @Provides
@@ -131,6 +139,36 @@ object AppModule {
     @Singleton
     fun provideCredentialRepository(db: DigitalTijoriDatabase): CredentialRepository {
         return CredentialRepositoryImpl(db.credentialDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddCredentialUseCase(repository: CredentialRepository): AddCredentialUseCase {
+        return AddCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCredentialUseCase(repository: CredentialRepository): GetCredentialUseCase {
+        return GetCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateCredentialUseCase(repository: CredentialRepository): UpdateCredentialUseCase {
+        return UpdateCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteCredentialUseCase(repository: CredentialRepository): DeleteCredentialUseCase {
+        return DeleteCredentialUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllCredentialsWithEntityDetailsUseCase(repository: CredentialRepository): GetAllCredentialsWithEntityDetailsUseCase {
+        return GetAllCredentialsWithEntityDetailsUseCase(repository)
     }
 
 }
