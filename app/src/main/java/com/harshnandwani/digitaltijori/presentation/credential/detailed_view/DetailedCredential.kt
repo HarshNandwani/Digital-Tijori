@@ -26,7 +26,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 @ExperimentalMaterialApi
 @Composable
-fun DetailedCredentialScreen(entity: Company, credential: Credential, onDeleteClick: () -> Unit) {
+fun DetailedCredential(entity: Company, credential: Credential, onDeleteClick: () -> Unit) {
 
     val context = LocalContext.current
 

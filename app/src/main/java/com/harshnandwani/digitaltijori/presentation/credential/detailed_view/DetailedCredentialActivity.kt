@@ -30,7 +30,7 @@ class DetailedCredentialActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    DetailedCredentialScreen(
+                    DetailedCredential(
                         entity = viewModel.state.value.entity,
                         credential = viewModel.state.value.credential,
                         onDeleteClick = {
