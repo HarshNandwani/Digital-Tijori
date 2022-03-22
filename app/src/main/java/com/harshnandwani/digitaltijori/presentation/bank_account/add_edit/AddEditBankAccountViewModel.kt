@@ -14,6 +14,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.B
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
@@ -78,28 +79,30 @@ class AddEditBankAccountViewModel @Inject constructor(
             is BankAccountEvent.BankAccountSubmit -> {
                 viewModelScope.launch {
                     val account = _state.value.bankAccount.value
-                    try {
-                        if(_state.value.mode == Parameters.VAL_MODE_ADD){
-                            addBankAccountUseCase(account)
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved)
-                        } else{
-                            if(_state.value.previouslyEnteredBankAccount == account){
-                                _eventFlow.emit(
-                                    BankAccountSubmitResultEvent.ShowError(
-                                        message = "No values changed"
-                                    )
-                                )
-                                return@launch
+                    if (_state.value.mode == Parameters.VAL_MODE_ADD) {
+                        val data = async {
+                            try {
+                                addBankAccountUseCase(account)
+                            } catch (e: InvalidBankAccountException) {
+                                _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(e.message ?: "Cannot save bank account"))
+                                -1L
                             }
-                            updateBankAccountUseCase(account)
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved)
                         }
-                    }catch (e: InvalidBankAccountException){
-                        _eventFlow.emit(
-                            BankAccountSubmitResultEvent.ShowError(
-                                e.message?: "Cannot save bank account"
-                            )
-                        )
+                        val accountId = data.await()
+                        if (accountId != -1L) {
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, accountId))
+                        }
+                    } else {
+                        if (_state.value.previouslyEnteredBankAccount == account) {
+                            _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(message = "No values changed"))
+                            return@launch
+                        }
+                        try {
+                            updateBankAccountUseCase(account)
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.id.toLong()))
+                        } catch (e: InvalidBankAccountException) {
+                            _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(e.message ?: "Cannot save bank account"))
+                        }
                     }
                 }
             }

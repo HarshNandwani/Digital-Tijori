@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -8,9 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -21,11 +20,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
+import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,6 +42,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var addCredentialsClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -145,6 +147,17 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                 )
             )
 
+            if (state.selectedBank?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD) {
+                Button(
+                    onClick = {
+                        viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+                        addCredentialsClicked = true
+                    }
+                ) {
+                    Text(text = "Add Credentials for this account")
+                }
+            }
+
             TextButton(
                 onClick = {
                     viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
@@ -161,7 +174,15 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             when (event) {
                 is BankAccountSubmitResultEvent.BankAccountSaved -> {
                     Toast.makeText(activity, "Bank Account saved!", Toast.LENGTH_SHORT).show()
-                    activity.onBackPressed()
+                    if (addCredentialsClicked) {
+                        Intent(activity, AddEditCredentialActivity::class.java).apply {
+                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                            putExtra(Parameters.KEY_ENTITY, event.linkedBank)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, event.accountId)
+                            startActivity(activity, this, null)
+                        }
+                    }
+                    activity.finish()
                 }
                 is BankAccountSubmitResultEvent.ShowError -> {
                     Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()

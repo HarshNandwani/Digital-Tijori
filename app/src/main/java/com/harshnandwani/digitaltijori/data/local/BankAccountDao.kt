@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface BankAccountDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun add(account: BankAccount)
+    suspend fun add(account: BankAccount): Long
 
     @Query("SELECT * FROM BankAccount ORDER BY id ASC")
     fun getAll() : Flow<List<BankAccount>>
