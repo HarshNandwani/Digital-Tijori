@@ -36,7 +36,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     ModalBottomSheetLayout(
         sheetContent = {
             CompaniesList(
-                titleText = "Select entity",
+                titleText = "Select card issuer",
                 companies = state.allCardIssuers,
                 onSelect = {
                     viewModel.onEvent(CardEvent.SelectIssuer(it))
