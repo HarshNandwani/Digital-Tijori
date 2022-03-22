@@ -1,7 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.credential.detailed_view
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,15 +19,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.harshnandwani.digitaltijori.domain.model.Company
+import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
-import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.util.DetailedCredentialEvent
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 @ExperimentalMaterialApi
 @Composable
-fun DetailedCredentialScreen(viewModel: DetailedCredentialViewModel) {
+fun DetailedCredential(entity: Company, credential: Credential, onDeleteClick: () -> Unit) {
 
-    val state = viewModel.state.value
     val context = LocalContext.current
 
     var passwordVisibility by remember { mutableStateOf(true) }
@@ -46,13 +45,13 @@ fun DetailedCredentialScreen(viewModel: DetailedCredentialViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = state.entity.iconResId),
+                    painter = painterResource(id = entity.iconResId),
                     contentDescription = "Entity Icon",
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
-                    text = state.entity.name,
+                    text = entity.name,
                     style = MaterialTheme.typography.h1,
                     modifier = Modifier.weight(weight = 1f)
                 )
@@ -63,8 +62,8 @@ fun DetailedCredentialScreen(viewModel: DetailedCredentialViewModel) {
                     modifier = Modifier.clickable {
                         Intent(context, AddEditCredentialActivity::class.java).apply {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
-                            putExtra(Parameters.KEY_ENTITY, state.entity)
-                            putExtra(Parameters.KEY_Credential, state.credential)
+                            putExtra(Parameters.KEY_ENTITY, entity)
+                            putExtra(Parameters.KEY_Credential, credential)
                             ContextCompat.startActivity(context, this, null)
                         }
                         (context as DetailedCredentialActivity).finish()
@@ -76,9 +75,7 @@ fun DetailedCredentialScreen(viewModel: DetailedCredentialViewModel) {
                     contentDescription = "Delete Icon",
                     tint = Color.Red,
                     modifier = Modifier.clickable {
-                        viewModel.onEvent(DetailedCredentialEvent.DeleteCredential)
-                        Toast.makeText(context, "Credential deleted!", Toast.LENGTH_SHORT).show()
-                        (context as DetailedCredentialActivity).finish()
+                        onDeleteClick()
                     }
                 )
             }
@@ -92,10 +89,10 @@ fun DetailedCredentialScreen(viewModel: DetailedCredentialViewModel) {
                 }
                 Spacer(modifier = Modifier.size(32.dp))
                 Column {
-                    Text(text = state.credential.username)
+                    Text(text = credential.username)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = if (passwordVisibility) "*".repeat(state.credential.password.length) else state.credential.password,
+                            text = if (passwordVisibility) "*".repeat(credential.password.length) else credential.password,
                             modifier = Modifier.weight(weight = 1f)
                         )
                         IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
