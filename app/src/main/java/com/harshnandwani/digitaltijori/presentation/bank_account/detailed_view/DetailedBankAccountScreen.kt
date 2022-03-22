@@ -47,7 +47,11 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = state.bank.name, style = MaterialTheme.typography.h1)
+                Text(
+                    text = state.bank.name,
+                    style = MaterialTheme.typography.h1,
+                    modifier = Modifier.weight(weight = 1f)
+                )
                 Spacer(modifier = Modifier.size(32.dp))
                 Icon(
                     imageVector = Icons.Default.Edit,
