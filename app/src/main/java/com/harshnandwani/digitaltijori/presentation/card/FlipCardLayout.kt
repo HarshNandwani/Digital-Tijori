@@ -1,13 +1,11 @@
 package com.harshnandwani.digitaltijori.presentation.card
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -15,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -27,8 +24,9 @@ import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 
+@ExperimentalMaterialApi
 @Composable
-fun CardLayout(
+fun FlipCardLayout(
     variant: String,
     company: Company?,
     nameText: String,
@@ -40,34 +38,20 @@ fun CardLayout(
 ) {
 
     var backVisible by remember { mutableStateOf(false) }
+
     val initial = remember { "*****************" }
         .replaceRange(0..16, cardNumber.take(16))
 
-    if (cvvNumber.length == 1 && !backVisible) {
-        backVisible = true
-    } else if (cvvNumber.length == 2) {
-        backVisible = true
-    } else if (cvvNumber.length == 3) {
-        backVisible = false
-    }
-
-    Card(
-        shape = RoundedCornerShape(24.dp),
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .height(220.dp)
-            .graphicsLayer(
-                rotationY = animateFloatAsState(if (backVisible) 180f else 0f).value,
-                translationY = 0f
-            )
-    ) {
-
-        AnimatedVisibility(visible = !backVisible) {
-
+    FlipCard(
+        backVisible = backVisible,
+        onClick = {
+            backVisible = !backVisible
+        },
+        front = {
             ConstraintLayout(
                 modifier = Modifier
                     .padding(16.dp)
+                    .fillMaxSize()
             ) {
                 val (cardVariant, issuerLogo, cardNumAndExpiryLayout, holderName, cardNetworkLogo) = createRefs()
 
@@ -134,7 +118,11 @@ fun CardLayout(
                 )
 
                 Image(
-                    painter = painterResource(id = CardHelperFunctions.getDrawableIdForCardNetwork(cardNetwork)),
+                    painter = painterResource(
+                        id = CardHelperFunctions.getDrawableIdForCardNetwork(
+                            cardNetwork
+                        )
+                    ),
                     contentDescription = "Card Network",
                     modifier = Modifier.constrainAs(cardNetworkLogo) {
                         end.linkTo(parent.end)
@@ -143,23 +131,37 @@ fun CardLayout(
                 )
 
             }
-
-        }
-
-        AnimatedVisibility(visible = backVisible) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Color.Gray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = cvvNumber,
-                    style = MaterialTheme.typography.h6,
-                    color = Color.White,
+        },
+        back = {
+            Column {
+                Spacer(
+                    modifier = Modifier
+                        .padding(top = 36.dp)
+                        .height(48.dp)
+                        .background(Color.Black)
+                        .fillMaxWidth()
                 )
-            }
-        }
 
-    }
+                Spacer(modifier = Modifier.size(24.dp))
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .align(Alignment.CenterHorizontally)
+                        .background(Color.Gray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = cvvNumber.take(3),
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier
+                            .padding(vertical = 4.dp, horizontal = 16.dp)
+                    )
+                }
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp)
+    )
+
 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.harshnandwani.digitaltijori.presentation.card.CardLayout
+import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
@@ -53,7 +53,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             modifier = Modifier.padding(24.dp)
         ) {
 
-            CardLayout(
+            FlipCardLayout(
                 variant = "",
                 company = state.selectedIssuer,
                 nameText = state.nameOnCard,
