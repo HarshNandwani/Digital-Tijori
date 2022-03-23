@@ -34,7 +34,7 @@ class AddEditCardViewModel @Inject constructor(
     val state: State<CardState> = _state
 
     private val _eventFlow = MutableSharedFlow<CardSubmitResultEvent>()
-    private val eventFlow = _eventFlow.asSharedFlow()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     val identifyCardNetwork = IdentifyCardNetworkUseCase()
 
