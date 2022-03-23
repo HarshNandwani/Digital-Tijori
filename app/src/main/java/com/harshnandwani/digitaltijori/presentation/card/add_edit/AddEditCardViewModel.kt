@@ -50,6 +50,11 @@ class AddEditCardViewModel @Inject constructor(
                     selectedIssuer = event.issuer
                 )
             }
+            is CardEvent.SelectedCardType -> {
+                _state.value = state.value.copy(
+                    cardType = event.cardType
+                )
+            }
             is CardEvent.EnteredCardNumber -> {
                 _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value = state.value.copy(
