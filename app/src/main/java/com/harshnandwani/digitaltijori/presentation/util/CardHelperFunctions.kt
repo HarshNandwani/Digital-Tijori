@@ -20,6 +20,34 @@ class CardHelperFunctions {
             }
         }
 
+        fun formatExpiry(expiry: AnnotatedString): TransformedText {
+            var out = ""
+            for (i in expiry.indices) {
+                out += expiry[i]
+                if (i == 1) out += "/"
+            }
+
+            val expiryOffsetTranslator = object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int {
+                    return if (offset <= 1) {
+                        offset
+                    } else {
+                        offset + 1
+                    }
+                }
+
+                override fun transformedToOriginal(offset: Int): Int {
+                    return if (offset <= 1) {
+                        offset
+                    } else {
+                        offset - 1
+                    }
+                }
+            }
+
+            return TransformedText(AnnotatedString(out), expiryOffsetTranslator)
+        }
+
         /*
         * Credits to Benyam
         * https://dev.to/benyam7/formatting-credit-card-number-input-in-jetpack-compose-android-2nal
