@@ -24,6 +24,7 @@ fun InputTextField(
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions,
     modifier: Modifier = Modifier,
+    placeholder: String? = null,
     trailingIcon: @Composable () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
@@ -39,6 +40,7 @@ fun InputTextField(
             label = {
                 Text(text = label)
             },
+            placeholder = { placeholder?.let { Text(it) } },
             singleLine = true,
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(

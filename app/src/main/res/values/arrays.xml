@@ -20,11 +20,11 @@
     IF NOT ADDED there will be ArrayIndexOutOfBoundException
     on app start -->
     <integer-array name="company_logos">
-        <item>-1</item>
+        <item>@drawable/airtel_icon</item>
         <item>@drawable/axis_bank_logo</item>
         <item>@drawable/hdfc_bank_logo</item>
         <item>@drawable/icici_bank_logo</item>
-        <item>-1</item>
+        <item>@drawable/paytm_icon</item>
         <item>@drawable/sbi_logo</item>
     </integer-array>
 
