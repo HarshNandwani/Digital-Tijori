@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.CardDao
 import com.harshnandwani.digitaltijori.domain.model.Card
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +26,10 @@ class CardRepositoryImpl(private val dao: CardDao): CardRepository {
 
     override fun get(id: Int): Card? {
         return dao.get(id)
+    }
+
+    override fun getCardsWithIssuerDetails(): Flow<Map<Company, Card>> {
+        return dao.getCardsWithIssuerDetails()
     }
 
     override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>>? {

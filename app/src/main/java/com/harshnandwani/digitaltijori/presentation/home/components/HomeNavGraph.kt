@@ -27,7 +27,7 @@ fun HomeNavGraph(viewModel: HomeViewModel, navController: NavHostController) {
         }
         composable(route = HomeScreens.CardsList.route) {
             viewModel.onEvent(HomeScreenEvent.OnPageChanged(HomeScreens.CardsList.route))
-            CardsListScreen()
+            CardsListScreen(viewModel)
         }
         composable(route = HomeScreens.CredentialsList.route) {
             viewModel.onEvent(HomeScreenEvent.OnPageChanged(HomeScreens.CredentialsList.route))
