@@ -8,12 +8,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
@@ -69,6 +71,28 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                     }
                 }
             )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                RadioButton(
+                    selected = state.cardType == CardType.DebitCard,
+                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.DebitCard)) }
+                )
+                Text(text = "Debit")
+                RadioButton(
+                    selected = state.cardType == CardType.CreditCard,
+                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.CreditCard)) }
+                )
+                Text(text = "Credit")
+                RadioButton(
+                    selected = state.cardType == CardType.Other,
+                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.Other)) }
+                )
+                Text(text = "Other")
+            }
 
             InputTextField(
                 label = "Card Number",
