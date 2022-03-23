@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,15 +70,9 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.EnteredCvv -> {
-                try {
-                    _state.value = state.value.copy(
-                        cvv = event.cvv
-                    )
-                } catch (e: NumberFormatException) {
-                    viewModelScope.launch {
-                        _eventFlow.emit(CardSubmitResultEvent.InvalidCvv)
-                    }
-                }
+                _state.value = state.value.copy(
+                    cvv = event.cvv
+                )
             }
             is CardEvent.EnteredNameOnCard -> {
                 _state.value = state.value.copy(
