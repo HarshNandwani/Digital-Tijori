@@ -155,6 +155,12 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 )
             )
 
+            TextButton(
+                onClick = { viewModel.onEvent(CardEvent.CardSubmit) }
+            ) {
+                Text(text = "Submit")
+            }
+
         }
     }
 

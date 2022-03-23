@@ -89,7 +89,6 @@ class AddEditCardViewModel @Inject constructor(
                 viewModelScope.launch {
                     val expiryMonth: Byte
                     val expiryYear: Byte
-                    val cvv: Short
                     try {
                         expiryMonth = _state.value.expiryMonth.toByte()
                         expiryYear = _state.value.expiryYear.toByte()
@@ -99,27 +98,18 @@ class AddEditCardViewModel @Inject constructor(
                         ))
                         return@launch
                     }
-                    try {
-                        cvv = _state.value.cvv.toShort()
-                    } catch (_: NumberFormatException) {
-                        _eventFlow.emit(CardSubmitResultEvent.ShowError(
-                            message = "Invalid cvv"
-                        ))
-                        return@launch
-                    }
                     val card = Card(
-                        -1,
-                        false,
-                        null,
-                        _state.value.selectedIssuer?.id,
-                        _state.value.cardNumber,
-                        expiryMonth,
-                        expiryYear,
-                        cvv,
-                        _state.value.nameOnCard,
-                        _state.value.cardNetwork,
-                        _state.value.cardAlias,
-                        _state.value.cardType
+                        isLinkedToBank = false,
+                        bankAccountId = null,
+                        companyId = _state.value.selectedIssuer?.id,
+                        cardNumber = _state.value.cardNumber,
+                        expiryMonth = expiryMonth,
+                        expiryYear = expiryYear,
+                        cvv = _state.value.cvv,
+                        nameOnCard = _state.value.nameOnCard,
+                        cardNetwork = _state.value.cardNetwork,
+                        cardAlias = _state.value.cardAlias,
+                        cardType = _state.value.cardType
                     )
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {
