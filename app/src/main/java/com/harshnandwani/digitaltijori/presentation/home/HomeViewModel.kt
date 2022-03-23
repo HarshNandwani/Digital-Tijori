@@ -8,6 +8,7 @@ import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssuerDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
     private val getBankAccountUseCase: GetBankAccountUseCase,
+    private val getAllCardsWithIssuerDetails: GetAllCardsWithIssuerDetailsUseCase,
     private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase
 ) : ViewModel() {
@@ -32,10 +34,12 @@ class HomeViewModel @Inject constructor(
 
     private var getAllAccountsJob: Job? = null
     private var getAllCredentialsJob: Job? = null
+    private var getAllCardsJob: Job? = null
 
     init {
         getAllBankAccounts()
         getAllCredentials()
+        getAllCards()
     }
 
     fun onEvent(event: HomeScreenEvent) {
@@ -94,6 +98,17 @@ class HomeViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     bankAccounts = accounts,
                     filteredBankAccounts = accounts
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getAllCards() {
+        getAllCardsJob?.cancel()
+        getAllCardsJob = getAllCardsWithIssuerDetails()
+            .onEach { cards ->
+                _state.value = state.value.copy(
+                    cards = cards
                 )
             }
             .launchIn(viewModelScope)
