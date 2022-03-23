@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -86,15 +87,35 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.CardSubmit -> {
                 viewModelScope.launch {
+                    val expiryMonth: Byte
+                    val expiryYear: Byte
+                    val cvv: Short
+                    try {
+                        expiryMonth = _state.value.expiryMonth.toByte()
+                        expiryYear = _state.value.expiryYear.toByte()
+                    } catch (_: NumberFormatException) {
+                        _eventFlow.emit(CardSubmitResultEvent.ShowError(
+                            message = "Invalid Expiry"
+                        ))
+                        return@launch
+                    }
+                    try {
+                        cvv = _state.value.cvv.toShort()
+                    } catch (_: NumberFormatException) {
+                        _eventFlow.emit(CardSubmitResultEvent.ShowError(
+                            message = "Invalid cvv"
+                        ))
+                        return@launch
+                    }
                     val card = Card(
                         -1,
                         false,
                         null,
                         _state.value.selectedIssuer?.id,
                         _state.value.cardNumber,
-                        _state.value.expiryMonth.toByte(),
-                        _state.value.expiryYear.toByte(),
-                        _state.value.cvv.toShort(),
+                        expiryMonth,
+                        expiryYear,
+                        cvv,
                         _state.value.nameOnCard,
                         _state.value.cardNetwork,
                         _state.value.cardAlias,
