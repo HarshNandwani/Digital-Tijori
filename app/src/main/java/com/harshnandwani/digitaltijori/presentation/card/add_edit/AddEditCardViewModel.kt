@@ -62,15 +62,13 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.EnteredCardExpiry -> {
-                try {
-                    _state.value = state.value.copy(
-                        expiryMonth = event.expiry
-                    )
-                } catch (e: NumberFormatException) {
-                    viewModelScope.launch {
-                        _eventFlow.emit(CardSubmitResultEvent.InvalidExpiry)
-                    }
-                }
+                if (event.expiry.length > 4) return
+                _state.value = state.value.copy(
+                    expiryMonth = if (event.expiry.length > 2) event.expiry.take(2) else event.expiry
+                )
+                _state.value = state.value.copy(
+                    expiryYear = if (event.expiry.length > 2) event.expiry.substring(2) else ""
+                )
             }
             is CardEvent.EnteredCvv -> {
                 try {

@@ -108,13 +108,15 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             )
 
             InputTextField(
-                label = "Card Expiry",
+                label = "Expiry",
                 value = state.expiryMonth + state.expiryYear,
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredCardExpiry(it)) },
+                placeholder = "mm/yy",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
-                )
+                ),
+                visualTransformation = { CardHelperFunctions.formatExpiry(it) }
             )
 
             InputTextField(
