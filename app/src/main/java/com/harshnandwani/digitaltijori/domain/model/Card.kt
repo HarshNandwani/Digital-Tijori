@@ -27,14 +27,14 @@ import kotlin.jvm.Throws
 )
 data class Card(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val isLinkedToBank: Boolean,
     val bankAccountId: Int?,
     val companyId: Int?,
     val cardNumber: String,
     val expiryMonth: Byte,
     val expiryYear: Byte,
-    val cvv: Short,
+    val cvv: String,
     val nameOnCard: String,
     val cardNetwork: CardNetwork,
     val cardAlias: String?,
@@ -52,7 +52,7 @@ data class Card(
                 "",
                 14,
                 1,
-                1,
+                "",
                 "",
                 CardNetwork.Unknown,
                 null,
@@ -64,23 +64,23 @@ data class Card(
 
     @Throws(InvalidCardException::class)
     fun isValidCard(): Boolean {
-        if (this.bankAccountId == null && this.companyId == null) {
-            throw InvalidCardException("Please link card")
+        if (bankAccountId == null && companyId == null) {
+            throw InvalidCardException("Please link card with issuer")
         }
-        if (this.cardNumber.isEmpty()) {
+        if (cardNumber.isEmpty() || cardNumber.length < 15) {
             throw InvalidCardException("Enter full card number")
         }
-        if (this.expiryMonth < 1 || this.expiryMonth > 12) {
+        if (expiryMonth < 1 || expiryMonth > 12) {
             throw InvalidCardException("Enter valid expiry month")
         }
-        if (this.expiryYear.toString().length < 2) {
+        if (expiryYear.toString().length < 2) {
             throw InvalidCardException("Enter valid expiry year")
         }
-        if (this.cvv.toString().length < 3) {
+        if (cvv.length != 3) {
             throw InvalidCardException("Enter valid cvv")
         }
-        if (this.nameOnCard.isEmpty()) {
-            throw InvalidCardException("Enter name")
+        if (nameOnCard.isEmpty() || nameOnCard.length < 3) {
+            throw InvalidCardException("Enter full name")
         }
         return true
     }
