@@ -20,6 +20,7 @@ import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
+import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.launch
 
@@ -76,7 +77,10 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
-                )
+                ),
+                visualTransformation = { number ->
+                    CardHelperFunctions.formatCardNumber(state.cardNetwork, number)
+                }
             )
 
             InputTextField(

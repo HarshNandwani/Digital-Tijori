@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.IdentifyCardNetworkUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
@@ -36,6 +37,8 @@ class AddEditCardViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<CardSubmitResultEvent>()
     private val eventFlow = _eventFlow.asSharedFlow()
 
+    val identifyCardNetwork = IdentifyCardNetworkUseCase()
+
     init {
         getAllCardIssuers()
     }
@@ -48,6 +51,7 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.EnteredCardNumber -> {
+                _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value = state.value.copy(
                     cardNumber = event.cardNumber
                 )

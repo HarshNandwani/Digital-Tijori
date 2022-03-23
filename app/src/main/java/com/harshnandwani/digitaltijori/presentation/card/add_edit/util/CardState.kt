@@ -15,7 +15,7 @@ data class CardState(
     val expiryYear: String = "",
     val cvv: String = "",
     val nameOnCard: String = "",
-    val cardNetwork: CardNetwork = CardNetwork.Unknown,
+    var cardNetwork: CardNetwork = CardNetwork.Unknown,
     val cardAlias: String = "",
     val cardType: CardType = CardType.None,
     var previouslyEnteredCard: Card = Card.emptyCard()
