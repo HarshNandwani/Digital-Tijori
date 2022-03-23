@@ -171,7 +171,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
                 CardSubmitResultEvent.CardSaved -> {
-                    Toast.makeText(context, "Credentials saved!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Card saved!", Toast.LENGTH_SHORT).show()
                     (context as AddEditCardActivity).onBackPressed()
                 }
             }
