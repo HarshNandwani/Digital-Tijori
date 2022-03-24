@@ -49,7 +49,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                         rightSwipeAction = {
                             coroutineScope.launch {
                                 val data = coroutineScope.async(Dispatchers.IO) {
-                                    viewModel.getCard(card.id)
+                                    viewModel.getCard(card.cardId)
                                 }
                                 withContext(Dispatchers.Main) {
                                     val cardToEdit = data.await()

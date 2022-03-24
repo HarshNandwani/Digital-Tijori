@@ -51,7 +51,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                         * */
                         coroutineScope.launch {
                             val data = coroutineScope.async(Dispatchers.IO) {
-                                viewModel.getBankAccount(bankAccount.id)
+                                viewModel.getBankAccount(bankAccount.bankAccountId)
                             }
                             withContext(Dispatchers.Main) {
                                 val accountToShare = data.await()
@@ -78,7 +78,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                        * */
                         coroutineScope.launch {
                             val data = coroutineScope.async(Dispatchers.IO) {
-                                viewModel.getBankAccount(bankAccount.id)
+                                viewModel.getBankAccount(bankAccount.bankAccountId)
                             }
                             withContext(Dispatchers.Main) {
                                 val accountToEdit = data.await()

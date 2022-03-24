@@ -14,11 +14,11 @@ interface CardDao {
     @Query("SELECT * FROM Card")
     fun getAll(): Flow<List<Card>>
 
-    @Query("SELECT * FROM Card WHERE id = :id")
+    @Query("SELECT * FROM Card WHERE cardId = :id")
     suspend fun get(id: Int): Card?
 
     @Transaction
-    @Query("SELECT * FROM Company JOIN Card ON Company.id = Card.companyId")
+    @Query("SELECT * FROM Company JOIN Card ON Company.companyId = Card.companyId")
     fun getCardsWithIssuerDetails(): Flow<Map<Company, Card>>
 
     @Query("SELECT * FROM Card WHERE bankAccountId = :bankAccountId")

@@ -14,10 +14,10 @@ interface CredentialDao {
     @Query("SELECT * FROM Credential")
     fun getAll(): Flow<List<Credential>>
 
-    @Query("SELECT * FROM Credential WHERE id = :id")
+    @Query("SELECT * FROM Credential WHERE credentialId = :id")
     suspend fun get(id: Int): Credential?
 
-    @Query("SELECT * FROM Company JOIN Credential ON Company.id = Credential.companyId")
+    @Query("SELECT * FROM Company JOIN Credential ON Company.companyId = Credential.companyId")
     fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>>
 
     @Update

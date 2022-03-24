@@ -44,7 +44,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                     leftSwipeAction = {
                         coroutineScope.launch {
                             val data = coroutineScope.async(Dispatchers.IO) {
-                                viewModel.getCredential(credential.id)
+                                viewModel.getCredential(credential.credentialId)
                             }
                             withContext(Dispatchers.Main) {
                                 val credentialToCopy = data.await()
@@ -65,7 +65,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                     rightSwipeAction = {
                         coroutineScope.launch {
                             val data = coroutineScope.async(Dispatchers.IO) {
-                                viewModel.getCredential(credential.id)
+                                viewModel.getCredential(credential.credentialId)
                             }
                             withContext(Dispatchers.Main) {
                                 val credentialToEdit = data.await()

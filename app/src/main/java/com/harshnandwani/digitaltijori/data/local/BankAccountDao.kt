@@ -11,14 +11,14 @@ interface BankAccountDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun add(account: BankAccount): Long
 
-    @Query("SELECT * FROM BankAccount ORDER BY id ASC")
+    @Query("SELECT * FROM BankAccount ORDER BY bankAccountId ASC")
     fun getAll() : Flow<List<BankAccount>>
 
-    @Query("SELECT * FROM BankAccount WHERE id = :id")
+    @Query("SELECT * FROM BankAccount WHERE bankAccountId = :id")
     suspend fun get(id: Int) : BankAccount?
 
     @Transaction
-    @Query("SELECT * FROM Company JOIN BankAccount ON Company.id = BankAccount.bankId")
+    @Query("SELECT * FROM Company JOIN BankAccount ON Company.companyId = BankAccount.companyId")
     fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>>
 
 

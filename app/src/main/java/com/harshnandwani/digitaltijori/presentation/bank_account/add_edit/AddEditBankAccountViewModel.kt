@@ -48,7 +48,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                     selectedBank = event.bank,
                 )
                 _state.value.bankAccount.value = state.value.bankAccount.value.copy(
-                    bankId = event.bank.id
+                    companyId = event.bank.companyId
                 )
             }
             is BankAccountEvent.EnteredAccountNumber -> {
@@ -99,7 +99,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                         }
                         try {
                             updateBankAccountUseCase(account)
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.id.toLong()))
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.bankAccountId.toLong()))
                         } catch (e: InvalidBankAccountException) {
                             _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(e.message ?: "Cannot save bank account"))
                         }
