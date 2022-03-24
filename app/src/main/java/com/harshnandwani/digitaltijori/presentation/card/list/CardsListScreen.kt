@@ -61,7 +61,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                         Intent(context, AddEditCardActivity::class.java).apply {
                                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                             putExtra(Parameters.KEY_ISSUER, issuer)
-                                            putExtra(Parameters.KEY_CARD, card)
+                                            putExtra(Parameters.KEY_CARD, cardToEdit)
                                             ContextCompat.startActivity(context, this, null)
                                         }
                                     }
