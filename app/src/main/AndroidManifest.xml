@@ -11,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DigitalTijori">
         <activity
+            android:name=".presentation.card.detailed_view.DetailedCardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detailed_card"
+            android:theme="@style/Theme.DigitalTijori.NoActionBar" />
+        <activity
             android:name=".presentation.credential.detailed_view.DetailedCredentialActivity"
             android:exported="false"
             android:label="@string/title_activity_detailed_credential"

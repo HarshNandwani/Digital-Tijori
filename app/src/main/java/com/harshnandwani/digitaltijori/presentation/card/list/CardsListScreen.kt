@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
+import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCardActivity
 import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.Dispatchers
@@ -105,7 +106,14 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                 expiryNumber = "xxxx",
                                 cvvNumber = "",
                                 cardNetwork = card.cardNetwork,
-                                backVisible = false
+                                backVisible = false,
+                                onCardClick = {
+                                    Intent(context, DetailedCardActivity::class.java).apply {
+                                        putExtra(Parameters.KEY_ISSUER, issuer)
+                                        putExtra(Parameters.KEY_CARD, card)
+                                        ContextCompat.startActivity(context, this, null)
+                                    }
+                                }
                             )
                         }
                     }
