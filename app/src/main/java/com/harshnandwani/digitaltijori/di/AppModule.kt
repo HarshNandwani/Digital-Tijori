@@ -15,10 +15,7 @@ import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.UpdateCardUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssuerDetailsUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
@@ -141,6 +138,12 @@ object AppModule {
     @Singleton
     fun provideUpdateCardUseCase(repository: CardRepository): UpdateCardUseCase {
         return UpdateCardUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteCardUseCase(repository: CardRepository): DeleteCardUseCase {
+        return DeleteCardUseCase(repository)
     }
 
     @Provides
