@@ -1,5 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit.util
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
@@ -18,5 +20,6 @@ data class CardState(
     var cardNetwork: CardNetwork = CardNetwork.Unknown,
     val cardAlias: String = "",
     val cardType: CardType = CardType.None,
+    val backVisible: MutableState<Boolean> = mutableStateOf(false),
     var previouslyEnteredCard: Card = Card.emptyCard()
 )

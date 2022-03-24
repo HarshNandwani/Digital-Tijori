@@ -34,7 +34,8 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                         cardNumber = cardNumberDisplay,
                         expiryNumber = "xxxx",
                         cvvNumber = "",
-                        cardNetwork = card.cardNetwork
+                        cardNetwork = card.cardNetwork,
+                        backVisible = false
                     )
 
                     Spacer(modifier = Modifier.size(24.dp))
