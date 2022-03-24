@@ -12,6 +12,7 @@
         <item>@drawable/icici_bank_icon</item>
         <item>@drawable/paytm_icon</item>
         <item>@drawable/sbi_icon</item>
+        <item>@drawable/default_company_icon</item>
     </integer-array>
 
     <!-- Everytime a company is added in assets/companies.json add
@@ -26,6 +27,7 @@
         <item>@drawable/icici_bank_logo</item>
         <item>@drawable/paytm_icon</item>
         <item>@drawable/sbi_logo</item>
+        <item>@drawable/default_company_icon</item>
     </integer-array>
 
 </resources>

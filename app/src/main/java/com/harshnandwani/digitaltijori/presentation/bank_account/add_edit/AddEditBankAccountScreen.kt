@@ -1,7 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 
 import android.app.Activity
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -20,13 +19,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
-import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,7 +73,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                 }
             ) {
                 Image(
-                    painter = painterResource(id = state.selectedBank?.iconResId ?: R.drawable.default_bank),
+                    painter = painterResource(id = state.selectedBank?.iconResId ?: R.drawable.default_company_icon),
                     contentDescription = "Bank Icon",
                     modifier = Modifier.size(40.dp)
                 )

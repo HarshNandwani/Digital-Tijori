@@ -80,7 +80,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 }
             ) {
                 Image(
-                    painter = painterResource(id = state.selectedEntity?.iconResId ?: R.drawable.default_bank),
+                    painter = painterResource(id = state.selectedEntity?.iconResId ?: R.drawable.default_company_icon),
                     contentDescription = "Entity Icon",
                     modifier = Modifier.size(40.dp)
                 )

@@ -64,7 +64,7 @@ fun FlipCardLayout(
                 )
 
                 Image(
-                    painter = painterResource(id = company?.logoResId ?: R.drawable.default_bank),
+                    painter = painterResource(id = company?.logoResId ?: R.drawable.default_company_icon),
                     contentDescription = "Issuer Logo",
                     modifier = Modifier
                         .constrainAs(issuerLogo) {
