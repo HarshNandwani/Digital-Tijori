@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.presentation.card
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,7 +22,7 @@ fun FlipCard(
 
     Card(
         onClick = { onClick() },
-        modifier = modifier,
+        modifier = modifier.padding(2.dp), //Elevation not visible when card is white
         shape = RoundedCornerShape(24.dp)
     ) {
         Box(
