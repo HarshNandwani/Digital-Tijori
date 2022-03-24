@@ -108,6 +108,7 @@ class AddEditCardViewModel @Inject constructor(
                         return@launch
                     }
                     val card = Card(
+                        cardId = state.value.previouslyEnteredCard.cardId,
                         isLinkedToBank = false,
                         bankAccountId = null,
                         companyId = _state.value.selectedIssuer?.companyId,

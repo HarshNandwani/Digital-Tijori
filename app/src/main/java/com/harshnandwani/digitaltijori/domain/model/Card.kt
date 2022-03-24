@@ -50,7 +50,7 @@ data class Card(
 
         fun emptyCard(): Card {
             return Card(
-                -1,
+                0,
                 false,
                 null,
                 null,
