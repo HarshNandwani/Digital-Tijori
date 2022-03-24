@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.IdentifyCardNetworkUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.UpdateCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardState
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
+import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditCardViewModel @Inject constructor(
     private val getAllCardIssuersUseCase: GetAllCardIssuersUseCase,
-    private val addCardUseCase: AddCardUseCase
+    private val addCardUseCase: AddCardUseCase,
+    private val updateCardUseCase: UpdateCardUseCase
 ) : ViewModel() {
 
     private var getAllCardIssuersJob: Job? = null
@@ -120,6 +123,12 @@ class AddEditCardViewModel @Inject constructor(
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {
                             addCardUseCase(card)
+                        } else {
+                            if (_state.value.previouslyEnteredCard == card) {
+                                _eventFlow.emit(CardSubmitResultEvent.ShowError("No values changes"))
+                                return@launch
+                            }
+                            updateCardUseCase(card)
                         }
                         _eventFlow.emit(CardSubmitResultEvent.CardSaved)
                     } catch (e: InvalidCardException) {
@@ -128,6 +137,22 @@ class AddEditCardViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+            is CardEvent.ChangeToEditMode -> {
+                getAllCardIssuersJob?.cancel()
+                _state.value = state.value.copy(
+                    selectedIssuer = event.issuer,
+                    mode = Parameters.VAL_MODE_EDIT,
+                    cardNumber = event.card.cardNumber,
+                    expiryMonth = CardHelperFunctions.getMonthAsString(event.card.expiryMonth),
+                    expiryYear = event.card.expiryYear.toString(),
+                    cvv = event.card.cvv,
+                    nameOnCard = event.card.nameOnCard,
+                    cardNetwork = event.card.cardNetwork,
+                    cardAlias = event.card.cardAlias ?: "",
+                    cardType = event.card.cardType,
+                    previouslyEnteredCard = event.card
+                )
             }
         }
     }

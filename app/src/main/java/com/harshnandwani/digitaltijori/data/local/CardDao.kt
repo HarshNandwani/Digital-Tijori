@@ -15,7 +15,7 @@ interface CardDao {
     fun getAll(): Flow<List<Card>>
 
     @Query("SELECT * FROM Card WHERE id = :id")
-    fun get(id: Int): Card?
+    suspend fun get(id: Int): Card?
 
     @Transaction
     @Query("SELECT * FROM Company JOIN Card ON Company.id = Card.companyId")

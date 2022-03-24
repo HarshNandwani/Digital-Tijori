@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit.util
 
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardType
 
@@ -12,4 +13,5 @@ sealed class CardEvent {
     data class EnteredCvv(val cvv: String) : CardEvent()
     data class EnteredCardAlias(val alias: String) : CardEvent()
     object CardSubmit : CardEvent()
+    data class ChangeToEditMode(val issuer: Company, val card: Card) : CardEvent()
 }

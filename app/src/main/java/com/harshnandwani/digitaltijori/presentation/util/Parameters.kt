@@ -8,6 +8,8 @@ class Parameters {
         const val KEY_BANK = "bank"
         const val KEY_BANK_ACCOUNT = "bank_account"
         const val KEY_BANK_ACCOUNT_ID = "bank_account_id"
+        const val KEY_ISSUER = "issuer"
+        const val KEY_CARD = "card"
         const val KEY_ENTITY = "entity"
         const val KEY_Credential = "credential"
     }

@@ -48,6 +48,10 @@ class CardHelperFunctions {
             return TransformedText(AnnotatedString(out), expiryOffsetTranslator)
         }
 
+        fun getMonthAsString(month: Byte):String {
+            return if (month < 10) "0$month" else month.toString()
+        }
+
         /*
         * Credits to Benyam
         * https://dev.to/benyam7/formatting-credit-card-number-input-in-jetpack-compose-android-2nal

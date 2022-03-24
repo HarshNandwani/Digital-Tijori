@@ -10,7 +10,7 @@ interface CardRepository {
 
     fun getAll(): Flow<List<Card>>
 
-    fun get(id: Int): Card?
+    suspend fun get(id: Int): Card?
 
     fun getCardsWithIssuerDetails(): Flow<Map<Company, Card>>
 

@@ -24,7 +24,7 @@ class CardRepositoryImpl(private val dao: CardDao): CardRepository {
         return dao.getAll()
     }
 
-    override fun get(id: Int): Card? {
+    override suspend fun get(id: Int): Card? {
         return dao.get(id)
     }
 
