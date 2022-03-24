@@ -48,7 +48,7 @@ class AddEditCredentialViewModel @Inject constructor(
                     selectedEntity = event.entity
                 )
                 _state.value.credential.value = state.value.credential.value.copy(
-                    companyId = event.entity.id
+                    companyId = event.entity.companyId
                 )
             }
             is CredentialEvent.LinkToAccount -> {

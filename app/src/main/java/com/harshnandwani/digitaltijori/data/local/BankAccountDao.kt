@@ -18,7 +18,7 @@ interface BankAccountDao {
     suspend fun get(id: Int) : BankAccount?
 
     @Transaction
-    @Query("SELECT * FROM Company JOIN BankAccount ON Company.id = BankAccount.bankId")
+    @Query("SELECT * FROM Company JOIN BankAccount ON Company.companyId = BankAccount.bankId")
     fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>>
 
 

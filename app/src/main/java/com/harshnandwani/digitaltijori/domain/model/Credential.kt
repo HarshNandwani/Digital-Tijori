@@ -17,7 +17,7 @@ import kotlin.jvm.Throws
         ),
         ForeignKey(
             entity = Company::class,
-            parentColumns = ["id"],
+            parentColumns = ["companyId"],
             childColumns = ["companyId"],
             onDelete = ForeignKey.RESTRICT
         )

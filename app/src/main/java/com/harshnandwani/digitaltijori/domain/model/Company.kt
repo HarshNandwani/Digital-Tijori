@@ -7,7 +7,7 @@ import java.io.Serializable
 @Entity
 data class Company(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val companyId: Int,
     val name: String,
     val isABank: Boolean,
     val issuesCards: Boolean,
