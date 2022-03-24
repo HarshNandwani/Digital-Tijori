@@ -42,7 +42,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
-    var addCredentialsClicked by remember { mutableStateOf(false) }
+//    var addCredentialsClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -147,16 +147,16 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                 )
             )
 
-            if (state.selectedBank?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD) {
-                Button(
-                    onClick = {
-                        viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
-                        addCredentialsClicked = true
-                    }
-                ) {
-                    Text(text = "Add Credentials for this account")
-                }
-            }
+//            if (state.selectedBank?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD) {
+//                Button(
+//                    onClick = {
+//                        viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+//                        addCredentialsClicked = true
+//                    }
+//                ) {
+//                    Text(text = "Add Credentials for this account")
+//                }
+//            }
 
             TextButton(
                 onClick = {
@@ -174,14 +174,14 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             when (event) {
                 is BankAccountSubmitResultEvent.BankAccountSaved -> {
                     Toast.makeText(activity, "Bank Account saved!", Toast.LENGTH_SHORT).show()
-                    if (addCredentialsClicked) {
-                        Intent(activity, AddEditCredentialActivity::class.java).apply {
-                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
-                            putExtra(Parameters.KEY_ENTITY, event.linkedBank)
-                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, event.accountId)
-                            startActivity(activity, this, null)
-                        }
-                    }
+//                    if (addCredentialsClicked) {
+//                        Intent(activity, AddEditCredentialActivity::class.java).apply {
+//                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+//                            putExtra(Parameters.KEY_ENTITY, event.linkedBank)
+//                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, event.accountId)
+//                            startActivity(activity, this, null)
+//                        }
+//                    }
                     activity.finish()
                 }
                 is BankAccountSubmitResultEvent.ShowError -> {
