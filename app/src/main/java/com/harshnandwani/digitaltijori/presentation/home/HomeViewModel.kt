@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssuerDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
@@ -25,6 +27,7 @@ class HomeViewModel @Inject constructor(
     private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
     private val getBankAccountUseCase: GetBankAccountUseCase,
     private val getAllCardsWithIssuerDetails: GetAllCardsWithIssuerDetailsUseCase,
+    private val getCardUseCase: GetCardUseCase,
     private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase
 ) : ViewModel() {
@@ -141,6 +144,10 @@ class HomeViewModel @Inject constructor(
 
     suspend fun getBankAccount(id: Int): BankAccount? {
         return getBankAccountUseCase(id)
+    }
+
+    suspend fun getCard(id: Int): Card? {
+        return getCardUseCase(id)
     }
 
     suspend fun getCredential(id: Int): Credential? {
