@@ -34,5 +34,11 @@
     "isABank": true,
     "issuesCards": true,
     "hasCredentials": true
+  },
+  {
+    "name": "Other",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
   }
 ]
