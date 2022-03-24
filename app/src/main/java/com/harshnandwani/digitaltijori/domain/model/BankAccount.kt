@@ -17,7 +17,7 @@ import kotlin.jvm.Throws
 )
 data class BankAccount(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val bankAccountId: Int = 0,
     val companyId: Int,
     val holderName: String,
     val accountNumber: String,

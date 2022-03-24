@@ -99,7 +99,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                         }
                         try {
                             updateBankAccountUseCase(account)
-                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.id.toLong()))
+                            _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, account.bankAccountId.toLong()))
                         } catch (e: InvalidBankAccountException) {
                             _eventFlow.emit(BankAccountSubmitResultEvent.ShowError(e.message ?: "Cannot save bank account"))
                         }

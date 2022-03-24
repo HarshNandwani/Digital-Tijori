@@ -11,7 +11,7 @@ import kotlin.jvm.Throws
     foreignKeys = [
         ForeignKey(
             entity = BankAccount::class,
-            parentColumns = ["id"],
+            parentColumns = ["bankAccountId"],
             childColumns = ["bankAccountId"],
             onDelete = ForeignKey.RESTRICT
         ),
