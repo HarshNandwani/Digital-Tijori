@@ -27,7 +27,7 @@ import kotlin.jvm.Throws
 )
 data class Card(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val cardId: Int = 0,
     val isLinkedToBank: Boolean,
     val bankAccountId: Int?,
     val companyId: Int?,
