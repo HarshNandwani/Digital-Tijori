@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.card.list
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,24 +22,23 @@ fun CardsListScreen(viewModel: HomeViewModel) {
         for ((issuer, card) in state.cards) {
             item {
 
-                var expiryNumberDisplay =
-                    if (card.expiryMonth < 10)
-                        "0${card.expiryMonth}"
-                    else
-                        card.expiryMonth.toString()
+                Column {
+                    val cardNumberDisplay =
+                        "x".repeat(card.cardNumber.length - 4) +
+                                card.cardNumber.takeLast(4)
 
-                expiryNumberDisplay += card.expiryYear.toString()
+                    FlipCardLayout(
+                        variant = "",
+                        company = issuer,
+                        nameText = card.nameOnCard,
+                        cardNumber = cardNumberDisplay,
+                        expiryNumber = "xxxx",
+                        cvvNumber = "",
+                        cardNetwork = card.cardNetwork
+                    )
 
-                FlipCardLayout(
-                    variant = "",
-                    company = issuer,
-                    nameText = card.nameOnCard,
-                    cardNumber = card.cardNumber,
-                    expiryNumber = expiryNumberDisplay,
-                    cvvNumber = card.cvv,
-                    cardNetwork = card.cardNetwork
-                )
-                Spacer(modifier = Modifier.size(24.dp))
+                    Spacer(modifier = Modifier.size(24.dp))
+                }
             }
         }
     }

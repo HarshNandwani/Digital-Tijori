@@ -102,9 +102,9 @@ fun FlipCardLayout(
                             text = "Expires",
                             fontSize = 10.sp,
                         )
-
+                        Spacer(modifier = Modifier.size(2.dp))
                         Text(
-                            text = expiryNumber.take(4).chunked(2).joinToString(" / "),
+                            text = expiryNumber.take(4).chunked(2).joinToString("/"),
                         )
                     }
                 }
