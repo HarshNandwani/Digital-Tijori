@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.domain.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.InvalidCredentialException
 import java.io.Serializable
@@ -21,6 +22,10 @@ import kotlin.jvm.Throws
             childColumns = ["companyId"],
             onDelete = ForeignKey.RESTRICT
         )
+    ],
+    indices = [
+        Index("bankAccountId"),
+        Index("companyId")
     ]
 )
 data class Credential(

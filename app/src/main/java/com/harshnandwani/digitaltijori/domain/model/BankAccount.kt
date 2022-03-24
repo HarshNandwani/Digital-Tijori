@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.domain.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
 import java.io.Serializable
@@ -13,7 +14,10 @@ import kotlin.jvm.Throws
         parentColumns = ["companyId"],
         childColumns = ["companyId"],
         onDelete = ForeignKey.RESTRICT
-    )]
+    )],
+    indices = [
+        Index("companyId")
+    ]
 )
 data class BankAccount(
     @PrimaryKey(autoGenerate = true)
