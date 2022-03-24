@@ -1,5 +1,8 @@
 package com.harshnandwani.digitaltijori.presentation.card.list
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -8,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +47,27 @@ fun CardsListScreen(viewModel: HomeViewModel) {
 
                         Swipeable(
                             swipeToLeftEnabled = true,
+                            rightColor = Color.Green,
+                            rightIcon = Icons.Default.ContentCopy,
+                            leftSwipeAction = {
+                                coroutineScope.launch {
+                                    val data = coroutineScope.async(Dispatchers.IO) {
+                                        viewModel.getCard(card.cardId)
+                                    }
+                                    withContext(Dispatchers.Main) {
+                                        val cardToCopy = data.await()
+                                        if (cardToCopy == null) {
+                                            Toast.makeText(context, "Card is null", Toast.LENGTH_SHORT)
+                                                .show()
+                                            return@withContext
+                                        }
+                                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                        val clip: ClipData = ClipData.newPlainText("Card Number", cardToCopy.cardNumber)
+                                        clipboard.setPrimaryClip(clip)
+                                        Toast.makeText(context, "Card number Copied", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            },
                             swipeToRightEnabled = true,
                             leftColor = Color.Magenta,
                             leftIcon = Icons.Default.Edit,
