@@ -25,7 +25,7 @@ import kotlin.jvm.Throws
 )
 data class Credential(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val credentialId: Int = 0,
     val username: String,
     val password: String,
     val isLinkedToBank : Boolean,
