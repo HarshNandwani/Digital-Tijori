@@ -11,14 +11,14 @@ import kotlin.jvm.Throws
     foreignKeys = [ForeignKey(
         entity = Company::class,
         parentColumns = ["companyId"],
-        childColumns = ["bankId"],
+        childColumns = ["companyId"],
         onDelete = ForeignKey.RESTRICT
     )]
 )
 data class BankAccount(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val bankId: Int,
+    val companyId: Int,
     val holderName: String,
     val accountNumber: String,
     val ifsc: String,
@@ -28,7 +28,7 @@ data class BankAccount(
 
     @Throws(InvalidBankAccountException::class)
     fun isValidBankAccount(): Boolean {
-        if (bankId == -1) {
+        if (companyId == -1) {
             throw InvalidBankAccountException("Select bank")
         }
         if (accountNumber.isEmpty() || accountNumber.length < 8) {
