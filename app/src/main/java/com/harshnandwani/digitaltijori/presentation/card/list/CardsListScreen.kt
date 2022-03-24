@@ -19,7 +19,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
     val state = viewModel.state.value
 
     LazyColumn(Modifier.padding(16.dp)) {
-        for ((issuer, card) in state.cards) {
+        for ((issuer, card) in state.filteredCards) {
             item {
 
                 Column {
