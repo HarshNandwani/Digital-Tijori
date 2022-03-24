@@ -56,12 +56,14 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.EnteredCardNumber -> {
+                _state.value.backVisible.value = false
                 _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value = state.value.copy(
                     cardNumber = event.cardNumber
                 )
             }
             is CardEvent.EnteredCardExpiry -> {
+                _state.value.backVisible.value = false
                 if (event.expiry.length > 4) return
                 _state.value = state.value.copy(
                     expiryMonth = if (event.expiry.length > 2) event.expiry.take(2) else event.expiry
@@ -71,21 +73,25 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.EnteredCvv -> {
+                _state.value.backVisible.value = true
                 _state.value = state.value.copy(
                     cvv = event.cvv
                 )
             }
             is CardEvent.EnteredNameOnCard -> {
+                _state.value.backVisible.value = false
                 _state.value = state.value.copy(
                     nameOnCard = event.name
                 )
             }
             is CardEvent.EnteredCardAlias -> {
+                _state.value.backVisible.value = false
                 _state.value = state.value.copy(
                     cardAlias = event.alias
                 )
             }
             is CardEvent.CardSubmit -> {
+                _state.value.backVisible.value = false
                 viewModelScope.launch {
                     val expiryMonth: Byte
                     val expiryYear: Byte

@@ -7,9 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -75,7 +73,9 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                         keyboardController?.hide()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
-                }
+                },
+                backVisible = state.backVisible.value,
+                onCardClick = { state.backVisible.value = !state.backVisible.value }
             )
 
             Row(

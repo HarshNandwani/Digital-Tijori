@@ -34,19 +34,17 @@ fun FlipCardLayout(
     expiryNumber: String,
     cvvNumber: String,
     cardNetwork: CardNetwork,
-    onIssuerLogoClick: () -> Unit = {}
+    onIssuerLogoClick: () -> Unit = {},
+    backVisible: Boolean,
+    onCardClick: () -> Unit = {}
 ) {
-
-    var backVisible by remember { mutableStateOf(false) }
 
     val initial = remember { "*****************" }
         .replaceRange(0..16, cardNumber.take(16))
 
     FlipCard(
         backVisible = backVisible,
-        onClick = {
-            backVisible = !backVisible
-        },
+        onClick = onCardClick,
         front = {
             ConstraintLayout(
                 modifier = Modifier
@@ -102,9 +100,9 @@ fun FlipCardLayout(
                             text = "Expires",
                             fontSize = 10.sp,
                         )
-
+                        Spacer(modifier = Modifier.size(2.dp))
                         Text(
-                            text = expiryNumber.take(4).chunked(2).joinToString(" / "),
+                            text = expiryNumber.take(4).chunked(2).joinToString("/"),
                         )
                     }
                 }
