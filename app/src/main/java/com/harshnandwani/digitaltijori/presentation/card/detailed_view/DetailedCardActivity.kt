@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
@@ -36,23 +38,25 @@ class DetailedCardActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    DetailedCard(
-                        issuer = issuer,
-                        card = card,
-                        onDeleteClick = {
-                            lifecycleScope.launch {
-                                deleteCardUseCase(card)
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@DetailedCardActivity,
-                                        "Card deleted",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    finish()
+                    Box(Modifier.fillMaxSize()) {
+                        DetailedCard(
+                            issuer = issuer,
+                            card = card,
+                            onDeleteClick = {
+                                lifecycleScope.launch {
+                                    deleteCardUseCase(card)
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            this@DetailedCardActivity,
+                                            "Card deleted",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        finish()
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
