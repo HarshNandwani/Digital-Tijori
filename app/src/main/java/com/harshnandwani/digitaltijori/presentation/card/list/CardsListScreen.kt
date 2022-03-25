@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
+import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCardActivity

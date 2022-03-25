@@ -15,7 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
+import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.list.components.SingleCredentialItem
