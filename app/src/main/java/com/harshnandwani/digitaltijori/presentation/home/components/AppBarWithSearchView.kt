@@ -66,6 +66,7 @@ fun AppBar(
         title = {
             Text(text = title)
         },
+        backgroundColor = MaterialTheme.colors.primary,
         actions = {
             IconButton(onClick = { onSearchIconClicked() }) {
                 Icon(
@@ -107,7 +108,6 @@ fun SearchAppBar(
             placeholder = {
                 Text(
                     text = "Search here...",
-                    color = Color.White,
                     modifier = Modifier.alpha(ContentAlpha.medium)
                 )
             },
@@ -122,8 +122,7 @@ fun SearchAppBar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "SearchImage",
-                        tint = Color.White
+                        contentDescription = "SearchImage"
                     )
                 }
             },
@@ -139,8 +138,7 @@ fun SearchAppBar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close Image",
-                        tint = Color.White
+                        contentDescription = "Close Image"
                     )
                 }
             },
