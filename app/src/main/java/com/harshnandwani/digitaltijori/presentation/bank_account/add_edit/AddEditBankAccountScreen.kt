@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -23,6 +24,8 @@ import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
@@ -155,14 +158,13 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 //                }
 //            }
 
-            TextButton(
-                onClick = {
-                    viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
-                },
-                content = {
-                    Text(text = "Submit")
-                }
+            Spacer(modifier = Modifier.size(16.dp))
+
+            RoundedOutlineButton(
+                onClick = { viewModel.onEvent(BankAccountEvent.BankAccountSubmit) },
+                text = "Save account"
             )
+
         }
     }
 

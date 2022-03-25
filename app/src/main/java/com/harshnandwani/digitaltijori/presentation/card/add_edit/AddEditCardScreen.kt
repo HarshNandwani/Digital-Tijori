@@ -21,6 +21,7 @@ import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -155,11 +156,12 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 )
             )
 
-            TextButton(
-                onClick = { viewModel.onEvent(CardEvent.CardSubmit) }
-            ) {
-                Text(text = "Submit")
-            }
+            Spacer(modifier = Modifier.size(16.dp))
+
+            RoundedOutlineButton(
+                onClick = { viewModel.onEvent(CardEvent.CardSubmit) },
+                text = "Save card"
+            )
 
         }
     }
