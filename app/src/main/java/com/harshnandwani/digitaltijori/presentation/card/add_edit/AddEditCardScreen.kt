@@ -57,10 +57,10 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     ) {
         Column(
             modifier = Modifier
-                .padding(24.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             FlipCardLayout(
                 variant = "",
                 company = state.selectedIssuer,
@@ -81,19 +81,19 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 RadioButton(
                     selected = state.cardType == CardType.DebitCard,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.DebitCard)) }
                 )
                 Text(text = "Debit")
+                Spacer(modifier = Modifier.size(8.dp))
                 RadioButton(
                     selected = state.cardType == CardType.CreditCard,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.CreditCard)) }
                 )
                 Text(text = "Credit")
+                Spacer(modifier = Modifier.size(8.dp))
                 RadioButton(
                     selected = state.cardType == CardType.Other,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.Other)) }
