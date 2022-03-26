@@ -6,8 +6,8 @@ import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 
 data class HomeScreenState(
-    val bankAccounts: Map<Company, BankAccount> = emptyMap(),
-    val filteredBankAccounts: Map<Company, BankAccount> = emptyMap(),
+    val bankAccounts: Map<Company, List<BankAccount>> = emptyMap(),
+    val filteredBankAccounts: MutableMap<Company, List<BankAccount>> = mutableMapOf(),
     val cards: Map<Company, Card> = emptyMap(),
     val filteredCards: Map<Company, Card> = emptyMap(),
     val credentials: Map<Company, Credential> = emptyMap(),

@@ -19,7 +19,7 @@ interface BankAccountDao {
 
     @Transaction
     @Query("SELECT * FROM Company JOIN BankAccount ON Company.companyId = BankAccount.companyId")
-    fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>>
+    fun getAccountsWithBankDetails(): Flow<Map<Company, List<BankAccount>>>
 
 
     @Update

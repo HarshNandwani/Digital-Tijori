@@ -58,12 +58,12 @@ class HomeViewModel @Inject constructor(
                 )
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts.filter { entry ->
-                                entry.value.holderName.contains(event.searchText, ignoreCase = true)
-                                        || entry.value.alias?.contains(event.searchText, ignoreCase = true)?: false
+                        _state.value.bankAccounts.forEach { (bank, accountsList) ->
+                            _state.value.filteredBankAccounts[bank] = accountsList.filter {
+                                it.holderName.contains(event.searchText, ignoreCase = true)
+                                        || it.alias?.contains(event.searchText, ignoreCase = true) ?: false
                             }
-                        )
+                        }
                     }
                     HomeScreens.CardsList.route -> {
                         _state.value = state.value.copy(
@@ -88,7 +88,7 @@ class HomeViewModel @Inject constructor(
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
                         _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts
+                            filteredBankAccounts = state.value.bankAccounts.toMutableMap()
                         )
                     }
                     HomeScreens.CardsList.route -> {
@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
             .onEach { accounts ->
                 _state.value = state.value.copy(
                     bankAccounts = accounts,
-                    filteredBankAccounts = accounts
+                    filteredBankAccounts = accounts.toMutableMap()
                 )
             }
             .launchIn(viewModelScope)
