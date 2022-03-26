@@ -28,7 +28,7 @@ class CardRepositoryImpl(private val dao: CardDao): CardRepository {
         return dao.get(id)
     }
 
-    override fun getCardsWithIssuerDetails(): Flow<Map<Company, Card>> {
+    override fun getCardsWithIssuerDetails(): Flow<Map<Company, List<Card>>> {
         return dao.getCardsWithIssuerDetails()
     }
 
