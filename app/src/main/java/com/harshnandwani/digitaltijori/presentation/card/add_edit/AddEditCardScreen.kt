@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.domain.util.CardType
@@ -142,8 +143,9 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 value = state.nameOnCard,
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredNameOnCard(it)) },
                 keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Next
                 )
             )
 

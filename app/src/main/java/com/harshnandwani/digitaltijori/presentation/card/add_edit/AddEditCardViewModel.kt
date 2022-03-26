@@ -83,6 +83,7 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredCvv -> {
                 _state.value.backVisible.value = true
+                if (event.cvv.length > 3) return
                 _state.value = state.value.copy(
                     cvv = event.cvv
                 )
