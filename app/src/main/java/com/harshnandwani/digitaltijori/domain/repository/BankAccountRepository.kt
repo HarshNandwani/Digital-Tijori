@@ -12,7 +12,7 @@ interface BankAccountRepository {
 
     suspend fun get(id: Int) : BankAccount?
 
-    fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>>
+    fun getAccountsWithBankDetails(): Flow<Map<Company, List<BankAccount>>>
 
     suspend fun update(account: BankAccount)
 

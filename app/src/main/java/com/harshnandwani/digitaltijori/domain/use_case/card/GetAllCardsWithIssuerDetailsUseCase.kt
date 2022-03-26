@@ -9,7 +9,7 @@ class GetAllCardsWithIssuerDetailsUseCase(
     private val repository: CardRepository
 ) {
 
-    operator fun invoke(): Flow<Map<Company, Card>> {
+    operator fun invoke(): Flow<Map<Company, List<Card>>> {
         return repository.getCardsWithIssuerDetails()
     }
 

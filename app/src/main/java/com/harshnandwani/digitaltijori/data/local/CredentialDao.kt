@@ -18,7 +18,7 @@ interface CredentialDao {
     suspend fun get(id: Int): Credential?
 
     @Query("SELECT * FROM Company JOIN Credential ON Company.companyId = Credential.companyId")
-    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>>
+    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, List<Credential>>>
 
     @Update
     suspend fun update(credential: Credential)

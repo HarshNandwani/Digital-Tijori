@@ -19,7 +19,7 @@ interface CardDao {
 
     @Transaction
     @Query("SELECT * FROM Company JOIN Card ON Company.companyId = Card.companyId")
-    fun getCardsWithIssuerDetails(): Flow<Map<Company, Card>>
+    fun getCardsWithIssuerDetails(): Flow<Map<Company, List<Card>>>
 
     @Query("SELECT * FROM Card WHERE bankAccountId = :bankAccountId")
     fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<Card>>?

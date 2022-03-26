@@ -58,26 +58,26 @@ class HomeViewModel @Inject constructor(
                 )
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts.filter { entry ->
-                                entry.value.holderName.contains(event.searchText, ignoreCase = true)
-                                        || entry.value.alias?.contains(event.searchText, ignoreCase = true)?: false
+                        _state.value.bankAccounts.forEach { (bank, accountsList) ->
+                            _state.value.filteredBankAccounts[bank] = accountsList.filter {
+                                it.holderName.contains(event.searchText, ignoreCase = true)
+                                        || it.alias?.contains(event.searchText, ignoreCase = true) ?: false
                             }
-                        )
+                        }
                     }
                     HomeScreens.CardsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredCards = state.value.cards.filter { entry ->
-                                entry.value.nameOnCard.contains(event.searchText, ignoreCase = true)
+                        _state.value.cards.forEach { (issuer, cardsList) ->
+                            _state.value.filteredCards[issuer] = cardsList.filter {
+                                it.nameOnCard.contains(event.searchText, ignoreCase = true)
                             }
-                        )
+                        }
                     }
                     HomeScreens.CredentialsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials.filter { entry ->
-                                entry.value.username.contains(event.searchText, ignoreCase = true)
+                        _state.value.credentials.forEach { (entity, credentialList) ->
+                            _state.value.filteredCredentials[entity] = credentialList.filter {
+                                it.username.contains(event.searchText, ignoreCase = true)
                             }
-                        )
+                        }
                     }
                 }
             }
@@ -88,17 +88,17 @@ class HomeViewModel @Inject constructor(
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
                         _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts
+                            filteredBankAccounts = state.value.bankAccounts.toMutableMap()
                         )
                     }
                     HomeScreens.CardsList.route -> {
                         _state.value = state.value.copy(
-                            filteredCards = state.value.cards
+                            filteredCards = state.value.cards.toMutableMap()
                         )
                     }
                     HomeScreens.CredentialsList.route -> {
                         _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials
+                            filteredCredentials = state.value.credentials.toMutableMap()
                         )
                     }
                 }
@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
             .onEach { accounts ->
                 _state.value = state.value.copy(
                     bankAccounts = accounts,
-                    filteredBankAccounts = accounts
+                    filteredBankAccounts = accounts.toMutableMap()
                 )
             }
             .launchIn(viewModelScope)
@@ -124,7 +124,7 @@ class HomeViewModel @Inject constructor(
             .onEach { cards ->
                 _state.value = state.value.copy(
                     cards = cards,
-                    filteredCards = cards
+                    filteredCards = cards.toMutableMap()
                 )
             }
             .launchIn(viewModelScope)
@@ -136,7 +136,7 @@ class HomeViewModel @Inject constructor(
             .onEach { credentials ->
                 _state.value = state.value.copy(
                     credentials = credentials,
-                    filteredCredentials = credentials
+                    filteredCredentials = credentials.toMutableMap()
                 )
             }
             .launchIn(viewModelScope)

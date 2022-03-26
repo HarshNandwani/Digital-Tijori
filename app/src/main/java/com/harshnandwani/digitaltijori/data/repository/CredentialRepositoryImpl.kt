@@ -28,7 +28,7 @@ class CredentialRepositoryImpl(private val dao: CredentialDao): CredentialReposi
         return dao.get(id)
     }
 
-    override fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>> {
+    override fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, List<Credential>>> {
         return dao.getAllCredentialsWithEntityDetails()
     }
 

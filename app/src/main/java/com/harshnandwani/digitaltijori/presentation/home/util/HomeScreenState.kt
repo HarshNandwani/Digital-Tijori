@@ -6,12 +6,12 @@ import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 
 data class HomeScreenState(
-    val bankAccounts: Map<Company, BankAccount> = emptyMap(),
-    val filteredBankAccounts: Map<Company, BankAccount> = emptyMap(),
-    val cards: Map<Company, Card> = emptyMap(),
-    val filteredCards: Map<Company, Card> = emptyMap(),
-    val credentials: Map<Company, Credential> = emptyMap(),
-    val filteredCredentials: Map<Company, Credential> = emptyMap(),
+    val bankAccounts: Map<Company, List<BankAccount>> = emptyMap(),
+    val filteredBankAccounts: MutableMap<Company, List<BankAccount>> = mutableMapOf(),
+    val cards: Map<Company, List<Card>> = emptyMap(),
+    val filteredCards: MutableMap<Company, List<Card>> = mutableMapOf(),
+    val credentials: Map<Company, List<Credential>> = emptyMap(),
+    val filteredCredentials: MutableMap<Company, List<Credential>> = mutableMapOf(),
     val currentPage: String = HomeScreens.BankAccountsList.route,
     val searchText: String = ""
 )

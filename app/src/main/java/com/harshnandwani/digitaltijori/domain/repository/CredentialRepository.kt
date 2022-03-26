@@ -12,7 +12,7 @@ interface CredentialRepository {
 
     suspend fun get(id: Int): Credential?
 
-    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, Credential>>
+    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, List<Credential>>>
 
     suspend fun update(credential: Credential)
 

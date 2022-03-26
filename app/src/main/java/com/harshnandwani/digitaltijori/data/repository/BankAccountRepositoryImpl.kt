@@ -28,7 +28,7 @@ class BankAccountRepositoryImpl(private val dao: BankAccountDao): BankAccountRep
         return dao.get(id)
     }
 
-    override fun getAccountsWithBankDetails(): Flow<Map<Company, BankAccount>> {
+    override fun getAccountsWithBankDetails(): Flow<Map<Company, List<BankAccount>>> {
         return dao.getAccountsWithBankDetails()
     }
 

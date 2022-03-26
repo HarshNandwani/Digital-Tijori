@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetAllAccountsWithBankDetailsUseCase(
     private val repository: BankAccountRepository
 ) {
-    operator fun invoke(): Flow<Map<Company, BankAccount>> {
+    operator fun invoke(): Flow<Map<Company, List<BankAccount>>> {
         return repository.getAccountsWithBankDetails()
     }
 
