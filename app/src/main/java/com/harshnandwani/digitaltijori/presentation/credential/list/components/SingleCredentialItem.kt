@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.credential.list.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -27,6 +28,7 @@ fun SingleCredentialItem(
             .clickable {
                 onClick()
             }
+            .background(MaterialTheme.colors.background)
             .padding(16.dp)
     ) {
         Image(

@@ -21,6 +21,7 @@ import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -56,10 +57,10 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     ) {
         Column(
             modifier = Modifier
-                .padding(24.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             FlipCardLayout(
                 variant = "",
                 company = state.selectedIssuer,
@@ -80,19 +81,19 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 RadioButton(
                     selected = state.cardType == CardType.DebitCard,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.DebitCard)) }
                 )
                 Text(text = "Debit")
+                Spacer(modifier = Modifier.size(8.dp))
                 RadioButton(
                     selected = state.cardType == CardType.CreditCard,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.CreditCard)) }
                 )
                 Text(text = "Credit")
+                Spacer(modifier = Modifier.size(8.dp))
                 RadioButton(
                     selected = state.cardType == CardType.Other,
                     onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.Other)) }
@@ -155,11 +156,12 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 )
             )
 
-            TextButton(
-                onClick = { viewModel.onEvent(CardEvent.CardSubmit) }
-            ) {
-                Text(text = "Submit")
-            }
+            Spacer(modifier = Modifier.size(16.dp))
+
+            RoundedOutlineButton(
+                onClick = { viewModel.onEvent(CardEvent.CardSubmit) },
+                text = "Save card"
+            )
 
         }
     }

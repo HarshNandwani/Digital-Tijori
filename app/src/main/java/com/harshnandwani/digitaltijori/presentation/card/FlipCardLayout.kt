@@ -39,9 +39,9 @@ fun FlipCardLayout(
     onCardClick: () -> Unit = {}
 ) {
 
-    val initial = remember { "*****************" }
-        .replaceRange(0..16, cardNumber.take(16))
-
+    val length = if (cardNumber.length > 16) 16 else cardNumber.length
+    val initialCardNum = remember { "*****************" }
+        .replaceRange(0..length, cardNumber.take(16))
     FlipCard(
         backVisible = backVisible,
         onClick = onCardClick,
@@ -87,7 +87,7 @@ fun FlipCardLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        initial.chunked(4).joinToString(" "),
+                        initialCardNum.chunked(4).joinToString(" "),
                         fontSize = 24.sp, //TODO: Remove hardcode
                     )
 
@@ -108,11 +108,12 @@ fun FlipCardLayout(
                 }
 
                 Text(
-                    text = nameText,
+                    text = if(nameText.isEmpty()) "Card holder name" else nameText,
                     modifier = Modifier.constrainAs(holderName) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
-                    }
+                    },
+                    style = MaterialTheme.typography.body2
                 )
 
                 Image(
