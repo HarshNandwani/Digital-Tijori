@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialEvent
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialSubmitResultEvent
@@ -118,13 +119,12 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
             )
 
-            TextButton(
-                onClick = {
-                    viewModel.onEvent(CredentialEvent.CredentialSubmit)
-                }
-            ) {
-                Text(text = "Submit")
-            }
+            Spacer(modifier = Modifier.size(16.dp))
+
+            RoundedOutlineButton(
+                onClick = { viewModel.onEvent(CredentialEvent.CredentialSubmit) },
+                text = "Save credentials"
+            )
 
         }
     }

@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.DetailedBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.SingleBankAccountItem
-import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.Swipeable
+import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 import com.harshnandwani.digitaltijori.presentation.util.BankAccountHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters

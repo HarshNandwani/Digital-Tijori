@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.presentation.bank_account.list.components
+package com.harshnandwani.digitaltijori.presentation.common_components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
