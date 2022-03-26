@@ -22,7 +22,7 @@ interface CardDao {
     fun getCardsWithIssuerDetails(): Flow<Map<Company, List<Card>>>
 
     @Query("SELECT * FROM Card WHERE bankAccountId = :bankAccountId")
-    fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<Card>>?
+    fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<Card>>
 
     @Update
     suspend fun update(card: Card)
