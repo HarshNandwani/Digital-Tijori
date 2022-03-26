@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,13 +18,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
+import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
+import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +43,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var addCredentialClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -182,6 +187,16 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             Spacer(modifier = Modifier.size(16.dp))
 
+            if(state.selectedIssuer?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD && state.isLinkedToAccount){
+                RoundedFilledButton(
+                    onClick = {
+                        addCredentialClicked = true
+                        viewModel.onEvent(CardEvent.CardSubmit)
+                    },
+                    text = "Proceed to add credentials"
+                )
+            }
+
             RoundedOutlineButton(
                 onClick = { viewModel.onEvent(CardEvent.CardSubmit) },
                 text = "Save card"
@@ -194,10 +209,20 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is CardSubmitResultEvent.ShowError -> {
+                    addCredentialClicked = false
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
                 CardSubmitResultEvent.CardSaved -> {
                     Toast.makeText(context, "Card saved!", Toast.LENGTH_SHORT).show()
+                    if (addCredentialClicked) {
+                        Intent(context, AddEditCredentialActivity::class.java).apply {
+                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                            putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
+                            putExtra(Parameters.KEY_ENTITY, state.selectedIssuer)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.bankAccountId)
+                            ContextCompat.startActivity(context, this, null)
+                        }
+                    }
                     (context as AddEditCardActivity).onBackPressed()
                 }
             }
