@@ -150,6 +150,8 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     selectedIssuer = event.issuer,
                     mode = Parameters.VAL_MODE_EDIT,
+                    isLinkedToAccount = event.card.isLinkedToBank,
+                    bankAccountId = event.card.bankAccountId,
                     cardNumber = event.card.cardNumber,
                     expiryMonth = CardHelperFunctions.getMonthAsString(event.card.expiryMonth),
                     expiryYear = event.card.expiryYear.toString(),
