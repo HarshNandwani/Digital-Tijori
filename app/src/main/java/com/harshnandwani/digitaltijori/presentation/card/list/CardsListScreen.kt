@@ -99,12 +99,13 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                             card.cardNumber.takeLast(4)
 
                                 FlipCardLayout(
-                                    variant = "",
+                                    variant = card.variant ?: "",
                                     company = issuer,
                                     nameText = card.nameOnCard,
                                     cardNumber = cardNumberDisplay,
                                     expiryNumber = "xxxx",
                                     cvvNumber = "",
+                                    pin = "",
                                     cardNetwork = card.cardNetwork,
                                     backVisible = false,
                                     onCardClick = {

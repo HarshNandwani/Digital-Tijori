@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.domain.util.CardType
@@ -62,12 +63,13 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FlipCardLayout(
-                variant = "",
+                variant = state.variant,
                 company = state.selectedIssuer,
                 nameText = state.nameOnCard,
                 cardNumber = state.cardNumber,
                 expiryNumber = state.expiryMonth + state.expiryYear,
                 cvvNumber = state.cvv,
+                pin = state.pin,
                 cardNetwork = state.cardNetwork,
                 onIssuerLogoClick = {
                     if(state.mode == Parameters.VAL_MODE_ADD) {
@@ -141,8 +143,30 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 value = state.nameOnCard,
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredNameOnCard(it)) },
                 keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            InputTextField(
+                label = "Card Variant",
+                value = state.variant,
+                onValueChange = { viewModel.onEvent(CardEvent.EnteredVariant(it)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                placeholder = "Moneyback / ACE / Flipkart.."
+            )
+
+            InputTextField(
+                label = "Pin",
+                value = state.pin,
+                onValueChange = { viewModel.onEvent(CardEvent.EnteredPin(it)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
                 )
             )
 

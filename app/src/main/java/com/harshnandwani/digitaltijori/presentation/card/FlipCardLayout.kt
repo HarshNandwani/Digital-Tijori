@@ -5,9 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ fun FlipCardLayout(
     cardNumber: String,
     expiryNumber: String,
     cvvNumber: String,
+    pin: String,
     cardNetwork: CardNetwork,
     onIssuerLogoClick: () -> Unit = {},
     backVisible: Boolean,
@@ -42,6 +44,10 @@ fun FlipCardLayout(
     val length = if (cardNumber.length > 16) 16 else cardNumber.length
     val initialCardNum = remember { "*****************" }
         .replaceRange(0..length, cardNumber.take(16))
+
+    var pinVisible by remember { mutableStateOf(false) }
+    val icon = if (pinVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+
     FlipCard(
         backVisible = backVisible,
         onClick = onCardClick,
@@ -132,29 +138,39 @@ fun FlipCardLayout(
             }
         },
         back = {
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Spacer(
                     modifier = Modifier
-                        .padding(top = 36.dp)
+                        .padding(top = 36.dp, bottom = 8.dp)
                         .height(48.dp)
                         .background(Color.Black)
                         .fillMaxWidth()
                 )
-
-                Spacer(modifier = Modifier.size(24.dp))
-                Box(
+                Text(
+                    text = cvvNumber.take(3),
+                    style = MaterialTheme.typography.h6,
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
-                        .align(Alignment.CenterHorizontally)
-                        .background(Color.Gray),
-                    contentAlignment = Alignment.Center
+                        .background(Color.Gray)
+                        .padding(vertical = 4.dp, horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(text = "pin: ")
                     Text(
-                        text = cvvNumber.take(3),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier
-                            .padding(vertical = 4.dp, horizontal = 16.dp)
+                        text = if (pinVisible) pin else "****",
+                        style = MaterialTheme.typography.h6
                     )
+                    if (pin.isNotEmpty()) {
+                        IconButton(onClick = { pinVisible = !pinVisible }) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = "Pin visibility icon"
+                            )
+                        }
+                    }
                 }
             }
         },
