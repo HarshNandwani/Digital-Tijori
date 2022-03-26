@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                     HomeScreens.CardsList.route -> {
-                        _state.value.cards.forEach { issuer, cardsList ->
+                        _state.value.cards.forEach { (issuer, cardsList) ->
                             _state.value.filteredCards[issuer] = cardsList.filter {
                                 it.nameOnCard.contains(event.searchText, ignoreCase = true)
                             }
