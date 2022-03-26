@@ -6,10 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
@@ -40,6 +42,7 @@ class DetailedCardActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Box(Modifier.fillMaxSize()) {
                         DetailedCard(
+                            titleText = "${issuer.name} ${card.cardType.name} Details",
                             issuer = issuer,
                             card = card,
                             onDeleteClick = {
@@ -54,7 +57,8 @@ class DetailedCardActivity : ComponentActivity() {
                                         finish()
                                     }
                                 }
-                            }
+                            },
+                            modifier = Modifier.padding(24.dp)
                         )
                     }
                 }
