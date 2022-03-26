@@ -32,6 +32,10 @@ class CredentialRepositoryImpl(private val dao: CredentialDao): CredentialReposi
         return dao.getAllCredentialsWithEntityDetails()
     }
 
+    override fun getCredentialsLinkedToAccount(bankAccountId: Int): Flow<List<Credential>> {
+        return dao.getCredentialsLinkedToAccount(bankAccountId)
+    }
+
     override suspend fun update(credential: Credential) {
         dao.update(credential)
     }

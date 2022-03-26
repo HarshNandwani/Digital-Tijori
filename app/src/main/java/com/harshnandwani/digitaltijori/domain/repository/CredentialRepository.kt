@@ -14,6 +14,8 @@ interface CredentialRepository {
 
     fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, List<Credential>>>
 
+    fun getCredentialsLinkedToAccount(bankAccountId: Int): Flow<List<Credential>>
+
     suspend fun update(credential: Credential)
 
     suspend fun delete(credential: Credential)
