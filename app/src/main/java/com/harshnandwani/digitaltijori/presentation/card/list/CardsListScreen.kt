@@ -40,10 +40,10 @@ fun CardsListScreen(viewModel: HomeViewModel) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    LazyColumn(Modifier.padding(16.dp)) {
+    LazyColumn {
         for ((issuer, card) in state.filteredCards) {
             item {
-                Column {
+                Column(Modifier.padding(16.dp)) {
                     Box(Modifier.clip(RoundedCornerShape(24.dp))) {
 
                         Swipeable(
