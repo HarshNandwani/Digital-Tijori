@@ -24,6 +24,8 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.u
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCard
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
+import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
+import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredential
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 @ExperimentalMaterialApi
@@ -120,7 +122,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
         Spacer(modifier = Modifier.size(24.dp))
         Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
         state.linkedCards.forEach { card ->
-            Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             DetailedCard(
                 titleText = "${card.cardType.name} Details",
                 issuer = state.bank,
@@ -144,6 +146,31 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             text = "add more cards"
         )
 
+        Spacer(modifier = Modifier.size(24.dp))
+        Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
+        state.linkedCredentials.forEach { credential ->
+            Spacer(modifier = Modifier.size(16.dp))
+            DetailedCredential(
+                entity = state.bank,
+                credential = credential,
+                onDeleteClick = {
+
+                }
+            )
+        }
+        Spacer(modifier = Modifier.size(16.dp))
+        RoundedFilledButton(
+            onClick = {
+                Intent(context, AddEditCredentialActivity::class.java).apply {
+                    putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                    putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
+                    putExtra(Parameters.KEY_ENTITY, state.bank)
+                    putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
+                    ContextCompat.startActivity(context, this, null)
+                }
+            },
+            text = "add more credentials"
+        )
     }
 
 }

@@ -194,4 +194,10 @@ object AppModule {
         return GetAllCredentialsWithEntityDetailsUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideGetCredentialsLinkedToAccountUseCase(repository: CredentialRepository): GetCredentialsLinkedToAccountUseCase {
+        return GetCredentialsLinkedToAccountUseCase(repository)
+    }
+
 }
