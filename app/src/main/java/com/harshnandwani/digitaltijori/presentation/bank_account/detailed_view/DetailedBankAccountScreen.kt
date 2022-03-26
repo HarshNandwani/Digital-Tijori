@@ -122,7 +122,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
         Spacer(modifier = Modifier.size(24.dp))
         Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
         state.linkedCards.forEach { card ->
-            Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             DetailedCard(
                 titleText = "${card.cardType.name} Details",
                 issuer = state.bank,
@@ -149,6 +149,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
         Spacer(modifier = Modifier.size(24.dp))
         Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
         state.linkedCredentials.forEach { credential ->
+            Spacer(modifier = Modifier.size(16.dp))
             DetailedCredential(
                 entity = state.bank,
                 credential = credential,
