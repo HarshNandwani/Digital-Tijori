@@ -206,6 +206,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                     activity.finish()
                 }
                 is BankAccountSubmitResultEvent.ShowError -> {
+                    addCardsClicked = false
                     Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
