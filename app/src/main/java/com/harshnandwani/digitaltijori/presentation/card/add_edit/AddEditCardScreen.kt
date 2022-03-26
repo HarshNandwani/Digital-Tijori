@@ -62,12 +62,13 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FlipCardLayout(
-                variant = "",
+                variant = state.variant,
                 company = state.selectedIssuer,
                 nameText = state.nameOnCard,
                 cardNumber = state.cardNumber,
                 expiryNumber = state.expiryMonth + state.expiryYear,
                 cvvNumber = state.cvv,
+                pin = state.pin,
                 cardNetwork = state.cardNetwork,
                 onIssuerLogoClick = {
                     if(state.mode == Parameters.VAL_MODE_ADD) {
@@ -143,6 +144,27 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done
+                )
+            )
+
+            InputTextField(
+                label = "Card Variant",
+                value = state.variant,
+                onValueChange = { viewModel.onEvent(CardEvent.EnteredVariant(it)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                placeholder = "Moneyback / ACE / Flipkart.."
+            )
+
+            InputTextField(
+                label = "Pin",
+                value = state.pin,
+                onValueChange = { viewModel.onEvent(CardEvent.EnteredPin(it)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
                 )
             )
 

@@ -41,7 +41,9 @@ data class Card(
     val expiryYear: Byte,
     val cvv: String,
     val nameOnCard: String,
+    val variant: String?,
     val cardNetwork: CardNetwork,
+    val pin: String,
     val cardAlias: String?,
     val cardType: CardType,
 ) : Serializable {
@@ -59,7 +61,9 @@ data class Card(
                 1,
                 "",
                 "",
+                null,
                 CardNetwork.Unknown,
+                "",
                 null,
                 CardType.None
             )
@@ -86,6 +90,9 @@ data class Card(
         }
         if (nameOnCard.isEmpty() || nameOnCard.length < 3) {
             throw InvalidCardException("Enter full name")
+        }
+        if (pin.length != 4) {
+            throw InvalidCardException("Enter valid pin")
         }
         return true
     }

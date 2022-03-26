@@ -12,6 +12,8 @@ sealed class CardEvent {
     data class EnteredNameOnCard(val name: String) : CardEvent()
     data class EnteredCardExpiry(val expiry: String) : CardEvent()
     data class EnteredCvv(val cvv: String) : CardEvent()
+    data class EnteredVariant(val variant: String) : CardEvent()
+    data class EnteredPin(val pin: String) : CardEvent()
     data class EnteredCardAlias(val alias: String) : CardEvent()
     object CardSubmit : CardEvent()
     data class ChangeToEditMode(val issuer: Company, val card: Card) : CardEvent()

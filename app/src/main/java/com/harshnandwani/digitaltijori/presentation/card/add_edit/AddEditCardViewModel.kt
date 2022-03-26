@@ -93,6 +93,19 @@ class AddEditCardViewModel @Inject constructor(
                     nameOnCard = event.name
                 )
             }
+            is CardEvent.EnteredVariant -> {
+                _state.value.backVisible.value = false
+                _state.value = state.value.copy(
+                    variant = event.variant
+                )
+            }
+            is CardEvent.EnteredPin -> {
+                _state.value.backVisible.value = true
+                if (event.pin.length > 4) return
+                _state.value = state.value.copy(
+                    pin = event.pin
+                )
+            }
             is CardEvent.EnteredCardAlias -> {
                 _state.value.backVisible.value = false
                 _state.value = state.value.copy(
@@ -123,7 +136,9 @@ class AddEditCardViewModel @Inject constructor(
                         expiryYear = expiryYear,
                         cvv = _state.value.cvv,
                         nameOnCard = _state.value.nameOnCard,
+                        variant = _state.value.variant,
                         cardNetwork = _state.value.cardNetwork,
+                        pin = _state.value.pin,
                         cardAlias = _state.value.cardAlias,
                         cardType = _state.value.cardType
                     )
@@ -157,6 +172,8 @@ class AddEditCardViewModel @Inject constructor(
                     expiryYear = event.card.expiryYear.toString(),
                     cvv = event.card.cvv,
                     nameOnCard = event.card.nameOnCard,
+                    variant = event.card.variant ?: "",
+                    pin = event.card.pin,
                     cardNetwork = event.card.cardNetwork,
                     cardAlias = event.card.cardAlias ?: "",
                     cardType = event.card.cardType,
