@@ -128,7 +128,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                 issuer = state.bank,
                 card = card,
                 onDeleteClick = {
-
+                    viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
                 }
             )
         }
@@ -154,7 +154,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                 entity = state.bank,
                 credential = credential,
                 onDeleteClick = {
-
+                    viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
                 }
             )
         }
