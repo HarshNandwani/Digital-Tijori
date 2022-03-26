@@ -154,6 +154,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetCardsLinkedToAccountUseCase(repository: CardRepository): GetCardsLinkedToAccountUseCase {
+        return GetCardsLinkedToAccountUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideCredentialRepository(db: DigitalTijoriDatabase): CredentialRepository {
         return CredentialRepositoryImpl(db.credentialDao)
     }

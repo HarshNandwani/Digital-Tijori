@@ -6,6 +6,7 @@ import com.harshnandwani.digitaltijori.domain.util.CardType
 
 sealed class CardEvent {
     data class SelectIssuer(val issuer: Company) : CardEvent()
+    data class LinkToAccount(val accountId: Int) : CardEvent()
     data class SelectedCardType(val cardType: CardType) : CardEvent()
     data class EnteredCardNumber(val cardNumber: String) : CardEvent()
     data class EnteredNameOnCard(val name: String) : CardEvent()

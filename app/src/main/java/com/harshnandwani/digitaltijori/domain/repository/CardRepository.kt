@@ -14,7 +14,7 @@ interface CardRepository {
 
     fun getCardsWithIssuerDetails(): Flow<Map<Company, List<Card>>>
 
-    fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<Card>>?
+    fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<Card>>
 
     suspend fun update(card: Card)
 

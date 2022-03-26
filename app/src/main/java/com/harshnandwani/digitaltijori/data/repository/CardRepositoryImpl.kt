@@ -32,7 +32,7 @@ class CardRepositoryImpl(private val dao: CardDao): CardRepository {
         return dao.getCardsWithIssuerDetails()
     }
 
-    override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>>? {
+    override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>> {
         return dao.getCardsLinkedToABank(bankAccountId)
     }
 

@@ -12,6 +12,8 @@ data class CardState(
     val allCardIssuers: List<Company> = emptyList(),
     val selectedIssuer: Company? = null,
     val mode: String = Parameters.VAL_MODE_ADD,
+    val isLinkedToAccount: Boolean = false,
+    val bankAccountId: Int? = null,
     val cardNumber: String = "",
     val expiryMonth: String = "",
     val expiryYear: String = "",

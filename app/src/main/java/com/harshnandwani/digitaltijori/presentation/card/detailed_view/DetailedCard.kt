@@ -26,20 +26,28 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 @ExperimentalMaterialApi
 @Composable
-fun DetailedCard(issuer: Company, card: Card, onDeleteClick: () -> Unit) {
+fun DetailedCard(
+    titleText: String,
+    issuer: Company,
+    card: Card,
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     val context = LocalContext.current
     var backVisible by remember { mutableStateOf(false) }
 
-    Column(Modifier.padding(24.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+    Column(modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        ) {
             Text(
-                text = "${issuer.name} ${card.cardType.name} Details",
+                text = titleText,
                 Modifier
-                    .padding(16.dp)
                     .weight(1f)
             )
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(8.dp))
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = "Edit Icon",
