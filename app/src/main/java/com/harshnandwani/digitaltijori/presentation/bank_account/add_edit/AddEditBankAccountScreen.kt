@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -20,9 +20,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
+import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
@@ -42,6 +44,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var addCardsClicked by remember { mutableStateOf(false) }
 //    var addCredentialsClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
@@ -160,6 +163,16 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
             Spacer(modifier = Modifier.size(16.dp))
 
+            if(state.selectedBank?.issuesCards == true && state.mode == Parameters.VAL_MODE_ADD) {
+                RoundedFilledButton(
+                    onClick = {
+                        addCardsClicked = true
+                        viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+                    },
+                    text = "Proceed to add card"
+                )
+            }
+
             RoundedOutlineButton(
                 onClick = { viewModel.onEvent(BankAccountEvent.BankAccountSubmit) },
                 text = "Save account"
@@ -173,6 +186,15 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             when (event) {
                 is BankAccountSubmitResultEvent.BankAccountSaved -> {
                     Toast.makeText(activity, "Bank Account saved!", Toast.LENGTH_SHORT).show()
+                    if(addCardsClicked){
+                        Intent(activity, AddEditCardActivity::class.java).apply {
+                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                            putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
+                            putExtra(Parameters.KEY_ISSUER, event.linkedBank)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, event.accountId)
+                            startActivity(activity, this, null)
+                        }
+                    }
 //                    if (addCredentialsClicked) {
 //                        Intent(activity, AddEditCredentialActivity::class.java).apply {
 //                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)

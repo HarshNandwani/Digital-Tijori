@@ -31,11 +31,20 @@ class AddEditCardActivity : ComponentActivity() {
 
             val viewModel: AddEditCardViewModel = hiltViewModel()
             var eventSent by remember { mutableStateOf(false) }
-            val mode = intent.getStringExtra(Parameters.KEY_MODE)
-            if (mode == Parameters.VAL_MODE_EDIT && !eventSent) {
-                val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
-                val card = intent.getSerializableExtra(Parameters.KEY_CARD) as Card
-                viewModel.onEvent(CardEvent.ChangeToEditMode(issuer, card))
+            if (!eventSent) {
+                val mode = intent.getStringExtra(Parameters.KEY_MODE)
+                if (mode == Parameters.VAL_MODE_ADD) {
+                    if (intent.getBooleanExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, false)) {
+                        val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
+                        val bankAccountId = intent.getIntExtra(Parameters.KEY_BANK_ACCOUNT_ID, -1)
+                        viewModel.onEvent(CardEvent.SelectIssuer(issuer))
+                        viewModel.onEvent(CardEvent.LinkToAccount(bankAccountId))
+                    }
+                } else {
+                    val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
+                    val card = intent.getSerializableExtra(Parameters.KEY_CARD) as Card
+                    viewModel.onEvent(CardEvent.ChangeToEditMode(issuer, card))
+                }
                 eventSent = true  //fixme: setContent is being refreshed repeatedly this is a temporary work around
             }
 

@@ -4,5 +4,5 @@ import com.harshnandwani.digitaltijori.domain.model.Company
 
 sealed class BankAccountSubmitResultEvent {
     data class ShowError(val message: String): BankAccountSubmitResultEvent()
-    data class BankAccountSaved(val linkedBank: Company?, val accountId: Long): BankAccountSubmitResultEvent()
+    data class BankAccountSaved(val linkedBank: Company?, val accountId: Int): BankAccountSubmitResultEvent()
 }

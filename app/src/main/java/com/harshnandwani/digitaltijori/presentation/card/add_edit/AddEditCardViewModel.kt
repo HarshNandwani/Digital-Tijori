@@ -53,6 +53,12 @@ class AddEditCardViewModel @Inject constructor(
                     selectedIssuer = event.issuer
                 )
             }
+            is CardEvent.LinkToAccount -> {
+                _state.value = state.value.copy(
+                    isLinkedToAccount = true,
+                    bankAccountId = event.accountId
+                )
+            }
             is CardEvent.SelectedCardType -> {
                 _state.value = state.value.copy(
                     cardType = event.cardType
@@ -109,8 +115,8 @@ class AddEditCardViewModel @Inject constructor(
                     }
                     val card = Card(
                         cardId = state.value.previouslyEnteredCard.cardId,
-                        isLinkedToBank = false,
-                        bankAccountId = null,
+                        isLinkedToBank = _state.value.isLinkedToAccount,
+                        bankAccountId = _state.value.bankAccountId,
                         companyId = _state.value.selectedIssuer?.companyId,
                         cardNumber = _state.value.cardNumber,
                         expiryMonth = expiryMonth,
