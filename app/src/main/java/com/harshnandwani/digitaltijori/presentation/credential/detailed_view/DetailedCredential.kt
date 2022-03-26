@@ -27,7 +27,12 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 @ExperimentalMaterialApi
 @Composable
-fun DetailedCredential(entity: Company, credential: Credential, onDeleteClick: () -> Unit) {
+fun DetailedCredential(
+    entity: Company,
+    credential: Credential,
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     val context = LocalContext.current
 
@@ -35,9 +40,7 @@ fun DetailedCredential(entity: Company, credential: Credential, onDeleteClick: (
     val icon = if (passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
 
     Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+        modifier = modifier,
         elevation = 16.dp,
         shape = RoundedCornerShape(16.dp)
     ) {
