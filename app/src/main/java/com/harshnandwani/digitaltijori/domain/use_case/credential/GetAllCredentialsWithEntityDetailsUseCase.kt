@@ -9,7 +9,7 @@ class GetAllCredentialsWithEntityDetailsUseCase(
     private val repository: CredentialRepository
 ) {
 
-    operator fun invoke(): Flow<Map<Company, Credential>> {
+    operator fun invoke(): Flow<Map<Company, List<Credential>>> {
         return repository.getAllCredentialsWithEntityDetails()
     }
 

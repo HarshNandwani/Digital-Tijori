@@ -73,11 +73,11 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                     HomeScreens.CredentialsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials.filter { entry ->
-                                entry.value.username.contains(event.searchText, ignoreCase = true)
+                        _state.value.credentials.forEach { (entity, credentialList) ->
+                            _state.value.filteredCredentials[entity] = credentialList.filter {
+                                it.username.contains(event.searchText, ignoreCase = true)
                             }
-                        )
+                        }
                     }
                 }
             }
@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
                     }
                     HomeScreens.CredentialsList.route -> {
                         _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials
+                            filteredCredentials = state.value.credentials.toMutableMap()
                         )
                     }
                 }
@@ -136,7 +136,7 @@ class HomeViewModel @Inject constructor(
             .onEach { credentials ->
                 _state.value = state.value.copy(
                     credentials = credentials,
-                    filteredCredentials = credentials
+                    filteredCredentials = credentials.toMutableMap()
                 )
             }
             .launchIn(viewModelScope)

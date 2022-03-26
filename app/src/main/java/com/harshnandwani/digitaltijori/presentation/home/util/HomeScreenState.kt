@@ -10,8 +10,8 @@ data class HomeScreenState(
     val filteredBankAccounts: MutableMap<Company, List<BankAccount>> = mutableMapOf(),
     val cards: Map<Company, List<Card>> = emptyMap(),
     val filteredCards: MutableMap<Company, List<Card>> = mutableMapOf(),
-    val credentials: Map<Company, Credential> = emptyMap(),
-    val filteredCredentials: Map<Company, Credential> = emptyMap(),
+    val credentials: Map<Company, List<Credential>> = emptyMap(),
+    val filteredCredentials: MutableMap<Company, List<Credential>> = mutableMapOf(),
     val currentPage: String = HomeScreens.BankAccountsList.route,
     val searchText: String = ""
 )
