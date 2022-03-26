@@ -46,7 +46,6 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                 item {
                     Column(Modifier.padding(16.dp)) {
                         Box(Modifier.clip(RoundedCornerShape(24.dp))) {
-
                             Swipeable(
                                 swipeToLeftEnabled = true,
                                 rightColor = Color.Green,
@@ -118,11 +117,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                 )
                             }
                         }
-
-                        Spacer(modifier = Modifier.size(24.dp))
-
                     }
-
                 }
             }
         }
