@@ -2,6 +2,8 @@ package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -9,6 +11,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
@@ -75,7 +78,9 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 )
             }
         }
-    ) {
-        HomeNavGraph(viewModel, navController)
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            HomeNavGraph(viewModel, navController)
+        }
     }
 }
