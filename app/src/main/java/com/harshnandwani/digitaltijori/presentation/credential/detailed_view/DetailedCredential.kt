@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.credential.detailed_view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -66,7 +67,7 @@ fun DetailedCredential(entity: Company, credential: Credential, onDeleteClick: (
                             putExtra(Parameters.KEY_Credential, credential)
                             ContextCompat.startActivity(context, this, null)
                         }
-                        (context as DetailedCredentialActivity).finish()
+                        (context as Activity).finish()
                     }
                 )
                 Spacer(modifier = Modifier.size(8.dp))

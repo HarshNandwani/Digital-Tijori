@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.DeleteBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardsLinkedToAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialsLinkedToAccountUseCase
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailedBankAccountViewModel @Inject constructor(
     private val deleteBankAccountUseCase: DeleteBankAccountUseCase,
-    private val getCardsLinkedToAccount: GetCardsLinkedToAccountUseCase
+    private val getCardsLinkedToAccount: GetCardsLinkedToAccountUseCase,
+    private val getCredentialsLinkedToAccount: GetCredentialsLinkedToAccountUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DetailedBankAccountState())
@@ -35,6 +37,7 @@ class DetailedBankAccountViewModel @Inject constructor(
                     account = event.account
                 )
                 getAllLinkedCards()
+                getAllLinkedCredentials()
             }
             is DetailedBankAccountEvent.DeleteBankAccount -> {
                 viewModelScope.launch {
@@ -49,6 +52,16 @@ class DetailedBankAccountViewModel @Inject constructor(
             .onEach { cards ->
                 _state.value = state.value.copy(
                     linkedCards = cards
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getAllLinkedCredentials() {
+        getCredentialsLinkedToAccount(state.value.account.bankAccountId)
+            .onEach { credentials ->
+                _state.value = state.value.copy(
+                    linkedCredentials = credentials
                 )
             }
             .launchIn(viewModelScope)
