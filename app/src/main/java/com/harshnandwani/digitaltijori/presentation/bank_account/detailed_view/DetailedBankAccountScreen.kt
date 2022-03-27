@@ -155,8 +155,9 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             DetailedCredential(
                 entity = state.bank,
                 credential = credential,
-                onDeleteClick = {
+                onDeleteAction = {
                     viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
+                    Toast.makeText(context, "Credential deleted!", Toast.LENGTH_SHORT).show()
                 }
             )
         }

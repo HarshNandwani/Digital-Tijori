@@ -39,7 +39,7 @@ class DetailedCredentialActivity : ComponentActivity() {
                         DetailedCredential(
                             entity = viewModel.state.value.entity,
                             credential = viewModel.state.value.credential,
-                            onDeleteClick = {
+                            onDeleteAction = {
                                 viewModel.onEvent(DetailedCredentialEvent.DeleteCredential)
                                 Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
                                 finish()
