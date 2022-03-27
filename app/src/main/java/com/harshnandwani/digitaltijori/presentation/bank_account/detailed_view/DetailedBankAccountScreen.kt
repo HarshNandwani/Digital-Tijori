@@ -120,60 +120,66 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             }
 
         }
-        Spacer(modifier = Modifier.size(24.dp))
-        Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
-        state.linkedCards.forEach { card ->
-            Spacer(modifier = Modifier.size(16.dp))
-            DetailedCard(
-                titleText = "${card.cardType.name} Details",
-                issuer = state.bank,
-                card = card,
-                onDeleteAction = {
-                    viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
-                    Toast.makeText(context, "Card deleted!", Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
-        Spacer(modifier = Modifier.size(16.dp))
-        RoundedFilledButton(
-            onClick = {
-                Intent(context, AddEditCardActivity::class.java).apply {
-                    putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
-                    putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
-                    putExtra(Parameters.KEY_ISSUER, state.bank)
-                    putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
-                    ContextCompat.startActivity(context, this, null)
-                }
-            },
-            text = "add more cards"
-        )
 
-        Spacer(modifier = Modifier.size(24.dp))
-        Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
-        state.linkedCredentials.forEach { credential ->
+        if (state.bank.issuesCards) {
+            Spacer(modifier = Modifier.size(24.dp))
+            Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
+            state.linkedCards.forEach { card ->
+                Spacer(modifier = Modifier.size(16.dp))
+                DetailedCard(
+                    titleText = "${card.cardType.name} Details",
+                    issuer = state.bank,
+                    card = card,
+                    onDeleteAction = {
+                        viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
+                        Toast.makeText(context, "Card deleted!", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
             Spacer(modifier = Modifier.size(16.dp))
-            DetailedCredential(
-                entity = state.bank,
-                credential = credential,
-                onDeleteAction = {
-                    viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
-                    Toast.makeText(context, "Credential deleted!", Toast.LENGTH_SHORT).show()
-                }
+            RoundedFilledButton(
+                onClick = {
+                    Intent(context, AddEditCardActivity::class.java).apply {
+                        putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                        putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
+                        putExtra(Parameters.KEY_ISSUER, state.bank)
+                        putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
+                        ContextCompat.startActivity(context, this, null)
+                    }
+                },
+                text = "add more cards"
             )
         }
-        Spacer(modifier = Modifier.size(16.dp))
-        RoundedFilledButton(
-            onClick = {
-                Intent(context, AddEditCredentialActivity::class.java).apply {
-                    putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
-                    putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
-                    putExtra(Parameters.KEY_ENTITY, state.bank)
-                    putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
-                    ContextCompat.startActivity(context, this, null)
-                }
-            },
-            text = "add more credentials"
-        )
+
+        if (state.bank.hasCredentials) {
+            Spacer(modifier = Modifier.size(24.dp))
+            Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
+            state.linkedCredentials.forEach { credential ->
+                Spacer(modifier = Modifier.size(16.dp))
+                DetailedCredential(
+                    entity = state.bank,
+                    credential = credential,
+                    onDeleteAction = {
+                        viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
+                        Toast.makeText(context, "Credential deleted!", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.size(16.dp))
+            RoundedFilledButton(
+                onClick = {
+                    Intent(context, AddEditCredentialActivity::class.java).apply {
+                        putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
+                        putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
+                        putExtra(Parameters.KEY_ENTITY, state.bank)
+                        putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
+                        ContextCompat.startActivity(context, this, null)
+                    }
+                },
+                text = "add more credentials"
+            )
+        }
+
     }
 
 }

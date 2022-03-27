@@ -62,23 +62,27 @@ class DetailedBankAccountViewModel @Inject constructor(
     }
 
     private fun getAllLinkedCards() {
-        getCardsLinkedToAccount(state.value.account.bankAccountId)
-            .onEach { cards ->
-                _state.value = state.value.copy(
-                    linkedCards = cards
-                )
-            }
-            .launchIn(viewModelScope)
+        if (state.value.bank.issuesCards) {
+            getCardsLinkedToAccount(state.value.account.bankAccountId)
+                .onEach { cards ->
+                    _state.value = state.value.copy(
+                        linkedCards = cards
+                    )
+                }
+                .launchIn(viewModelScope)
+        }
     }
 
     private fun getAllLinkedCredentials() {
-        getCredentialsLinkedToAccount(state.value.account.bankAccountId)
-            .onEach { credentials ->
-                _state.value = state.value.copy(
-                    linkedCredentials = credentials
-                )
-            }
-            .launchIn(viewModelScope)
+        if (state.value.bank.hasCredentials) {
+            getCredentialsLinkedToAccount(state.value.account.bankAccountId)
+                .onEach { credentials ->
+                    _state.value = state.value.copy(
+                        linkedCredentials = credentials
+                    )
+                }
+                .launchIn(viewModelScope)
+        }
     }
 
 }
