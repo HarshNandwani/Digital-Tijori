@@ -48,6 +48,9 @@ fun FlipCardLayout(
     var pinVisible by remember { mutableStateOf(false) }
     val icon = if (pinVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
 
+    if (!backVisible)
+        pinVisible = false
+
     FlipCard(
         backVisible = backVisible,
         onClick = onCardClick,
