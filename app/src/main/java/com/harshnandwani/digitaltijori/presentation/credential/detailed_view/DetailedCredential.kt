@@ -119,7 +119,12 @@ fun DetailedCredential(
             title = "You are deleting ${entity.name} credentials of ${credential.username}",
             text = "This action cannot be undone, do you want to proceed?",
             confirmButton = {
-                TextButton(onClick = { onDeleteAction() }) {
+                TextButton(
+                    onClick = {
+                        onDeleteAction()
+                        showDialog = false
+                    }
+                ) {
                     Text(text = "Yes, delete")
                 }
             },

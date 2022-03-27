@@ -78,7 +78,12 @@ fun DetailedCard(
             title = "You are deleting ${issuer.name} ${card.cardType.name}",
             text = "This action cannot be undone, do you want to proceed?",
             confirmButton = {
-                TextButton(onClick = { onDeleteAction() }) {
+                TextButton(
+                    onClick = {
+                        onDeleteAction()
+                        showDialog = false
+                    }
+                ) {
                     Text(text = "Yes, delete")
                 }
             },
