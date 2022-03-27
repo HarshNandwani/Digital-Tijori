@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.DeleteBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.DeleteCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardsLinkedToAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialsLinkedToAccountUseCase
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountState
@@ -19,7 +21,9 @@ import javax.inject.Inject
 class DetailedBankAccountViewModel @Inject constructor(
     private val deleteBankAccountUseCase: DeleteBankAccountUseCase,
     private val getCardsLinkedToAccount: GetCardsLinkedToAccountUseCase,
-    private val getCredentialsLinkedToAccount: GetCredentialsLinkedToAccountUseCase
+    private val deleteCardUseCase: DeleteCardUseCase,
+    private val getCredentialsLinkedToAccount: GetCredentialsLinkedToAccountUseCase,
+    private val deleteCredentialUseCase: DeleteCredentialUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DetailedBankAccountState())
@@ -42,6 +46,16 @@ class DetailedBankAccountViewModel @Inject constructor(
             is DetailedBankAccountEvent.DeleteBankAccount -> {
                 viewModelScope.launch {
                     deleteBankAccountUseCase(state.value.account)
+                }
+            }
+            is DetailedBankAccountEvent.DeleteCard -> {
+                viewModelScope.launch {
+                    deleteCardUseCase(event.card)
+                }
+            }
+            is DetailedBankAccountEvent.DeleteCredential -> {
+                viewModelScope.launch {
+                    deleteCredentialUseCase(event.credential)
                 }
             }
         }

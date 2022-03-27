@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
+import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
@@ -30,7 +31,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 fun DetailedCredential(
     entity: Company,
     credential: Credential,
-    onDeleteClick: () -> Unit,
+    onDeleteAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -38,6 +39,7 @@ fun DetailedCredential(
 
     var passwordVisibility by remember { mutableStateOf(true) }
     val icon = if (passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
+    var showDialog by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier,
@@ -79,7 +81,7 @@ fun DetailedCredential(
                     contentDescription = "Delete Icon",
                     tint = Color.Red,
                     modifier = Modifier.clickable {
-                        onDeleteClick()
+                        showDialog = true
                     }
                 )
             }
@@ -110,6 +112,29 @@ fun DetailedCredential(
                 }
             }
         }
+
+        ConfirmationAlertDialog(
+            visible = showDialog,
+            onDismiss = { showDialog = false },
+            title = "You are deleting ${entity.name} credentials of ${credential.username}",
+            text = "This action cannot be undone, do you want to proceed?",
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDeleteAction()
+                        showDialog = false
+                    }
+                ) {
+                    Text(text = "Yes, delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text(text = "Cancel")
+                }
+            }
+        )
+
     }
 
 }

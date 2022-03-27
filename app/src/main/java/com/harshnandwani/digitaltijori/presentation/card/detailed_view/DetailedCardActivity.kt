@@ -45,7 +45,7 @@ class DetailedCardActivity : ComponentActivity() {
                             titleText = "${issuer.name} ${card.cardType.name} Details",
                             issuer = issuer,
                             card = card,
-                            onDeleteClick = {
+                            onDeleteAction = {
                                 lifecycleScope.launch {
                                     deleteCardUseCase(card)
                                     withContext(Dispatchers.Main) {
