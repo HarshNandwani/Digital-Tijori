@@ -12,7 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +24,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEdi
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCard
+import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredential
@@ -35,6 +36,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
 
     val state = viewModel.state.value
     val context = LocalContext.current
+    var showAccountDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -84,8 +86,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         contentDescription = "Delete Icon",
                         tint = Color.Red,
                         modifier = Modifier.clickable {
-                            viewModel.onEvent(DetailedBankAccountEvent.DeleteBankAccount)
-                            (context as DetailedBankAccountActivity).finish()
+                            showAccountDialog = true
                         }
                     )
                 }
@@ -117,6 +118,29 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         Spacer(modifier = Modifier.size(12.dp))
                     }
                 }
+
+                ConfirmationAlertDialog(
+                    visible = showAccountDialog,
+                    onDismiss = { showAccountDialog = false },
+                    title = "Do you want to delete ${state.bank.name} account",
+                    text = "This action cannot be undone, do you want to proceed?",
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                viewModel.onEvent(DetailedBankAccountEvent.DeleteBankAccount)
+                                showAccountDialog = false
+                            }
+                        ) {
+                            Text(text = "Yes, delete")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showAccountDialog = false }) {
+                            Text(text = "Cancel")
+                        }
+                    }
+                )
+
             }
 
         }
@@ -132,7 +156,6 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     card = card,
                     onDeleteAction = {
                         viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
-                        Toast.makeText(context, "Card deleted!", Toast.LENGTH_SHORT).show()
                     }
                 )
             }
@@ -161,7 +184,6 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     credential = credential,
                     onDeleteAction = {
                         viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
-                        Toast.makeText(context, "Credential deleted!", Toast.LENGTH_SHORT).show()
                     }
                 )
             }

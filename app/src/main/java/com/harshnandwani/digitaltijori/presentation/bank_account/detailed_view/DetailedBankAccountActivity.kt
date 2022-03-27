@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -8,14 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
+import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEventResult
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailedBankAccountActivity : ComponentActivity() {
@@ -36,6 +42,32 @@ class DetailedBankAccountActivity : ComponentActivity() {
                     Box(modifier = Modifier.fillMaxSize()) {
                         DetailedBankAccountScreen(viewModel)
                     }
+
+                    LaunchedEffect(key1 = true) {
+                        lifecycleScope.launch {
+                            viewModel.eventFlow.collectLatest { eventResult ->
+                                var message = ""
+                                when (eventResult) {
+                                    is DetailedBankAccountEventResult.ShowError -> {
+                                        message = eventResult.message
+                                    }
+                                    is DetailedBankAccountEventResult.BankAccountDeleted -> {
+                                        Toast.makeText(this@DetailedBankAccountActivity, "Account deleted", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                        return@collectLatest
+                                    }
+                                    is DetailedBankAccountEventResult.CardDeleted -> {
+                                        message = "Card deleted"
+                                    }
+                                    is DetailedBankAccountEventResult.CredentialDeleted -> {
+                                        message = "Credential deleted"
+                                    }
+                                }
+                                Toast.makeText(this@DetailedBankAccountActivity, message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
                 }
             }
         }
