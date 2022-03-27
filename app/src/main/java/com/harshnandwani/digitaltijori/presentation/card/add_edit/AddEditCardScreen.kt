@@ -248,6 +248,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     }
 
     LaunchedEffect(key1 = true) {
+        coroutineScope.launch { bottomSheetState.show() }
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is CardSubmitResultEvent.LinkCardWithIssuer -> {
