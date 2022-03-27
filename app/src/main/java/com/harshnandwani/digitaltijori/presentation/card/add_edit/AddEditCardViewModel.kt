@@ -60,6 +60,7 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.SelectedCardType -> {
+                _state.value.backVisible.value = false
                 _state.value = state.value.copy(
                     cardType = event.cardType
                 )
@@ -68,7 +69,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = false
                 _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value = state.value.copy(
-                    cardNumber = event.cardNumber
+                    cardNumber = event.cardNumber.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredCardExpiry -> {
@@ -85,7 +88,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = true
                 if (event.cvv.length > 3) return
                 _state.value = state.value.copy(
-                    cvv = event.cvv
+                    cvv = event.cvv.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredNameOnCard -> {
@@ -104,7 +109,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = true
                 if (event.pin.length > 4) return
                 _state.value = state.value.copy(
-                    pin = event.pin
+                    pin = event.pin.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredCardAlias -> {
@@ -155,9 +162,13 @@ class AddEditCardViewModel @Inject constructor(
                         }
                         _eventFlow.emit(CardSubmitResultEvent.CardSaved)
                     } catch (e: InvalidCardException) {
-                        _eventFlow.emit(
-                            CardSubmitResultEvent.ShowError(e.message ?: "Cannot save card")
-                        )
+                        if (e.message?.contains("link card with issuer") == true) {
+                            _eventFlow.emit(CardSubmitResultEvent.LinkCardWithIssuer)
+                        } else {
+                            _eventFlow.emit(
+                                CardSubmitResultEvent.ShowError(e.message ?: "Cannot save card")
+                            )
+                        }
                     }
                 }
             }
