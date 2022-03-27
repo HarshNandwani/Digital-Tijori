@@ -83,7 +83,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 pin = state.pin,
                 cardNetwork = state.cardNetwork,
                 onIssuerLogoClick = {
-                    if(state.mode == Parameters.VAL_MODE_ADD) {
+                    if(state.mode == Parameters.VAL_MODE_ADD && !state.isLinkedToAccount) {
                         keyboardController?.hide()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
@@ -248,7 +248,9 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     }
 
     LaunchedEffect(key1 = true) {
-        coroutineScope.launch { bottomSheetState.show() }
+        if(state.mode == Parameters.VAL_MODE_ADD && !state.isLinkedToAccount) {
+            coroutineScope.launch { bottomSheetState.show() }
+        }
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is CardSubmitResultEvent.LinkCardWithIssuer -> {
