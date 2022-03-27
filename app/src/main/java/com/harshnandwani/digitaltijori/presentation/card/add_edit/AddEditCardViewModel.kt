@@ -60,6 +60,7 @@ class AddEditCardViewModel @Inject constructor(
                 )
             }
             is CardEvent.SelectedCardType -> {
+                _state.value.backVisible.value = false
                 _state.value = state.value.copy(
                     cardType = event.cardType
                 )

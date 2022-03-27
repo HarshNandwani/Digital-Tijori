@@ -2,16 +2,21 @@ package com.harshnandwani.digitaltijori.presentation.card.add_edit
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -20,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.util.CardType
+import com.harshnandwani.digitaltijori.domain.util.cardsTypesList
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
@@ -86,28 +92,6 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 onCardClick = { state.backVisible.value = !state.backVisible.value }
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                RadioButton(
-                    selected = state.cardType == CardType.DebitCard,
-                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.DebitCard)) }
-                )
-                Text(text = "Debit")
-                Spacer(modifier = Modifier.size(8.dp))
-                RadioButton(
-                    selected = state.cardType == CardType.CreditCard,
-                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.CreditCard)) }
-                )
-                Text(text = "Credit")
-                Spacer(modifier = Modifier.size(8.dp))
-                RadioButton(
-                    selected = state.cardType == CardType.Other,
-                    onClick = { viewModel.onEvent(CardEvent.SelectedCardType(CardType.Other)) }
-                )
-                Text(text = "Other")
-            }
-
             InputTextField(
                 label = "Card Number",
                 value = state.cardNumber,
@@ -121,27 +105,35 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 }
             )
 
-            InputTextField(
-                label = "Expiry",
-                value = state.expiryMonth + state.expiryYear,
-                onValueChange = { viewModel.onEvent(CardEvent.EnteredCardExpiry(it)) },
-                placeholder = "mm/yy",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                ),
-                visualTransformation = { CardHelperFunctions.formatExpiry(it) }
-            )
-
-            InputTextField(
-                label = "CVV",
-                value = state.cvv,
-                onValueChange = { viewModel.onEvent(CardEvent.EnteredCvv(it)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
+            Row(
+                Modifier.width(TextFieldDefaults.MinWidth)
+            ) {
+                InputTextField(
+                    label = "Expiry",
+                    value = state.expiryMonth + state.expiryYear,
+                    onValueChange = { viewModel.onEvent(CardEvent.EnteredCardExpiry(it)) },
+                    placeholder = "mm/yy",
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    visualTransformation = { CardHelperFunctions.formatExpiry(it) },
+                    modifier = Modifier.weight(1f)
                 )
-            )
+
+                Spacer(modifier = Modifier.weight(0.2f))
+
+                InputTextField(
+                    label = "CVV",
+                    value = state.cvv,
+                    onValueChange = { viewModel.onEvent(CardEvent.EnteredCvv(it)) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier.weight(1f)
+                )
+            }
 
             InputTextField(
                 label = "Holder Name",
@@ -165,15 +157,65 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 placeholder = "Moneyback / ACE / Flipkart.."
             )
 
-            InputTextField(
-                label = "Pin",
-                value = state.pin,
-                onValueChange = { viewModel.onEvent(CardEvent.EnteredPin(it)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
+            Row(
+                Modifier.width(TextFieldDefaults.MinWidth)
+            ) {
+
+                InputTextField(
+                    label = "Pin",
+                    value = state.pin,
+                    onValueChange = { viewModel.onEvent(CardEvent.EnteredPin(it)) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier.weight(1f)
                 )
-            )
+
+                Spacer(modifier = Modifier.weight(0.2f))
+
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+
+                    var expanded by remember { mutableStateOf(false) }
+                    val icon =
+                        if (expanded) Icons.Filled.KeyboardArrowUp
+                        else Icons.Filled.KeyboardArrowDown
+
+                    InputTextField(
+                        value = if (state.cardType == CardType.None) "" else state.cardType.name,
+                        onValueChange = {  },
+                        label = "Card Type",
+                        trailingIcon = {
+                            Icon(icon,"contentDescription",
+                                Modifier.clickable { expanded = !expanded })
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
+                        modifier = Modifier.onFocusChanged {
+                            if (it.isFocused) expanded = true
+                        }
+                    )
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        cardsTypesList.forEach {
+                            DropdownMenuItem(onClick = {
+                                viewModel.onEvent(CardEvent.SelectedCardType(it))
+                                expanded = false
+                            }) {
+                                Text(text = it.name)
+                            }
+                        }
+                    }
+                }
+
+            }
 
             InputTextField(
                 label = "Alias for card",
