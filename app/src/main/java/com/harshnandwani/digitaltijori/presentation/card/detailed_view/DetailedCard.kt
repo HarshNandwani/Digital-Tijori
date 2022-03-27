@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -21,6 +19,7 @@ import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
+import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
@@ -30,12 +29,13 @@ fun DetailedCard(
     titleText: String,
     issuer: Company,
     card: Card,
-    onDeleteClick: () -> Unit,
+    onDeleteAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     val context = LocalContext.current
     var backVisible by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
         Row(
@@ -67,10 +67,28 @@ fun DetailedCard(
                 contentDescription = "Delete Icon",
                 tint = Color.Red,
                 modifier = Modifier.clickable {
-                    onDeleteClick()
+                    showDialog = true
                 }
             )
         }
+
+        ConfirmationAlertDialog(
+            visible = showDialog,
+            onDismiss = { showDialog = false },
+            title = "You are deleting ${issuer.name} ${card.cardType.name}",
+            text = "This action cannot be undone, do you want to proceed?",
+            confirmButton = {
+                TextButton(onClick = { onDeleteAction() }) {
+                    Text(text = "Yes, delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text(text = "Cancel")
+                }
+            }
+        )
+
         FlipCardLayout(
             variant = card.variant ?: "",
             company = issuer,

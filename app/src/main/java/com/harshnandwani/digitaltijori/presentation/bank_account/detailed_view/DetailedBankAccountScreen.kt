@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -127,8 +128,9 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                 titleText = "${card.cardType.name} Details",
                 issuer = state.bank,
                 card = card,
-                onDeleteClick = {
+                onDeleteAction = {
                     viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
+                    Toast.makeText(context, "Card deleted!", Toast.LENGTH_SHORT).show()
                 }
             )
         }
