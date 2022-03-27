@@ -1,8 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.common_components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
@@ -34,29 +32,27 @@ fun InputTextField(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column {
-        Spacer(modifier = Modifier.size(12.dp))
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = {
-                Text(text = label)
-            },
-            placeholder = { placeholder?.let { Text(it) } },
-            singleLine = true,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Down) },
-                onDone = { keyboardController?.hide() }
-            ),
-            modifier = modifier,
-            trailingIcon = trailingIcon,
-            visualTransformation = visualTransformation,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondaryVariant,
-                focusedLabelColor = MaterialTheme.colors.secondaryVariant,
-                cursorColor = MaterialTheme.colors.secondaryVariant
-            )
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Text(text = label)
+        },
+        placeholder = { placeholder?.let { Text(it) } },
+        singleLine = true,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = KeyboardActions(
+            onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            onDone = { keyboardController?.hide() }
+        ),
+        modifier = modifier.padding(top = 12.dp),
+        trailingIcon = trailingIcon,
+        visualTransformation = visualTransformation,
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colors.secondaryVariant,
+            focusedLabelColor = MaterialTheme.colors.secondaryVariant,
+            cursorColor = MaterialTheme.colors.secondaryVariant
         )
-    }
+    )
+
 }
