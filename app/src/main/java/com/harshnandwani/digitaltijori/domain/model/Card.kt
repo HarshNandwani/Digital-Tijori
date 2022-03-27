@@ -76,6 +76,9 @@ data class Card(
         if (bankAccountId == null && companyId == null) {
             throw InvalidCardException("Please link card with issuer")
         }
+        if (cardType == CardType.None) {
+            throw InvalidCardException("Select card type Credit/Debit/Other")
+        }
         if (cardNumber.isEmpty() || cardNumber.length < 15) {
             throw InvalidCardException("Enter full card number")
         }
