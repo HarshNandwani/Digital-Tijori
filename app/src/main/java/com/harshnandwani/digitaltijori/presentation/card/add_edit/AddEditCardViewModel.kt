@@ -155,9 +155,13 @@ class AddEditCardViewModel @Inject constructor(
                         }
                         _eventFlow.emit(CardSubmitResultEvent.CardSaved)
                     } catch (e: InvalidCardException) {
-                        _eventFlow.emit(
-                            CardSubmitResultEvent.ShowError(e.message ?: "Cannot save card")
-                        )
+                        if (e.message?.contains("link card with issuer") == true) {
+                            _eventFlow.emit(CardSubmitResultEvent.LinkCardWithIssuer)
+                        } else {
+                            _eventFlow.emit(
+                                CardSubmitResultEvent.ShowError(e.message ?: "Cannot save card")
+                            )
+                        }
                     }
                 }
             }

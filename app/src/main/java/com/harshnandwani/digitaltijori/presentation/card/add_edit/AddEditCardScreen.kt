@@ -208,6 +208,11 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
+                is CardSubmitResultEvent.LinkCardWithIssuer -> {
+                    addCredentialClicked = false
+                    Toast.makeText(context, "Please select issuer", Toast.LENGTH_SHORT).show()
+                    coroutineScope.launch { bottomSheetState.show() }
+                }
                 is CardSubmitResultEvent.ShowError -> {
                     addCredentialClicked = false
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
