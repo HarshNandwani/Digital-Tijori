@@ -68,7 +68,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = false
                 _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value = state.value.copy(
-                    cardNumber = event.cardNumber
+                    cardNumber = event.cardNumber.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredCardExpiry -> {
@@ -85,7 +87,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = true
                 if (event.cvv.length > 3) return
                 _state.value = state.value.copy(
-                    cvv = event.cvv
+                    cvv = event.cvv.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredNameOnCard -> {
@@ -104,7 +108,9 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = true
                 if (event.pin.length > 4) return
                 _state.value = state.value.copy(
-                    pin = event.pin
+                    pin = event.pin.filter {
+                        it != '.' && it != ',' && it != '-' && it != ' '
+                    }
                 )
             }
             is CardEvent.EnteredCardAlias -> {
