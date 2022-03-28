@@ -64,7 +64,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 36.dp, vertical = 24.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

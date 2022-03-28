@@ -105,9 +105,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 }
             )
 
-            Row(
-                Modifier.width(TextFieldDefaults.MinWidth)
-            ) {
+            Row {
                 InputTextField(
                     label = "Expiry",
                     value = state.expiryMonth + state.expiryYear,
@@ -157,9 +155,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 placeholder = "Moneyback / ACE / Flipkart.."
             )
 
-            Row(
-                Modifier.width(TextFieldDefaults.MinWidth)
-            ) {
+            Row {
 
                 InputTextField(
                     label = "Pin",
