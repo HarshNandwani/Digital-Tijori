@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.common_components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,7 +46,7 @@ fun InputTextField(
             onNext = { focusManager.moveFocus(FocusDirection.Next) },
             onDone = { keyboardController?.hide() }
         ),
-        modifier = modifier.padding(top = 12.dp),
+        modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.outlinedTextFieldColors(
