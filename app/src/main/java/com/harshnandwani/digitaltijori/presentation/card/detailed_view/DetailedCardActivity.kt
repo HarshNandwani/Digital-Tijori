@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.use_case.card.DeleteCardUseCase
+import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,26 +42,26 @@ class DetailedCardActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    Box(Modifier.fillMaxSize()) {
-                        DetailedCard(
-                            titleText = "${issuer.name} ${card.cardType.name} Details",
-                            issuer = issuer,
-                            card = card,
-                            onDeleteAction = {
-                                lifecycleScope.launch {
-                                    deleteCardUseCase(card)
-                                    withContext(Dispatchers.Main) {
-                                        Toast.makeText(
-                                            this@DetailedCardActivity,
-                                            "Card deleted",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        finish()
+                    Scaffold(
+                        topBar = { TopAppBarWithBackButton(title = "Account details") }
+                    ) {
+                        Box(Modifier.fillMaxSize()) {
+                            DetailedCard(
+                                titleText = "${issuer.name} ${card.cardType.name} Details",
+                                issuer = issuer,
+                                card = card,
+                                onDeleteAction = {
+                                    lifecycleScope.launch {
+                                        deleteCardUseCase(card)
+                                        withContext(Dispatchers.Main) {
+                                            Toast.makeText(this@DetailedCardActivity, "Card deleted", Toast.LENGTH_SHORT).show()
+                                            finish()
+                                        }
                                     }
-                                }
-                            },
-                            modifier = Modifier.padding(24.dp)
-                        )
+                                },
+                                modifier = Modifier.padding(24.dp)
+                            )
+                        }
                     }
                 }
             }
