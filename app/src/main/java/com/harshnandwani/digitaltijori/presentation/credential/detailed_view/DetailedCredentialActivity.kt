@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
+import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.util.DetailedCredentialEvent
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -35,17 +37,21 @@ class DetailedCredentialActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        DetailedCredential(
-                            entity = viewModel.state.value.entity,
-                            credential = viewModel.state.value.credential,
-                            onDeleteAction = {
-                                viewModel.onEvent(DetailedCredentialEvent.DeleteCredential)
-                                Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
-                                finish()
-                            },
-                            modifier = Modifier.padding(16.dp)
-                        )
+                    Scaffold(
+                        topBar = { TopAppBarWithBackButton(title = "Account details") }
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            DetailedCredential(
+                                entity = viewModel.state.value.entity,
+                                credential = viewModel.state.value.credential,
+                                onDeleteAction = {
+                                    viewModel.onEvent(DetailedCredentialEvent.DeleteCredential)
+                                    Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                },
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
                     }
                 }
             }
