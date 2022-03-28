@@ -85,6 +85,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(text = state.selectedBank?.name ?: "Select bank")
             }
+            Spacer(modifier = Modifier.size(16.dp))
             val account = state.bankAccount.value
             InputTextField(
                 label = "Account Number",
@@ -148,7 +149,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                     imeAction = ImeAction.Done
                 )
             )
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(32.dp))
 
             if(state.selectedBank?.issuesCards == true && state.mode == Parameters.VAL_MODE_ADD) {
                 RoundedFilledButton(
@@ -158,6 +159,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                     },
                     text = "Proceed to add card"
                 )
+                Spacer(modifier = Modifier.size(4.dp))
             }
 
             RoundedOutlineButton(

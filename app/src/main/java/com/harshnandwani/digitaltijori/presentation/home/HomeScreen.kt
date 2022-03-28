@@ -33,7 +33,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
     Scaffold(
         topBar = {
             AppBarWithSearchView(
-                titleText = "Digital Tijori",
+                titleText = viewModel.state.value.currentPage,
                 searchText = viewModel.state.value.searchText,
                 onSearchTextChange = {
                     viewModel.onEvent(HomeScreenEvent.OnSearchTextChanged(it))

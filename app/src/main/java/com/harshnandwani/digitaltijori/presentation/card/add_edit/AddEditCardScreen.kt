@@ -91,7 +91,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 backVisible = state.backVisible.value,
                 onCardClick = { state.backVisible.value = !state.backVisible.value }
             )
-
+            Spacer(modifier = Modifier.size(16.dp))
             InputTextField(
                 label = "Card Number",
                 value = state.cardNumber,
@@ -223,7 +223,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 )
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(32.dp))
 
             if(state.selectedIssuer?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD && state.isLinkedToAccount){
                 RoundedFilledButton(
@@ -233,12 +233,15 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                     },
                     text = "Proceed to add credentials"
                 )
+                Spacer(modifier = Modifier.size(4.dp))
             }
 
             RoundedOutlineButton(
                 onClick = { viewModel.onEvent(CardEvent.CardSubmit) },
                 text = "Save card"
             )
+
+            Spacer(modifier = Modifier.size(16.dp))
 
         }
     }

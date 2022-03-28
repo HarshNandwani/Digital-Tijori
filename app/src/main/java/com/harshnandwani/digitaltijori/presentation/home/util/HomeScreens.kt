@@ -12,17 +12,17 @@ sealed class HomeScreens(
     val icon: ImageVector
 ){
     object BankAccountsList : HomeScreens(
-        route = "bank_accounts_list",
+        route = "Accounts",
         title = "Banks",
         icon = Icons.Default.AccountBalance
     )
     object CardsList : HomeScreens(
-        route = "cards_list",
+        route = "Cards",
         title = "Cards",
         icon = Icons.Default.CreditCard
     )
     object CredentialsList : HomeScreens(
-        route = "credentials_list",
+        route = "Credentials",
         title = "Credentials",
         icon = Icons.Default.Lock
     )

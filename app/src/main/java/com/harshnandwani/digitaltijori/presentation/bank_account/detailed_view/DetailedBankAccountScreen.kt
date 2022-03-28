@@ -43,8 +43,8 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Text(text = "Account details: ", style = MaterialTheme.typography.h1)
-        Spacer(modifier = Modifier.size(8.dp))
+        Text(text = "Account: ", style = MaterialTheme.typography.h1)
+        Spacer(modifier = Modifier.size(16.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -77,14 +77,12 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                                 putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
                                 ContextCompat.startActivity(context, this, null)
                             }
-                            (context as DetailedBankAccountActivity).finish()
                         }
                     )
                     Spacer(modifier = Modifier.size(8.dp))
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Icon",
-                        tint = Color.Red,
                         modifier = Modifier.clickable {
                             showAccountDialog = true
                         }
@@ -145,8 +143,14 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
 
         }
 
+        // Not the best way to show dotted line/border :P But am yet to learn Canvas, so here we go
+        Text(
+            text = "- ".repeat(100),
+            maxLines = 1,
+            modifier = Modifier.padding(vertical = 24.dp)
+        )
+
         if (state.bank.issuesCards) {
-            Spacer(modifier = Modifier.size(24.dp))
             Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
             state.linkedCards.forEach { card ->
                 Spacer(modifier = Modifier.size(16.dp))
@@ -170,12 +174,19 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         ContextCompat.startActivity(context, this, null)
                     }
                 },
-                text = "add more cards"
+                text = "add more cards",
+                cornerSize = 16.dp
             )
         }
 
+        // Oh Again? Sorry, its the last time!
+        Text(
+            text = "- ".repeat(100),
+            maxLines = 1,
+            modifier = Modifier.padding(vertical = 24.dp)
+        )
+
         if (state.bank.hasCredentials) {
-            Spacer(modifier = Modifier.size(24.dp))
             Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
             state.linkedCredentials.forEach { credential ->
                 Spacer(modifier = Modifier.size(16.dp))
@@ -198,7 +209,8 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         ContextCompat.startActivity(context, this, null)
                     }
                 },
-                text = "add more credentials"
+                text = "add more credentials",
+                cornerSize = 16.dp
             )
         }
 
