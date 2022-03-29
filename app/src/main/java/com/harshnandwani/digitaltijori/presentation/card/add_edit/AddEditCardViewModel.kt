@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardNumberLengthUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.IdentifyCardNetworkUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.UpdateCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
+import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardState
@@ -39,7 +41,9 @@ class AddEditCardViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<CardSubmitResultEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    val identifyCardNetwork = IdentifyCardNetworkUseCase()
+    private val identifyCardNetwork = IdentifyCardNetworkUseCase()
+    private val getCardNumberLength = GetCardNumberLengthUseCase()
+    private var maxCardSizeNumber = getCardNumberLength(CardNetwork.Unknown)
 
     init {
         getAllCardIssuers()
@@ -69,12 +73,15 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredCardNumber -> {
                 _state.value.backVisible.value = false
+                if (event.cardNumber.length > maxCardSizeNumber) return
+                val cardNetwork = identifyCardNetwork(event.cardNumber)
                 _state.value.card.value = state.value.card.value.copy(
                     cardNumber = event.cardNumber.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     },
-                    cardNetwork = identifyCardNetwork(event.cardNumber)
+                    cardNetwork = cardNetwork
                 )
+                maxCardSizeNumber = getCardNumberLength(cardNetwork)
             }
             is CardEvent.EnteredCardExpiry -> {
                 _state.value.backVisible.value = false
