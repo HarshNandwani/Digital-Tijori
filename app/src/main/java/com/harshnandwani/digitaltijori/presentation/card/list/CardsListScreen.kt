@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +40,21 @@ fun CardsListScreen(viewModel: HomeViewModel) {
     val state = viewModel.state.value
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+
+    if (state.cards.isEmpty()) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Icon(
+                imageVector = Icons.Default.CreditCard,
+                contentDescription = "",
+                tint = MaterialTheme.colors.secondaryVariant,
+                modifier = Modifier.alpha(0.1f).fillMaxSize(0.5f)
+            )
+        }
+        return
+    }
 
     LazyColumn {
         for ((issuer, cardsList) in state.filteredCards) {

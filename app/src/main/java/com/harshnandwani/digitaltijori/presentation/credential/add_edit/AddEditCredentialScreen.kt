@@ -88,7 +88,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(text = state.selectedEntity?.name ?: "Select entity")
             }
-
+            Spacer(modifier = Modifier.size(16.dp))
             InputTextField(
                 label = "Username",
                 value = credential.username,
@@ -119,7 +119,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(32.dp))
 
             RoundedOutlineButton(
                 onClick = { viewModel.onEvent(CredentialEvent.CredentialSubmit) },

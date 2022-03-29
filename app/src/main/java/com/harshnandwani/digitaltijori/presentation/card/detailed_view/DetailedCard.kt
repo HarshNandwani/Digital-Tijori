@@ -65,7 +65,6 @@ fun DetailedCard(
             Icon(
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Delete Icon",
-                tint = Color.Red,
                 modifier = Modifier.clickable {
                     showDialog = true
                 }

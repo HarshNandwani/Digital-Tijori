@@ -79,8 +79,7 @@ fun DetailedCredential(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete Icon",
-                    tint = Color.Red,
-                    modifier = Modifier.clickable {
+                     modifier = Modifier.clickable {
                         showDialog = true
                     }
                 )
