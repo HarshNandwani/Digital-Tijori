@@ -4,26 +4,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
-import com.harshnandwani.digitaltijori.domain.util.CardNetwork
-import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
 data class CardState(
     val allCardIssuers: List<Company> = emptyList(),
     val selectedIssuer: Company? = null,
     val mode: String = Parameters.VAL_MODE_ADD,
-    val isLinkedToAccount: Boolean = false,
-    val bankAccountId: Int? = null,
-    val cardNumber: String = "",
     val expiryMonth: String = "",
     val expiryYear: String = "",
-    val cvv: String = "",
-    val nameOnCard: String = "",
-    val variant: String = "",
-    var cardNetwork: CardNetwork = CardNetwork.Unknown,
-    val pin: String = "",
-    val cardAlias: String = "",
-    val cardType: CardType = CardType.None,
+    val card: MutableState<Card> = mutableStateOf(Card.emptyCard()),
     val backVisible: MutableState<Boolean> = mutableStateOf(false),
     var previouslyEnteredCard: Card = Card.emptyCard()
 )

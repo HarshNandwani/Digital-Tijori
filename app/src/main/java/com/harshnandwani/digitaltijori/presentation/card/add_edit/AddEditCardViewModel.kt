@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.IdentifyCardNetworkUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.UpdateCardUseCase
@@ -52,26 +51,29 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     selectedIssuer = event.issuer
                 )
+                _state.value.card.value = state.value.card.value.copy(
+                    companyId = event.issuer.companyId
+                )
             }
             is CardEvent.LinkToAccount -> {
-                _state.value = state.value.copy(
-                    isLinkedToAccount = true,
+                _state.value.card.value = state.value.card.value.copy(
+                    isLinkedToBank = true,
                     bankAccountId = event.accountId
                 )
             }
             is CardEvent.SelectedCardType -> {
                 _state.value.backVisible.value = false
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     cardType = event.cardType
                 )
             }
             is CardEvent.EnteredCardNumber -> {
                 _state.value.backVisible.value = false
-                _state.value.cardNetwork = identifyCardNetwork(event.cardNumber)
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     cardNumber = event.cardNumber.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
-                    }
+                    },
+                    cardNetwork = identifyCardNetwork(event.cardNumber)
                 )
             }
             is CardEvent.EnteredCardExpiry -> {
@@ -87,7 +89,7 @@ class AddEditCardViewModel @Inject constructor(
             is CardEvent.EnteredCvv -> {
                 _state.value.backVisible.value = true
                 if (event.cvv.length > 3) return
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     cvv = event.cvv.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     }
@@ -95,20 +97,20 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredNameOnCard -> {
                 _state.value.backVisible.value = false
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     nameOnCard = event.name
                 )
             }
             is CardEvent.EnteredVariant -> {
                 _state.value.backVisible.value = false
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     variant = event.variant
                 )
             }
             is CardEvent.EnteredPin -> {
                 _state.value.backVisible.value = true
                 if (event.pin.length > 4) return
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     pin = event.pin.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     }
@@ -116,7 +118,7 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredCardAlias -> {
                 _state.value.backVisible.value = false
-                _state.value = state.value.copy(
+                _state.value.card.value = state.value.card.value.copy(
                     cardAlias = event.alias
                 )
             }
@@ -134,22 +136,11 @@ class AddEditCardViewModel @Inject constructor(
                         ))
                         return@launch
                     }
-                    val card = Card(
-                        cardId = state.value.previouslyEnteredCard.cardId,
-                        isLinkedToBank = _state.value.isLinkedToAccount,
-                        bankAccountId = _state.value.bankAccountId,
-                        companyId = _state.value.selectedIssuer?.companyId,
-                        cardNumber = _state.value.cardNumber,
+                    val card = state.value.card.value.copy(
                         expiryMonth = expiryMonth,
-                        expiryYear = expiryYear,
-                        cvv = _state.value.cvv,
-                        nameOnCard = _state.value.nameOnCard,
-                        variant = _state.value.variant,
-                        cardNetwork = _state.value.cardNetwork,
-                        pin = _state.value.pin,
-                        cardAlias = _state.value.cardAlias,
-                        cardType = _state.value.cardType
+                        expiryYear = expiryYear
                     )
+
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {
                             addCardUseCase(card)
@@ -177,20 +168,11 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     selectedIssuer = event.issuer,
                     mode = Parameters.VAL_MODE_EDIT,
-                    isLinkedToAccount = event.card.isLinkedToBank,
-                    bankAccountId = event.card.bankAccountId,
-                    cardNumber = event.card.cardNumber,
                     expiryMonth = CardHelperFunctions.getMonthAsString(event.card.expiryMonth),
                     expiryYear = event.card.expiryYear.toString(),
-                    cvv = event.card.cvv,
-                    nameOnCard = event.card.nameOnCard,
-                    variant = event.card.variant ?: "",
-                    pin = event.card.pin,
-                    cardNetwork = event.card.cardNetwork,
-                    cardAlias = event.card.cardAlias ?: "",
-                    cardType = event.card.cardType,
                     previouslyEnteredCard = event.card
                 )
+                _state.value.card.value = event.card
             }
         }
     }

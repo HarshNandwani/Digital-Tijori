@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
     val state = viewModel.state.value
+    val card = state.card.value
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -74,16 +75,16 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FlipCardLayout(
-                variant = state.variant,
+                variant = card.variant ?: "",
                 company = state.selectedIssuer,
-                nameText = state.nameOnCard,
-                cardNumber = state.cardNumber,
+                nameText = card.nameOnCard,
+                cardNumber = card.cardNumber,
                 expiryNumber = state.expiryMonth + state.expiryYear,
-                cvvNumber = state.cvv,
-                pin = state.pin,
-                cardNetwork = state.cardNetwork,
+                cvvNumber = card.cvv,
+                pin = card.pin,
+                cardNetwork = card.cardNetwork,
                 onIssuerLogoClick = {
-                    if(state.mode == Parameters.VAL_MODE_ADD && !state.isLinkedToAccount) {
+                    if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
                         keyboardController?.hide()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
@@ -94,14 +95,14 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             Spacer(modifier = Modifier.size(16.dp))
             InputTextField(
                 label = "Card Number",
-                value = state.cardNumber,
+                value = card.cardNumber,
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredCardNumber(it)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 ),
                 visualTransformation = { number ->
-                    CardHelperFunctions.formatCardNumber(state.cardNetwork, number)
+                    CardHelperFunctions.formatCardNumber(card.cardNetwork, number)
                 }
             )
 
@@ -123,7 +124,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
                 InputTextField(
                     label = "CVV",
-                    value = state.cvv,
+                    value = card.cvv,
                     onValueChange = { viewModel.onEvent(CardEvent.EnteredCvv(it)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
@@ -135,7 +136,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             InputTextField(
                 label = "Holder Name",
-                value = state.nameOnCard,
+                value = card.nameOnCard,
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredNameOnCard(it)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
@@ -146,7 +147,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             InputTextField(
                 label = "Card Variant",
-                value = state.variant,
+                value = card.variant ?: "",
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredVariant(it)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -159,7 +160,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
                 InputTextField(
                     label = "Pin",
-                    value = state.pin,
+                    value = card.pin,
                     onValueChange = { viewModel.onEvent(CardEvent.EnteredPin(it)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
@@ -180,7 +181,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                         else Icons.Filled.KeyboardArrowDown
 
                     InputTextField(
-                        value = if (state.cardType == CardType.None) "" else state.cardType.name,
+                        value = if (card.cardType == CardType.None) "" else card.cardType.name,
                         onValueChange = {  },
                         label = "Card Type",
                         trailingIcon = {
@@ -215,7 +216,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             InputTextField(
                 label = "Alias for card",
-                value = state.cardAlias,
+                value = card.cardAlias ?: "",
                 onValueChange = { viewModel.onEvent(CardEvent.EnteredCardAlias(it)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -225,7 +226,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
             Spacer(modifier = Modifier.size(32.dp))
 
-            if(state.selectedIssuer?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD && state.isLinkedToAccount){
+            if(state.selectedIssuer?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD && card.isLinkedToBank){
                 RoundedFilledButton(
                     onClick = {
                         addCredentialClicked = true
@@ -247,7 +248,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     }
 
     LaunchedEffect(key1 = true) {
-        if(state.mode == Parameters.VAL_MODE_ADD && !state.isLinkedToAccount) {
+        if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
             coroutineScope.launch { bottomSheetState.show() }
         }
         viewModel.eventFlow.collectLatest { event ->
@@ -268,7 +269,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ENTITY, state.selectedIssuer)
-                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.bankAccountId)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, card.bankAccountId)
                             ContextCompat.startActivity(context, this, null)
                         }
                     }
