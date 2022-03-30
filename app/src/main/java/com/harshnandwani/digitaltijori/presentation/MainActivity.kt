@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.presentation.home.HomeActivity
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
-import com.harshnandwani.digitaltijori.presentation.util.DigitalTijoriDataStore
+import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDataStore
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.launch
 

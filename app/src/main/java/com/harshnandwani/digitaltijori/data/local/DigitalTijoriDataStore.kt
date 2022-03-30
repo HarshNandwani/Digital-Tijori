@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.presentation.util
+package com.harshnandwani.digitaltijori.data.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -14,7 +14,7 @@ class DigitalTijoriDataStore(private val context: Context) {
             name = "DigitalTijoriDataStore"
         )
 
-        private val LAST_AUTHENTICATED = longPreferencesKey("last_authenticated");
+        private val LAST_AUTHENTICATED = longPreferencesKey("last_authenticated")
 
     }
 
