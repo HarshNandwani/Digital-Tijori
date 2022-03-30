@@ -3,6 +3,7 @@ package com.harshnandwani.digitaltijori.domain.model
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.room.*
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardNumberLengthUseCase
 import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
@@ -84,7 +85,9 @@ data class Card(
         if (cardType == CardType.None) {
             throw InvalidCardException("Select card type Credit/Debit/Other")
         }
-        if (cardNumber.isEmpty() || cardNumber.length < 15) {
+        if (cardNumber.isEmpty() ||
+            cardNumber.length < GetCardNumberLengthUseCase().invoke(cardNetwork, true)
+        ) {
             throw InvalidCardException("Enter full card number")
         }
         if (expiryMonth < 1 || expiryMonth > 12) {
