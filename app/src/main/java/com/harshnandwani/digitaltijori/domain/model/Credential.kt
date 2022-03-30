@@ -35,7 +35,8 @@ data class Credential(
     val password: String,
     val isLinkedToBank : Boolean,
     val bankAccountId : Int?,
-    val companyId: Int?
+    val companyId: Int?,
+    val alias: String?
 ) : Serializable {
 
     companion object {
@@ -45,7 +46,8 @@ data class Credential(
                 password = "",
                 isLinkedToBank = false,
                 bankAccountId = null,
-                companyId = null
+                companyId = null,
+                alias = null
             )
         }
     }

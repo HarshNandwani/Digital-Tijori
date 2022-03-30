@@ -109,7 +109,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Next
                 ),
                 trailingIcon = {
                     IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
@@ -117,6 +117,18 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                     }
                 },
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+            )
+
+            InputTextField(
+                label = "Alias (optional)",
+                value = credential.alias ?: "",
+                onValueChange = {
+                    viewModel.onEvent(CredentialEvent.EnteredAlias(it))
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                )
             )
 
             Spacer(modifier = Modifier.size(32.dp))

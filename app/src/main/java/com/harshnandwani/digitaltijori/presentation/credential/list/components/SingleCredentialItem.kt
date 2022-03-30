@@ -37,10 +37,18 @@ fun SingleCredentialItem(
             modifier = Modifier.size(36.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Text(
-            text = credential.username,
-            style = MaterialTheme.typography.body2
-        )
+        Column {
+            if (!credential.alias.isNullOrBlank()) {
+                Text(
+                    text = credential.alias,
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            Text(
+                text = credential.username,
+                style = MaterialTheme.typography.body2
+            )
+        }
     }
 
 }
