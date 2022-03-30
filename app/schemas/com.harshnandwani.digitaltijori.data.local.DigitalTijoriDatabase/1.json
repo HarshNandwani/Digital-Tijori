@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "47ea60e5eddc516700af66c3f4a73c85",
+    "identityHash": "63f4a37d9928014e3bda523691930019",
     "entities": [
       {
         "tableName": "Company",
@@ -286,7 +286,7 @@
       },
       {
         "tableName": "Credential",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`credentialId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL, `isLinkedToBank` INTEGER NOT NULL, `bankAccountId` INTEGER, `companyId` INTEGER, FOREIGN KEY(`bankAccountId`) REFERENCES `BankAccount`(`bankAccountId`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`companyId`) REFERENCES `Company`(`companyId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`credentialId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL, `isLinkedToBank` INTEGER NOT NULL, `bankAccountId` INTEGER, `companyId` INTEGER, `alias` TEXT, FOREIGN KEY(`bankAccountId`) REFERENCES `BankAccount`(`bankAccountId`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`companyId`) REFERENCES `Company`(`companyId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "credentialId",
@@ -322,6 +322,12 @@
             "fieldPath": "companyId",
             "columnName": "companyId",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alias",
+            "columnName": "alias",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -380,7 +386,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47ea60e5eddc516700af66c3f4a73c85')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63f4a37d9928014e3bda523691930019')"
     ]
   }
 }

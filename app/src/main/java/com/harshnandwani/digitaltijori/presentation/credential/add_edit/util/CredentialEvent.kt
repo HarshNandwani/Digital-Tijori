@@ -8,6 +8,7 @@ sealed class CredentialEvent {
     data class LinkToAccount(val linkedAccountId: Int): CredentialEvent()
     data class EnteredUsername(val username: String) : CredentialEvent()
     data class EnteredPassword(val password: String) : CredentialEvent()
+    data class EnteredAlias(val alias: String) : CredentialEvent()
     object CredentialSubmit : CredentialEvent()
     data class ChangeToEditMode(val linkedEntity: Company, val credential: Credential) : CredentialEvent()
 }

@@ -67,6 +67,11 @@ class AddEditCredentialViewModel @Inject constructor(
                     password = event.password
                 )
             }
+            is CredentialEvent.EnteredAlias -> {
+                _state.value.credential.value = state.value.credential.value.copy(
+                    alias = event.alias
+                )
+            }
             is CredentialEvent.CredentialSubmit -> {
                 viewModelScope.launch {
                     val credential = _state.value.credential.value
