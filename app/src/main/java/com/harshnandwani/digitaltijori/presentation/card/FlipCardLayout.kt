@@ -13,37 +13,40 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.harshnandwani.digitaltijori.R
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
-import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 
 @ExperimentalMaterialApi
 @Composable
 fun FlipCardLayout(
-    variant: String,
     company: Company?,
-    nameText: String,
-    cardNumber: String,
-    expiryNumber: String,
-    cvvNumber: String,
-    pin: String,
-    cardNetwork: CardNetwork,
+    expiryNumber: String, //needed separately coz its type byte in entity
+    card: Card,
     onIssuerLogoClick: () -> Unit = {},
     backVisible: Boolean,
     onCardClick: () -> Unit = {}
 ) {
 
-    val length = if (cardNumber.length > 16) 16 else cardNumber.length
+    val textColor =
+        if (card.colorScheme.textColor != 0)
+            Color(card.colorScheme.textColor)
+        else
+            MaterialTheme.colors.onSurface
+
+    val length = if (card.cardNumber.length > 16) 16 else card.cardNumber.length
     val initialCardNum = remember { "*****************" }
-        .replaceRange(0..length, cardNumber.take(16))
+        .replaceRange(0..length, card.cardNumber.take(16))
 
     var pinVisible by remember { mutableStateOf(false) }
     val icon = if (pinVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
@@ -57,19 +60,28 @@ fun FlipCardLayout(
         front = {
             ConstraintLayout(
                 modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(card.colorScheme.bgColorFrom),
+                                Color(card.colorScheme.bgColorTo)
+                            )
+                        )
+                    )
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
                 val (cardVariant, issuerLogo, cardNumAndExpiryLayout, holderName, cardNetworkLogo) = createRefs()
 
                 Text(
-                    variant,
+                    card.variant ?: "",
                     style = TextStyle(fontStyle = FontStyle.Italic),
                     modifier = Modifier
                         .constrainAs(cardVariant) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
-                        }
+                        },
+                    color = textColor
                 )
 
                 Image(
@@ -96,8 +108,9 @@ fun FlipCardLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        initialCardNum.chunked(4).joinToString(" "),
+                        text = CardHelperFunctions.formatCardNumber(card.cardNetwork, AnnotatedString(initialCardNum)).text.replace("-".toRegex(), " "),
                         fontSize = 24.sp, //TODO: Remove hardcode
+                        color = textColor
                     )
 
                     Row(
@@ -108,27 +121,33 @@ fun FlipCardLayout(
                         Text(
                             text = "Expires",
                             fontSize = 10.sp,
+                            color = textColor
                         )
                         Spacer(modifier = Modifier.size(2.dp))
                         Text(
                             text = expiryNumber.take(4).chunked(2).joinToString("/"),
+                            color = textColor
                         )
                     }
                 }
 
+                val displayName: String = card.cardAlias.takeIf { !it.isNullOrEmpty() }
+                    ?: if (card.nameOnCard.isEmpty()) "Card holder name" else card.nameOnCard
+
                 Text(
-                    text = if(nameText.isEmpty()) "Card holder name" else nameText,
+                    text = displayName,
                     modifier = Modifier.constrainAs(holderName) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     },
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.body2,
+                    color = textColor
                 )
 
                 Image(
                     painter = painterResource(
                         id = CardHelperFunctions.getDrawableIdForCardNetwork(
-                            cardNetwork
+                            card.cardNetwork
                         )
                     ),
                     contentDescription = "Card Network",
@@ -141,7 +160,19 @@ fun FlipCardLayout(
             }
         },
         back = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(card.colorScheme.bgColorFrom),
+                                Color(card.colorScheme.bgColorTo)
+                            )
+                        )
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Spacer(
                     modifier = Modifier
                         .padding(top = 36.dp, bottom = 8.dp)
@@ -150,7 +181,7 @@ fun FlipCardLayout(
                         .fillMaxWidth()
                 )
                 Text(
-                    text = cvvNumber.take(3),
+                    text = card.cvv.take(3),
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
@@ -161,12 +192,13 @@ fun FlipCardLayout(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "pin: ")
+                    Text(text = "pin: ", color = textColor)
                     Text(
-                        text = if (pinVisible) pin else "****",
-                        style = MaterialTheme.typography.h6
+                        text = if (pinVisible) card.pin else "****",
+                        style = MaterialTheme.typography.h6,
+                        color = textColor
                     )
-                    if (pin.isNotEmpty()) {
+                    if (card.pin.isNotEmpty()) {
                         IconButton(onClick = { pinVisible = !pinVisible }) {
                             Icon(
                                 imageVector = icon,

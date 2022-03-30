@@ -114,15 +114,18 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                     "x".repeat(card.cardNumber.length - 4) +
                                             card.cardNumber.takeLast(4)
 
-                                FlipCardLayout(
-                                    variant = card.variant ?: "",
-                                    company = issuer,
-                                    nameText = card.nameOnCard,
+                                val cardToDisplay = card.copy(
                                     cardNumber = cardNumberDisplay,
+                                    expiryMonth = -1,
+                                    expiryYear = -1,
+                                    cvv = "",
+                                    pin = ""
+                                )
+
+                                FlipCardLayout(
+                                    company = issuer,
                                     expiryNumber = "xxxx",
-                                    cvvNumber = "",
-                                    pin = "",
-                                    cardNetwork = card.cardNetwork,
+                                    card = cardToDisplay,
                                     backVisible = false,
                                     onCardClick = {
                                         Intent(context, DetailedCardActivity::class.java).apply {

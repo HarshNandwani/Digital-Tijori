@@ -1,10 +1,13 @@
 package com.harshnandwani.digitaltijori.presentation.util
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
+import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 
 class CardHelperFunctions {
 
@@ -161,6 +164,12 @@ class CardHelperFunctions {
 
             return TransformedText(AnnotatedString(out), creditCardOffsetTranslator)
         }
+
+        val predefinedColorSchemes = listOf(
+            ColorScheme(Color(0xFF5FA2D7).toArgb(), Color(0xFF9CBDE4).toArgb()),
+            ColorScheme(Color(0xFF1E477A).toArgb(), Color(0xFF1C72C2).toArgb(), Color.White.toArgb()),
+            ColorScheme(Color(0xFF161616).toArgb(), Color(0xFF585858).toArgb(), Color.White.toArgb()),
+        )
 
     }
 

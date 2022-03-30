@@ -1,9 +1,10 @@
 package com.harshnandwani.digitaltijori.domain.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.room.*
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardNumberLengthUseCase
+import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
@@ -44,6 +45,10 @@ data class Card(
     val variant: String?,
     val cardNetwork: CardNetwork,
     val pin: String,
+    val colorScheme: ColorScheme = ColorScheme(
+        Color(0xFF5FA2D7).toArgb(),
+        Color(0xFF9CBDE4).toArgb()
+    ),
     val cardAlias: String?,
     val cardType: CardType,
 ) : Serializable {
@@ -64,6 +69,7 @@ data class Card(
                 null,
                 CardNetwork.Unknown,
                 "",
+                ColorScheme(Color(0xFF5FA2D7).toArgb(), Color(0xFF9CBDE4).toArgb()),
                 null,
                 CardType.None
             )
@@ -79,7 +85,9 @@ data class Card(
         if (cardType == CardType.None) {
             throw InvalidCardException("Select card type Credit/Debit/Other")
         }
-        if (cardNumber.isEmpty() || cardNumber.length < 15) {
+        if (cardNumber.isEmpty() ||
+            cardNumber.length < GetCardNumberLengthUseCase().invoke(cardNetwork, true)
+        ) {
             throw InvalidCardException("Enter full card number")
         }
         if (expiryMonth < 1 || expiryMonth > 12) {
