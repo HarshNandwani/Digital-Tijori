@@ -22,29 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.harshnandwani.digitaltijori.R
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
-import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 
 @ExperimentalMaterialApi
 @Composable
 fun FlipCardLayout(
-    variant: String,
     company: Company?,
-    nameText: String,
-    cardNumber: String,
-    expiryNumber: String,
-    cvvNumber: String,
-    pin: String,
-    cardNetwork: CardNetwork,
+    expiryNumber: String, //needed separately coz its type byte in entity
+    card: Card,
     onIssuerLogoClick: () -> Unit = {},
     backVisible: Boolean,
     onCardClick: () -> Unit = {}
 ) {
 
-    val length = if (cardNumber.length > 16) 16 else cardNumber.length
+    val length = if (card.cardNumber.length > 16) 16 else card.cardNumber.length
     val initialCardNum = remember { "*****************" }
-        .replaceRange(0..length, cardNumber.take(16))
+        .replaceRange(0..length, card.cardNumber.take(16))
 
     var pinVisible by remember { mutableStateOf(false) }
     val icon = if (pinVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
@@ -64,7 +59,7 @@ fun FlipCardLayout(
                 val (cardVariant, issuerLogo, cardNumAndExpiryLayout, holderName, cardNetworkLogo) = createRefs()
 
                 Text(
-                    variant,
+                    card.variant ?: "",
                     style = TextStyle(fontStyle = FontStyle.Italic),
                     modifier = Modifier
                         .constrainAs(cardVariant) {
@@ -97,7 +92,7 @@ fun FlipCardLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = CardHelperFunctions.formatCardNumber(cardNetwork, AnnotatedString(initialCardNum)).text.replace("-".toRegex(), " "),
+                        text = CardHelperFunctions.formatCardNumber(card.cardNetwork, AnnotatedString(initialCardNum)).text.replace("-".toRegex(), " "),
                         fontSize = 24.sp, //TODO: Remove hardcode
                     )
 
@@ -118,7 +113,7 @@ fun FlipCardLayout(
                 }
 
                 Text(
-                    text = if(nameText.isEmpty()) "Card holder name" else nameText,
+                    text = if(card.nameOnCard.isEmpty()) "Card holder name" else card.nameOnCard,
                     modifier = Modifier.constrainAs(holderName) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
@@ -129,7 +124,7 @@ fun FlipCardLayout(
                 Image(
                     painter = painterResource(
                         id = CardHelperFunctions.getDrawableIdForCardNetwork(
-                            cardNetwork
+                            card.cardNetwork
                         )
                     ),
                     contentDescription = "Card Network",
@@ -151,7 +146,7 @@ fun FlipCardLayout(
                         .fillMaxWidth()
                 )
                 Text(
-                    text = cvvNumber.take(3),
+                    text = card.cvv.take(3),
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
@@ -164,10 +159,10 @@ fun FlipCardLayout(
                 ) {
                     Text(text = "pin: ")
                     Text(
-                        text = if (pinVisible) pin else "****",
+                        text = if (pinVisible) card.pin else "****",
                         style = MaterialTheme.typography.h6
                     )
-                    if (pin.isNotEmpty()) {
+                    if (card.pin.isNotEmpty()) {
                         IconButton(onClick = { pinVisible = !pinVisible }) {
                             Icon(
                                 imageVector = icon,

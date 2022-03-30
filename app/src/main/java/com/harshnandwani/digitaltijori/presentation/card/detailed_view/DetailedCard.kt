@@ -94,14 +94,9 @@ fun DetailedCard(
         )
 
         FlipCardLayout(
-            variant = card.variant ?: "",
             company = issuer,
-            nameText = card.nameOnCard,
-            cardNumber = card.cardNumber,
             expiryNumber = CardHelperFunctions.getMonthAsString(card.expiryMonth) + card.expiryYear.toString(),
-            cvvNumber = card.cvv,
-            pin = card.pin,
-            cardNetwork = card.cardNetwork,
+            card = card,
             backVisible = backVisible,
             onCardClick = { backVisible = !backVisible }
         )

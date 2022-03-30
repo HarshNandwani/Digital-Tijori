@@ -75,14 +75,9 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FlipCardLayout(
-                variant = card.variant ?: "",
                 company = state.selectedIssuer,
-                nameText = card.nameOnCard,
-                cardNumber = card.cardNumber,
                 expiryNumber = state.expiryMonth + state.expiryYear,
-                cvvNumber = card.cvv,
-                pin = card.pin,
-                cardNetwork = card.cardNetwork,
+                card = card,
                 onIssuerLogoClick = {
                     if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
                         keyboardController?.hide()
