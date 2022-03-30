@@ -131,8 +131,11 @@ fun FlipCardLayout(
                     }
                 }
 
+                val displayName: String = card.cardAlias.takeIf { !it.isNullOrEmpty() }
+                    ?: if (card.nameOnCard.isEmpty()) "Card holder name" else card.nameOnCard
+
                 Text(
-                    text = if(card.nameOnCard.isEmpty()) "Card holder name" else card.nameOnCard,
+                    text = displayName,
                     modifier = Modifier.constrainAs(holderName) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
