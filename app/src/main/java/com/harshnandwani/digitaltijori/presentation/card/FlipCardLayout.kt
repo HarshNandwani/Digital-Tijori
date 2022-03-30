@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -37,6 +38,12 @@ fun FlipCardLayout(
     onCardClick: () -> Unit = {}
 ) {
 
+    val textColor =
+        if (card.colorScheme.textColor != 0)
+            Color(card.colorScheme.textColor)
+        else
+            MaterialTheme.colors.onSurface
+
     val length = if (card.cardNumber.length > 16) 16 else card.cardNumber.length
     val initialCardNum = remember { "*****************" }
         .replaceRange(0..length, card.cardNumber.take(16))
@@ -53,6 +60,14 @@ fun FlipCardLayout(
         front = {
             ConstraintLayout(
                 modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(card.colorScheme.bgColorFrom),
+                                Color(card.colorScheme.bgColorTo)
+                            )
+                        )
+                    )
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
@@ -65,7 +80,8 @@ fun FlipCardLayout(
                         .constrainAs(cardVariant) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
-                        }
+                        },
+                    color = textColor
                 )
 
                 Image(
@@ -94,6 +110,7 @@ fun FlipCardLayout(
                     Text(
                         text = CardHelperFunctions.formatCardNumber(card.cardNetwork, AnnotatedString(initialCardNum)).text.replace("-".toRegex(), " "),
                         fontSize = 24.sp, //TODO: Remove hardcode
+                        color = textColor
                     )
 
                     Row(
@@ -104,10 +121,12 @@ fun FlipCardLayout(
                         Text(
                             text = "Expires",
                             fontSize = 10.sp,
+                            color = textColor
                         )
                         Spacer(modifier = Modifier.size(2.dp))
                         Text(
                             text = expiryNumber.take(4).chunked(2).joinToString("/"),
+                            color = textColor
                         )
                     }
                 }
@@ -118,7 +137,8 @@ fun FlipCardLayout(
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     },
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.body2,
+                    color = textColor
                 )
 
                 Image(
@@ -137,7 +157,19 @@ fun FlipCardLayout(
             }
         },
         back = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(card.colorScheme.bgColorFrom),
+                                Color(card.colorScheme.bgColorTo)
+                            )
+                        )
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Spacer(
                     modifier = Modifier
                         .padding(top = 36.dp, bottom = 8.dp)
@@ -157,10 +189,11 @@ fun FlipCardLayout(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "pin: ")
+                    Text(text = "pin: ", color = textColor)
                     Text(
                         text = if (pinVisible) card.pin else "****",
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.h6,
+                        color = textColor
                     )
                     if (card.pin.isNotEmpty()) {
                         IconButton(onClick = { pinVisible = !pinVisible }) {

@@ -2,9 +2,11 @@ package com.harshnandwani.digitaltijori.presentation.card.add_edit
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -16,7 +18,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -87,7 +91,25 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 backVisible = state.backVisible.value,
                 onCardClick = { state.backVisible.value = !state.backVisible.value }
             )
+
             Spacer(modifier = Modifier.size(16.dp))
+
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                CardHelperFunctions.predefinedColorSchemes.forEach { colorScheme ->
+                    Row(
+                        Modifier
+                            .clip(CircleShape)
+                            .clickable { viewModel.onEvent(CardEvent.SelectedColorScheme(colorScheme)) }
+                    ) {
+                        Spacer(modifier = Modifier.size(16.dp).background(color = Color(colorScheme.bgColorFrom)).clip(CircleShape))
+                        Spacer(modifier = Modifier.size(16.dp).background(color = Color(colorScheme.bgColorTo)).clip(CircleShape))
+                    }
+                }
+            }
+
             InputTextField(
                 label = "Card Number",
                 value = card.cardNumber,

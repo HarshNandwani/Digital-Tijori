@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a3b120b238e3fa6b311af25eba76d918",
+    "identityHash": "47ea60e5eddc516700af66c3f4a73c85",
     "entities": [
       {
         "tableName": "Company",
@@ -140,7 +140,7 @@
       },
       {
         "tableName": "Card",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cardId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isLinkedToBank` INTEGER NOT NULL, `bankAccountId` INTEGER, `companyId` INTEGER, `cardNumber` TEXT NOT NULL, `expiryMonth` INTEGER NOT NULL, `expiryYear` INTEGER NOT NULL, `cvv` TEXT NOT NULL, `nameOnCard` TEXT NOT NULL, `variant` TEXT, `cardNetwork` TEXT NOT NULL, `pin` TEXT NOT NULL, `cardAlias` TEXT, `cardType` TEXT NOT NULL, FOREIGN KEY(`bankAccountId`) REFERENCES `BankAccount`(`bankAccountId`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`companyId`) REFERENCES `Company`(`companyId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cardId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isLinkedToBank` INTEGER NOT NULL, `bankAccountId` INTEGER, `companyId` INTEGER, `cardNumber` TEXT NOT NULL, `expiryMonth` INTEGER NOT NULL, `expiryYear` INTEGER NOT NULL, `cvv` TEXT NOT NULL, `nameOnCard` TEXT NOT NULL, `variant` TEXT, `cardNetwork` TEXT NOT NULL, `pin` TEXT NOT NULL, `colorScheme` TEXT NOT NULL, `cardAlias` TEXT, `cardType` TEXT NOT NULL, FOREIGN KEY(`bankAccountId`) REFERENCES `BankAccount`(`bankAccountId`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`companyId`) REFERENCES `Company`(`companyId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "cardId",
@@ -211,6 +211,12 @@
           {
             "fieldPath": "pin",
             "columnName": "pin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorScheme",
+            "columnName": "colorScheme",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -374,7 +380,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3b120b238e3fa6b311af25eba76d918')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47ea60e5eddc516700af66c3f4a73c85')"
     ]
   }
 }

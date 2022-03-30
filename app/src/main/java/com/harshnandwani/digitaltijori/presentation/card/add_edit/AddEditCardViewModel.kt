@@ -65,6 +65,11 @@ class AddEditCardViewModel @Inject constructor(
                     bankAccountId = event.accountId
                 )
             }
+            is CardEvent.SelectedColorScheme -> {
+                _state.value.card.value = state.value.card.value.copy(
+                    colorScheme = event.colorScheme
+                )
+            }
             is CardEvent.SelectedCardType -> {
                 _state.value.backVisible.value = false
                 _state.value.card.value = state.value.card.value.copy(
