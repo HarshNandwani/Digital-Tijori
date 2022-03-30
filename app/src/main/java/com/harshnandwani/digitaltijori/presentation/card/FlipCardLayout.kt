@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -96,7 +97,7 @@ fun FlipCardLayout(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        initialCardNum.chunked(4).joinToString(" "),
+                        text = CardHelperFunctions.formatCardNumber(cardNetwork, AnnotatedString(initialCardNum)).text.replace("-".toRegex(), " "),
                         fontSize = 24.sp, //TODO: Remove hardcode
                     )
 
