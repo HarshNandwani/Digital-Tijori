@@ -8,6 +8,7 @@ import com.harshnandwani.digitaltijori.domain.model.Credential
 sealed class DetailedBankAccountEvent {
     data class LoadBank(val bank: Company) : DetailedBankAccountEvent()
     data class LoadAccount(val account: BankAccount) : DetailedBankAccountEvent()
+    object RefreshBankAccount : DetailedBankAccountEvent()
     object DeleteBankAccount : DetailedBankAccountEvent()
     data class DeleteCard(val card: Card) : DetailedBankAccountEvent()
     data class DeleteCredential(val credential: Credential) : DetailedBankAccountEvent()

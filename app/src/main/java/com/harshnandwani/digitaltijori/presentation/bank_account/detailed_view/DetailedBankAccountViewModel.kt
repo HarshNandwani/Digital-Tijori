@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.DeleteBankAccountUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.DeleteCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardsLinkedToAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredentialUseCase
@@ -24,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailedBankAccountViewModel @Inject constructor(
+    private val getBankAccountUseCase: GetBankAccountUseCase,
     private val deleteBankAccountUseCase: DeleteBankAccountUseCase,
     private val getCardsLinkedToAccount: GetCardsLinkedToAccountUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
@@ -50,6 +52,16 @@ class DetailedBankAccountViewModel @Inject constructor(
                 )
                 getAllLinkedCards()
                 getAllLinkedCredentials()
+            }
+            is DetailedBankAccountEvent.RefreshBankAccount -> {
+                viewModelScope.launch {
+                    val refreshedAccount = getBankAccountUseCase(state.value.account.bankAccountId)
+                    if (refreshedAccount != null) {
+                        _state.value = state.value.copy(
+                            account = refreshedAccount
+                        )
+                    }
+                }
             }
             is DetailedBankAccountEvent.DeleteBankAccount -> {
                 viewModelScope.launch {

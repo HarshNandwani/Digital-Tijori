@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
@@ -27,17 +27,23 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailedBankAccountActivity : ComponentActivity() {
+
+    private val viewModel: DetailedBankAccountViewModel by viewModels()
+
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val viewModel: DetailedBankAccountViewModel = hiltViewModel()
-            val bank = intent.getSerializableExtra(Parameters.KEY_BANK) as Company
-            val account = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
+            var eventSent by remember { mutableStateOf(false) }
 
-            viewModel.onEvent(DetailedBankAccountEvent.LoadBank(bank))
-            viewModel.onEvent(DetailedBankAccountEvent.LoadAccount(account))
+            if (!eventSent) {
+                val bank = intent.getSerializableExtra(Parameters.KEY_BANK) as Company
+                val account = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
+                viewModel.onEvent(DetailedBankAccountEvent.LoadBank(bank))
+                viewModel.onEvent(DetailedBankAccountEvent.LoadAccount(account))
+                eventSent = true //fixme:  setContent is being refreshed repeatedly
+            }
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -78,4 +84,10 @@ class DetailedBankAccountActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        viewModel.onEvent(DetailedBankAccountEvent.RefreshBankAccount)
+    }
+
 }
