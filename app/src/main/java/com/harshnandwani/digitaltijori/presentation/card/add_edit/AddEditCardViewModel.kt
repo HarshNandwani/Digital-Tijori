@@ -80,13 +80,13 @@ class AddEditCardViewModel @Inject constructor(
                 _state.value.backVisible.value = false
                 if (event.cardNumber.length > maxCardSizeNumber) return
                 val cardNetwork = identifyCardNetwork(event.cardNumber)
+                maxCardSizeNumber = getCardNumberLength(cardNetwork)
                 _state.value.card.value = state.value.card.value.copy(
                     cardNumber = event.cardNumber.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     },
                     cardNetwork = cardNetwork
                 )
-                maxCardSizeNumber = getCardNumberLength(cardNetwork)
             }
             is CardEvent.EnteredCardExpiry -> {
                 _state.value.backVisible.value = false

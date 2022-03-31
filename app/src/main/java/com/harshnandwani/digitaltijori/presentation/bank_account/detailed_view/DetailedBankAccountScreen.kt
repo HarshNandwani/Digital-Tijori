@@ -1,7 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

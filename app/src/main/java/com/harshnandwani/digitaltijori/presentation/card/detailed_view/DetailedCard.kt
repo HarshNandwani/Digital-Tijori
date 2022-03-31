@@ -58,7 +58,8 @@ fun DetailedCard(
                         putExtra(Parameters.KEY_CARD, card)
                         ContextCompat.startActivity(context, this, null)
                     }
-                    (context as Activity).finish()
+                    if (context is DetailedCardActivity)
+                        context.finish()
                 }
             )
             Spacer(modifier = Modifier.size(8.dp))

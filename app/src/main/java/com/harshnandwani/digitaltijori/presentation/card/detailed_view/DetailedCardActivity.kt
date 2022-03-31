@@ -43,7 +43,7 @@ class DetailedCardActivity : ComponentActivity() {
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
-                        topBar = { TopAppBarWithBackButton(title = "Account details") }
+                        topBar = { TopAppBarWithBackButton(title = "Card details") }
                     ) {
                         Box(Modifier.fillMaxSize()) {
                             DetailedCard(

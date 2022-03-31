@@ -72,7 +72,8 @@ fun DetailedCredential(
                             putExtra(Parameters.KEY_Credential, credential)
                             ContextCompat.startActivity(context, this, null)
                         }
-                        (context as Activity).finish()
+                        if (context is DetailedCredentialActivity)
+                            context.finish()
                     }
                 )
                 Spacer(modifier = Modifier.size(8.dp))

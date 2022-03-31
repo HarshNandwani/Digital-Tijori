@@ -16,7 +16,7 @@ class GetCardNumberLengthUseCase {
             CardNetwork.Rupay -> 16
             CardNetwork.AmEx -> 15
             CardNetwork.DinersClub -> if (getMinLength) 14 else 19
-            CardNetwork.Unknown -> 19 // any other card number length would be max 19 according to: https://en.wikipedia.org/wiki/Payment_card_number
+            CardNetwork.Unknown -> if (getMinLength) 13 else 19 // according to: https://en.wikipedia.org/wiki/Payment_card_number
         }
     }
 

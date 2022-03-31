@@ -3,15 +3,11 @@ package com.harshnandwani.digitaltijori.di
 import android.app.Application
 import androidx.room.Room
 import com.harshnandwani.digitaltijori.R
+import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDataStore
 import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDatabase
-import com.harshnandwani.digitaltijori.data.repository.BankAccountRepositoryImpl
-import com.harshnandwani.digitaltijori.data.repository.CardRepositoryImpl
-import com.harshnandwani.digitaltijori.data.repository.CompanyRepositoryImpl
-import com.harshnandwani.digitaltijori.data.repository.CredentialRepositoryImpl
-import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
-import com.harshnandwani.digitaltijori.domain.repository.CardRepository
-import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
-import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
+import com.harshnandwani.digitaltijori.data.repository.*
+import com.harshnandwani.digitaltijori.domain.repository.*
+import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
@@ -39,6 +35,30 @@ object AppModule {
             DigitalTijoriDatabase::class.java,
             DigitalTijoriDatabase.DATABASE_NAME
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDigitalTijoriDataStore(app: Application): DigitalTijoriDataStore {
+        return DigitalTijoriDataStore(app)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(dataStore: DigitalTijoriDataStore): AuthRepository {
+        return AuthRepositoryImpl(dataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShouldAuthenticateUseCase(repository: AuthRepository): ShouldAuthenticateUseCase {
+        return ShouldAuthenticateUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetAuthenticatedUseCase(repository: AuthRepository): SetAuthenticatedUseCase {
+        return SetAuthenticatedUseCase(repository)
     }
 
     @Provides
