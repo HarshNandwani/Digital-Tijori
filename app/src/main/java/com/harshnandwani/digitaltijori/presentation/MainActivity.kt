@@ -20,11 +20,24 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.presentation.home.HomeActivity
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
-import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDataStore
-import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.domain.use_case.auth.SetAuthenticatedUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.auth.ShouldAuthenticateUseCase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+
+    @Inject
+    lateinit var shouldAuthenticate: ShouldAuthenticateUseCase
+
+    @Inject
+    lateinit var setAuthenticated: SetAuthenticatedUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,9 +59,7 @@ class MainActivity : FragmentActivity() {
             }
         }
 
-        val dataStore = DigitalTijoriDataStore(this)
-
-        val biometricPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
+        biometricPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
             object : BiometricPrompt.AuthenticationCallback() {
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -59,7 +70,7 @@ class MainActivity : FragmentActivity() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     lifecycleScope.launch {
-                        dataStore.setAuthenticatedTimestamp(System.currentTimeMillis())
+                        setAuthenticated()
                     }
                     showAppContent()
                 }
@@ -71,31 +82,24 @@ class MainActivity : FragmentActivity() {
             }
         )
 
-        val promptInfo: BiometricPrompt.PromptInfo = BiometricPrompt.PromptInfo.Builder()
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Unlock Digital Tijori")
             .setSubtitle("Authenticate using your biometric credential")
             .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
             .build()
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
         lifecycleScope.launch {
-            val lastAuthenticated = dataStore.getLastAuthenticatedTimestamp()
-            val timeNow = System.currentTimeMillis()
-            when {
-                // For the first ever app launch don't ask for authentication
-                // and set timeStamp such that from next launch regular logic applies
-                lastAuthenticated == -1L -> {
-                    dataStore.setAuthenticatedTimestamp(timeNow - Parameters.AUTH_GRACE)
-                    showAppContent()
-                }
-                timeNow - lastAuthenticated > Parameters.AUTH_GRACE -> {
-                    biometricPrompt.authenticate(promptInfo)
-                }
-                else -> {
-                    showAppContent()
-                }
+            if (shouldAuthenticate()) {
+                biometricPrompt.authenticate(promptInfo)
+            } else {
+                showAppContent()
             }
         }
-
     }
 
     private fun showAppContent() {
