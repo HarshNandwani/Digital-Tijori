@@ -12,6 +12,12 @@
     "hasCredentials": true
   },
   {
+    "name": "Bank of Baroda",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
     "name": "HDFC Bank",
     "isABank": true,
     "issuesCards": true,
@@ -19,6 +25,18 @@
   },
   {
     "name": "ICICI Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "IDFC First Bank",
+    "isABank": true,
+    "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "IndusInd Bank",
     "isABank": true,
     "issuesCards": true,
     "hasCredentials": true
@@ -33,6 +51,66 @@
     "name": "State Bank of India",
     "isABank": true,
     "issuesCards": true,
+    "hasCredentials": true
+  },
+  {
+    "name": "Gmail",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Facebook",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Instagram",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Twitter",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Reddit",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Microsoft Teams",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Microsoft Outlook",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Amazon",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Flipkart",
+    "isABank": false,
+    "issuesCards": false,
+    "hasCredentials": true
+  },
+  {
+    "name": "Netflix",
+    "isABank": false,
+    "issuesCards": false,
     "hasCredentials": true
   },
   {

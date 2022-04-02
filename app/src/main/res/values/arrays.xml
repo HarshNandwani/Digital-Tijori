@@ -8,10 +8,23 @@
     <integer-array name="company_icons">
         <item>@drawable/airtel_icon</item>
         <item>@drawable/axis_bank_icon</item>
+        <item>@drawable/bank_of_baroda_icon</item>
         <item>@drawable/hdfc_bank_icon</item>
         <item>@drawable/icici_bank_icon</item>
+        <item>@drawable/idfc_first_bank_icon</item>
+        <item>@drawable/indusind_bank_icon</item>
         <item>@drawable/paytm_icon</item>
         <item>@drawable/sbi_icon</item>
+        <item>@drawable/gmail_icon</item>
+        <item>@drawable/facebook_icon</item>
+        <item>@drawable/instagram_icon</item>
+        <item>@drawable/twitter_icon</item>
+        <item>@drawable/reddit_icon</item>
+        <item>@drawable/microsoft_teams_icon</item>
+        <item>@drawable/microsoft_outlook_icon</item>
+        <item>@drawable/amazon_icon</item>
+        <item>@drawable/flipkart_icon</item>
+        <item>@drawable/netflix_icon</item>
         <item>@drawable/default_company_icon</item>
     </integer-array>
 
@@ -23,10 +36,23 @@
     <integer-array name="company_logos">
         <item>@drawable/airtel_icon</item>
         <item>@drawable/axis_bank_logo</item>
+        <item>@drawable/bank_of_baroda_logo</item>
         <item>@drawable/hdfc_bank_logo</item>
         <item>@drawable/icici_bank_logo</item>
+        <item>@drawable/idfc_first_bank_logo</item>
+        <item>@drawable/indusind_bank_logo</item>
         <item>@drawable/paytm_icon</item>
         <item>@drawable/sbi_logo</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>-1</item>
         <item>@drawable/default_company_icon</item>
     </integer-array>
 
