@@ -16,6 +16,8 @@ import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCas
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.*
+import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.Module
 import dagger.Provides
@@ -59,6 +61,18 @@ object AppModule {
     @Singleton
     fun provideSetAuthenticatedUseCase(repository: PreferenceRepository): SetAuthenticatedUseCase {
         return SetAuthenticatedUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShouldShowAboutAppUseCase(repository: PreferenceRepository): ShouldShowAboutAppUseCase {
+        return ShouldShowAboutAppUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetDoNotShowAboutAppUseCase(repository: PreferenceRepository): SetDoNotShowAboutAppUseCase {
+        return SetDoNotShowAboutAppUseCase(repository)
     }
 
     @Provides

@@ -1,14 +1,18 @@
 package com.harshnandwani.digitaltijori.presentation.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,15 +28,16 @@ import com.harshnandwani.digitaltijori.presentation.ui.theme.SlateGray
 @Composable
 fun AboutAppDialog(
     isVisible: Boolean,
-    onDismissRequest: () -> Unit
+    onDismissRequest: (Boolean) -> Unit
 ) {
 
     if (isVisible) {
 
         val context = LocalContext.current
+        var donotShowAgainChecked by remember { mutableStateOf(false) }
 
         AlertDialog(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = { onDismissRequest(donotShowAgainChecked) },
             title = { Text(text = "About Digital Tijori") },
             text = {
                 Column {
@@ -93,10 +98,21 @@ fun AboutAppDialog(
                         }
                     )
 
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = donotShowAgainChecked,
+                            onCheckedChange = { donotShowAgainChecked = !donotShowAgainChecked }
+                        )
+                        Text(
+                            text = "Don't show this again",
+                            Modifier.clickable { donotShowAgainChecked = !donotShowAgainChecked }
+                        )
+                    }
+
                 }
             },
             confirmButton = {
-                TextButton(onClick = onDismissRequest) {
+                TextButton(onClick = { onDismissRequest(donotShowAgainChecked) }) {
                     Text(text = "Close")
                 }
             }

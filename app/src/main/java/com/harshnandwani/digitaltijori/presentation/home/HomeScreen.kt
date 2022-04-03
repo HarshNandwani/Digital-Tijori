@@ -126,8 +126,10 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
     AboutAppDialog(
         isVisible = viewModel.state.value.showAboutApp,
-        onDismissRequest = {
+        onDismissRequest = { doNotShowAgain ->
             viewModel.onEvent(HomeScreenEvent.ShowAboutAppToggle(false))
+            if (doNotShowAgain)
+                viewModel.onEvent(HomeScreenEvent.DoNotShowAboutAppAgain)
         }
     )
 

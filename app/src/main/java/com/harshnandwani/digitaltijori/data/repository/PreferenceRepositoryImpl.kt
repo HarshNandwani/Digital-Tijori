@@ -13,4 +13,12 @@ class PreferenceRepositoryImpl(private val dataStore: DigitalTijoriDataStore) : 
         return dataStore.getLastAuthenticatedTimestamp()
     }
 
+    override suspend fun setShowAboutApp(show: Boolean) {
+        dataStore.setShowAboutApp(show)
+    }
+
+    override suspend fun getShouldShowAboutApp(): Boolean {
+        return dataStore.getShowAboutApp()
+    }
+
 }

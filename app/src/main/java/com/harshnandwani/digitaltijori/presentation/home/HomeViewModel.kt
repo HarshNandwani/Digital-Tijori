@@ -13,6 +13,8 @@ import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssue
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
@@ -20,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +32,9 @@ class HomeViewModel @Inject constructor(
     private val getAllCardsWithIssuerDetails: GetAllCardsWithIssuerDetailsUseCase,
     private val getCardUseCase: GetCardUseCase,
     private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase,
-    private val getCredentialUseCase: GetCredentialUseCase
+    private val getCredentialUseCase: GetCredentialUseCase,
+    private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
+    private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeScreenState())
@@ -40,6 +45,7 @@ class HomeViewModel @Inject constructor(
     private var getAllCardsJob: Job? = null
 
     init {
+        checkIfAboutAppShouldShow()
         getAllBankAccounts()
         getAllCredentials()
         getAllCards()
@@ -109,6 +115,19 @@ class HomeViewModel @Inject constructor(
                     showAboutApp = event.show
                 )
             }
+            is HomeScreenEvent.DoNotShowAboutAppAgain -> {
+                viewModelScope.launch {
+                    setDoNotShowAboutApp()
+                }
+            }
+        }
+    }
+
+    private fun checkIfAboutAppShouldShow() {
+        viewModelScope.launch {
+            _state.value = state.value.copy(
+                showAboutApp = shouldShowAboutApp()
+            )
         }
     }
 

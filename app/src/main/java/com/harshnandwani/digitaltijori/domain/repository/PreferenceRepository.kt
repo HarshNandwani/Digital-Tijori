@@ -6,4 +6,8 @@ interface PreferenceRepository {
 
     suspend fun getLastAuthenticatedTimestamp(): Long
 
+    suspend fun setShowAboutApp(show: Boolean)
+
+    suspend fun getShouldShowAboutApp(): Boolean
+
 }
