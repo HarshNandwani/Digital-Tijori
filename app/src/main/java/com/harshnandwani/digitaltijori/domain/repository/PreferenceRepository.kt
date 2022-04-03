@@ -1,6 +1,6 @@
 package com.harshnandwani.digitaltijori.domain.repository
 
-interface AuthRepository {
+interface PreferenceRepository {
 
     suspend fun setAuthenticatedTimestamp(time: Long)
 

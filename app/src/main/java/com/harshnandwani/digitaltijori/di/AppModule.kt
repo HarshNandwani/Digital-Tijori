@@ -45,19 +45,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(dataStore: DigitalTijoriDataStore): AuthRepository {
-        return AuthRepositoryImpl(dataStore)
+    fun providePreferenceRepository(dataStore: DigitalTijoriDataStore): PreferenceRepository {
+        return PreferenceRepositoryImpl(dataStore)
     }
 
     @Provides
     @Singleton
-    fun provideShouldAuthenticateUseCase(repository: AuthRepository): ShouldAuthenticateUseCase {
+    fun provideShouldAuthenticateUseCase(repository: PreferenceRepository): ShouldAuthenticateUseCase {
         return ShouldAuthenticateUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideSetAuthenticatedUseCase(repository: AuthRepository): SetAuthenticatedUseCase {
+    fun provideSetAuthenticatedUseCase(repository: PreferenceRepository): SetAuthenticatedUseCase {
         return SetAuthenticatedUseCase(repository)
     }
 

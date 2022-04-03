@@ -1,14 +1,14 @@
 package com.harshnandwani.digitaltijori.domain.use_case.auth
 
-import com.harshnandwani.digitaltijori.domain.repository.AuthRepository
+import com.harshnandwani.digitaltijori.domain.repository.PreferenceRepository
 import java.time.Clock
 
 class SetAuthenticatedUseCase(
-    private val authRepository: AuthRepository
+    private val repository: PreferenceRepository
 ) {
 
     suspend operator fun invoke() {
-        authRepository.setAuthenticatedTimestamp(Clock.systemDefaultZone().millis())
+        repository.setAuthenticatedTimestamp(Clock.systemDefaultZone().millis())
     }
 
 }
