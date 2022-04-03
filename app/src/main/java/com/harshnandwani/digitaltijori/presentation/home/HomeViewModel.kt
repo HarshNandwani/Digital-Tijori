@@ -104,6 +104,11 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+            is HomeScreenEvent.ShowAboutAppToggle -> {
+                _state.value = state.value.copy(
+                    showAboutApp = event.show
+                )
+            }
         }
     }
 

@@ -13,5 +13,6 @@ data class HomeScreenState(
     val credentials: Map<Company, List<Credential>> = emptyMap(),
     val filteredCredentials: MutableMap<Company, List<Credential>> = mutableMapOf(),
     val currentPage: String = HomeScreens.BankAccountsList.route,
-    val searchText: String = ""
+    val searchText: String = "",
+    val showAboutApp: Boolean = false
 )

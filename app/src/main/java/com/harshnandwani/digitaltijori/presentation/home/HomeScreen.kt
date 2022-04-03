@@ -1,22 +1,24 @@
 package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.rememberNavController
+import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
+import com.harshnandwani.digitaltijori.presentation.home.components.AboutAppDialog
 import com.harshnandwani.digitaltijori.presentation.home.components.AppBarWithSearchView
 import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBar
 import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
@@ -29,6 +31,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val navController = rememberNavController()
+    var showMenu by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -43,6 +46,42 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 },
                 onCloseClicked = {
                     viewModel.onEvent(HomeScreenEvent.OnSearchDone)
+                },
+                actions = {
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "",
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                showMenu = false
+                                viewModel.onEvent(HomeScreenEvent.ShowAboutAppToggle(true))
+                            }
+                        ) {
+                            Text(text = "About app")
+                        }
+                        DropdownMenuItem(
+                            onClick = {
+                                showMenu = false
+                                val addresses = arrayOf(context.resources.getString(R.string.feedback_email))
+                                Intent(Intent.ACTION_SENDTO).apply {
+                                    data = Uri.parse("mailto:")
+                                    putExtra(Intent.EXTRA_EMAIL, addresses)
+                                    putExtra(Intent.EXTRA_SUBJECT, "Digital Tijori app feedback")
+                                    startActivity(context, this, null)
+                                }
+                            }
+                        ) {
+                            Text(text = "Send feedback")
+                        }
+                    }
                 }
             )         
         },
@@ -83,4 +122,13 @@ fun HomeScreen(viewModel: HomeViewModel) {
             HomeNavGraph(viewModel, navController)
         }
     }
+
+
+    AboutAppDialog(
+        isVisible = viewModel.state.value.showAboutApp,
+        onDismissRequest = {
+            viewModel.onEvent(HomeScreenEvent.ShowAboutAppToggle(false))
+        }
+    )
+
 }
