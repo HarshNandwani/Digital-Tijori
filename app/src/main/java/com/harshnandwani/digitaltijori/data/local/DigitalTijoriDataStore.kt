@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.data.local
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -15,7 +16,7 @@ class DigitalTijoriDataStore(private val context: Context) {
         )
 
         private val LAST_AUTHENTICATED = longPreferencesKey("last_authenticated")
-
+        private val SHOW_ABOUT_APP = booleanPreferencesKey("show_about_app")
     }
 
     suspend fun setAuthenticatedTimestamp(time: Long) {
@@ -26,5 +27,14 @@ class DigitalTijoriDataStore(private val context: Context) {
 
     suspend fun getLastAuthenticatedTimestamp(): Long =
         context.dataStore.data.firstOrNull()?.get(LAST_AUTHENTICATED) ?: -1L
+
+    suspend fun setShowAboutApp(show: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[SHOW_ABOUT_APP] = show
+        }
+    }
+
+    suspend fun getShowAboutApp(): Boolean =
+        context.dataStore.data.firstOrNull()?.get(SHOW_ABOUT_APP) ?: true
 
 }
