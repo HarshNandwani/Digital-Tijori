@@ -6,7 +6,7 @@ This app demonstrates the use of Clean architecture using MVVM, Dependency Injec
 
 <a href="https://play.google.com/store/apps/details?id=com.harshnandwani.digitaltijori" target="_blank"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="80"/></a> 
 
-**Install with APK**: [Digital Tijori v1.0.0](https://github.com/HarshNandwani/Digital-Tijori/releases/download/v1.0.0/digital_tijori.apk)
+**Install with APK**: [Digital Tijori v1.0.1](https://github.com/HarshNandwani/Digital-Tijori/releases/download/v1.0.1/digital_tijori_v1.0.1.apk)
 
 # Demo :computer:
 
