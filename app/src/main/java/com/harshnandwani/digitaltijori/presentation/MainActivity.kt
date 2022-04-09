@@ -1,15 +1,12 @@
 package com.harshnandwani.digitaltijori.presentation
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.biometric.BiometricManager.Authenticators.*
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.ui.Alignment
@@ -25,18 +22,26 @@ import com.harshnandwani.digitaltijori.domain.use_case.auth.ShouldAuthenticateUs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.app.KeyguardManager
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.*
+import androidx.compose.runtime.mutableStateOf
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
     private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     @Inject
     lateinit var shouldAuthenticate: ShouldAuthenticateUseCase
 
     @Inject
     lateinit var setAuthenticated: SetAuthenticatedUseCase
+
+    private var shouldShowDialog = mutableStateOf(false)
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +59,73 @@ class MainActivity : FragmentActivity() {
                             Modifier.fillMaxSize(0.2f),
                             tint = MaterialTheme.colors.secondaryVariant
                         )
+
+                        if(shouldShowDialog.value) {
+                            AlertDialog(
+                                onDismissRequest = {  },
+                                title = { Text(text = "No screen lock set") },
+                                text = { Text(text = "To continue using Digital Tijori, goto your phone settings and set a screen lock which can be PIN/Pattern/Password/Fingerprint") },
+                                confirmButton = {
+                                    TextButton(
+                                        onClick = {
+                                            shouldShowDialog.value = false
+                                            finish()
+                                        }
+                                    ) {
+                                        Text(text = "Close app")
+                                    }
+                                }
+                            )
+                        }
+
                     }
                 }
             }
         }
 
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    showAppContent()
+                } else {
+                    Toast.makeText(this@MainActivity, "Authentication failed", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            if (shouldAuthenticate()) {
+                showAuthentication()
+            } else {
+                showAppContent()
+            }
+        }
+    }
+
+    private fun showAuthentication() {
         biometricPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
             object : BiometricPrompt.AuthenticationCallback() {
-
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    finish()
+                    when (errorCode) {
+                        BiometricPrompt.ERROR_NO_BIOMETRICS, BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL -> {
+                            shouldShowDialog.value = true
+                        }
+                        BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
+                            // Despite adding setDeviceCredentialAllowed(true) some devices (like xiaomi 9a) are returning BIOMETRIC_ERROR_HW_NOT_PRESENT
+                            val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+                            if (km.isDeviceSecure) {
+                                val deviceLockIntent = km.createConfirmDeviceCredentialIntent(title,"Authenticate to open Digital Tijori")
+                                resultLauncher.launch(deviceLockIntent)
+                            }
+                        }
+                        else -> finish()
+                    }
                 }
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -82,24 +143,16 @@ class MainActivity : FragmentActivity() {
             }
         )
 
-        promptInfo = BiometricPrompt.PromptInfo.Builder()
+        val promptInfoBuilder = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Unlock Digital Tijori")
-            .setSubtitle("Authenticate using your biometric credential")
-            .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
-            .build()
-
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            if (shouldAuthenticate()) {
-                biometricPrompt.authenticate(promptInfo)
-            } else {
-                showAppContent()
-            }
+            .setSubtitle("Authenticate yourself")
+        if (Build.VERSION.SDK_INT >= 30) {
+            promptInfoBuilder.setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+        } else {
+            promptInfoBuilder.setDeviceCredentialAllowed(true)
         }
+        biometricPrompt.authenticate(promptInfoBuilder.build())
+
     }
 
     private fun showAppContent() {
