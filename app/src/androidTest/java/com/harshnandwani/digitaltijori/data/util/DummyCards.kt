@@ -5,7 +5,6 @@ import com.harshnandwani.digitaltijori.data.util.DummyAccounts.accountWithBank3
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.cardIssuer
-import com.harshnandwani.digitaltijori.data.util.DummyCompanies.entity
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
@@ -29,7 +28,7 @@ object DummyCards {
     )
 
     val cardWithInvalidAccount = Card(
-        companyId = entity.companyId,
+        companyId = cardIssuer.companyId,
         isLinkedToBank = true,
         bankAccountId = -1,
         cardNumber = "111111111",
@@ -45,7 +44,7 @@ object DummyCards {
     )
 
     /*
-    * Issuer 1 - entity
+    * Issuer 1 - cardIssuer
     * Issuer 2 - bankIssuesCards
     * Issuer 3 - bankIssuesCardsHasCredentials
     * */
