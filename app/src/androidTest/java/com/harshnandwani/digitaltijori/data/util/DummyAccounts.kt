@@ -1,5 +1,8 @@
 package com.harshnandwani.digitaltijori.data.util
 
+import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bank
+import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
+import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 
 object DummyAccounts {
@@ -15,7 +18,7 @@ object DummyAccounts {
 
     val accountWithBank1 = BankAccount(
         bankAccountId = 1,
-        companyId = 1,
+        companyId = bank.companyId,
         holderName = "Bank 1 Account 1",
         accountNumber = "B1A1_11111111111",
         ifsc = "IFSC_BANK_1",
@@ -25,7 +28,7 @@ object DummyAccounts {
 
     val account2WithBank1 = BankAccount(
         bankAccountId = 2,
-        companyId = 1,
+        companyId = bank.companyId,
         holderName = "Bank 1 Account 2",
         accountNumber = "B1A2_2222222222",
         ifsc = "IFSC_BANK_1",
@@ -35,7 +38,7 @@ object DummyAccounts {
     
     val accountWithBank2 = BankAccount(
         bankAccountId = 3,
-        companyId = 2,
+        companyId = bankIssuesCards.companyId,
         holderName = "Bank 2 Account 1",
         accountNumber = "B2A1_3333333333",
         ifsc = "IFSC_BANK_2",
@@ -45,7 +48,7 @@ object DummyAccounts {
     
     val account2WithBank2 = BankAccount(
         bankAccountId = 4,
-        companyId = 2,
+        companyId = bankIssuesCards.companyId,
         holderName = "Bank 2 Account 2",
         accountNumber = "B2A2_44444444",
         ifsc = "IFSC_BANK_2",
@@ -55,7 +58,7 @@ object DummyAccounts {
     
     val accountWithBank3 = BankAccount(
         bankAccountId = 5,
-        companyId = 3,
+        companyId = bankIssuesCardsHasCredentials.companyId,
         holderName = "Bank 3 Account 1",
         accountNumber = "B3A1_5555555555",
         ifsc = "IFSC_BANK_3",
@@ -65,7 +68,7 @@ object DummyAccounts {
 
     val account2WithBank3 = BankAccount(
         bankAccountId = 6,
-        companyId = 3,
+        companyId = bankIssuesCardsHasCredentials.companyId,
         holderName = "Bank 3 Account 2",
         accountNumber = "B3A2_6666666666",
         ifsc = "IFSC_BANK_3",
