@@ -17,6 +17,7 @@ import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmi
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -136,7 +137,7 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.CardSubmit -> {
                 _state.value.backVisible.value = false
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     val expiryMonth: Byte
                     val expiryYear: Byte
                     try {

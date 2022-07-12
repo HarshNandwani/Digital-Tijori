@@ -13,6 +13,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.B
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -77,7 +78,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                 )
             }
             is BankAccountEvent.BankAccountSubmit -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     val account = _state.value.bankAccount.value
                     if (_state.value.mode == Parameters.VAL_MODE_ADD) {
                         val data = async {

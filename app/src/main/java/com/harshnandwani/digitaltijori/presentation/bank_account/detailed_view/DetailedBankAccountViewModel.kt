@@ -15,6 +15,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.u
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEventResult
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
@@ -54,7 +55,7 @@ class DetailedBankAccountViewModel @Inject constructor(
                 getAllLinkedCredentials()
             }
             is DetailedBankAccountEvent.RefreshBankAccount -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     val refreshedAccount = getBankAccountUseCase(state.value.account.bankAccountId)
                     if (refreshedAccount != null) {
                         _state.value = state.value.copy(
@@ -64,7 +65,7 @@ class DetailedBankAccountViewModel @Inject constructor(
                 }
             }
             is DetailedBankAccountEvent.DeleteBankAccount -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         deleteBankAccountUseCase(state.value.account)
                         _eventFlow.emit(DetailedBankAccountEventResult.BankAccountDeleted)
@@ -78,7 +79,7 @@ class DetailedBankAccountViewModel @Inject constructor(
                 }
             }
             is DetailedBankAccountEvent.DeleteCard -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         deleteCardUseCase(event.card)
                         _eventFlow.emit(DetailedBankAccountEventResult.CardDeleted)
@@ -92,7 +93,7 @@ class DetailedBankAccountViewModel @Inject constructor(
                 }
             }
             is DetailedBankAccountEvent.DeleteCredential -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         deleteCredentialUseCase(event.credential)
                         _eventFlow.emit(DetailedBankAccountEventResult.CredentialDeleted)

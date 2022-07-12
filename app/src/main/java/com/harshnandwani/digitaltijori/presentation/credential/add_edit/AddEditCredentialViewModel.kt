@@ -13,6 +13,7 @@ import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.Cre
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -73,7 +74,7 @@ class AddEditCredentialViewModel @Inject constructor(
                 )
             }
             is CredentialEvent.CredentialSubmit -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     val credential = _state.value.credential.value
                     try {
                         if (_state.value.mode == Parameters.VAL_MODE_ADD) {

@@ -19,6 +19,7 @@ import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -116,7 +117,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
             is HomeScreenEvent.DoNotShowAboutAppAgain -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     setDoNotShowAboutApp()
                 }
             }
