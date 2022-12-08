@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.di
+package com.harshnandwani.digitaltijori.core.di
 
 import android.app.Application
 import androidx.room.Room
