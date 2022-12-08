@@ -21,7 +21,7 @@ import com.harshnandwani.digitaltijori.domain.model.Credential
     ],
     version = 1
 )
-@TypeConverters(com.harshnandwani.digitaltijori.domain.util.TypeConverters::class)
+@TypeConverters(com.harshnandwani.digitaltijori.data.local.TypeConverters::class)
 abstract class DigitalTijoriDatabase : RoomDatabase() {
 
     abstract val companyDao: CompanyDao

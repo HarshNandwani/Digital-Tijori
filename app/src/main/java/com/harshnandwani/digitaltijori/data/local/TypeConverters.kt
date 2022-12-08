@@ -1,6 +1,7 @@
-package com.harshnandwani.digitaltijori.domain.util
+package com.harshnandwani.digitaltijori.data.local
 
 import androidx.room.TypeConverter
+import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 
 class TypeConverters {
 
