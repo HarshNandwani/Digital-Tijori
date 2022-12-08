@@ -1,6 +1,6 @@
 package com.harshnandwani.digitaltijori.data.repository
 
-import com.harshnandwani.digitaltijori.data.local.BankAccountDao
+import com.harshnandwani.digitaltijori.data.local.dao.BankAccountDao
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository

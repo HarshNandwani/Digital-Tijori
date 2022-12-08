@@ -1,6 +1,6 @@
 package com.harshnandwani.digitaltijori.data.repository
 
-import com.harshnandwani.digitaltijori.data.local.CardDao
+import com.harshnandwani.digitaltijori.data.local.dao.CardDao
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository

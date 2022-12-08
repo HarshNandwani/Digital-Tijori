@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.data.local
+package com.harshnandwani.digitaltijori.data.local.dao
 
 import androidx.room.*
 import com.harshnandwani.digitaltijori.domain.model.Card

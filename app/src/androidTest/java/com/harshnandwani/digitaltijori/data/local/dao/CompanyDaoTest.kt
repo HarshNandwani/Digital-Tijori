@@ -1,10 +1,11 @@
-package com.harshnandwani.digitaltijori.data.local
+package com.harshnandwani.digitaltijori.data.local.dao
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDatabase
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bank
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials

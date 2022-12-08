@@ -1,6 +1,6 @@
 package com.harshnandwani.digitaltijori.data.repository
 
-import com.harshnandwani.digitaltijori.data.local.CredentialDao
+import com.harshnandwani.digitaltijori.data.local.dao.CredentialDao
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
