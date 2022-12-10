@@ -1,35 +1,10 @@
 package com.harshnandwani.digitaltijori.domain.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.util.InvalidCredentialException
 import java.io.Serializable
 import kotlin.jvm.Throws
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = BankAccount::class,
-            parentColumns = ["bankAccountId"],
-            childColumns = ["bankAccountId"],
-            onDelete = ForeignKey.RESTRICT
-        ),
-        ForeignKey(
-            entity = Company::class,
-            parentColumns = ["companyId"],
-            childColumns = ["companyId"],
-            onDelete = ForeignKey.RESTRICT
-        )
-    ],
-    indices = [
-        Index("bankAccountId"),
-        Index("companyId")
-    ]
-)
 data class Credential(
-    @PrimaryKey(autoGenerate = true)
     val credentialId: Int = 0,
     val username: String,
     val password: String,

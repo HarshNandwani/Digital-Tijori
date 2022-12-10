@@ -1,9 +1,11 @@
 package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.dao.CompanyDao
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /*
 * This may seem same as the dao,
@@ -16,26 +18,26 @@ import kotlinx.coroutines.flow.Flow
 class CompanyRepositoryImpl(private val dao: CompanyDao): CompanyRepository {
 
     override suspend fun add(company: Company) {
-        dao.add(company)
+        dao.add(CompanyEntity.toEntity(company))
     }
 
     override suspend fun getAll(): List<Company> {
-        return dao.getAll()
+        return dao.getAll().map { it.toDomain() }
     }
 
     override fun getAllBanks(): Flow<List<Company>> {
-        return dao.getAllBanks()
+        return dao.getAllBanks().map { it.map { it.toDomain() } }
     }
 
     override fun getAllCardIssuers(): Flow<List<Company>> {
-        return dao.getAllCardIssuers()
+        return dao.getAllCardIssuers().map { it.map { it.toDomain() } }
     }
 
     override fun getAllCompaniesWithCredentials(): Flow<List<Company>> {
-        return dao.getAllCompaniesWithCredentials()
+        return dao.getAllCompaniesWithCredentials().map { it.map { it.toDomain() } }
     }
 
     override suspend fun update(company: Company) {
-        dao.update(company)
+        dao.update(CompanyEntity.toEntity(company))
     }
 }

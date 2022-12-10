@@ -2,7 +2,6 @@ package com.harshnandwani.digitaltijori.domain.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.room.*
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardNumberLengthUseCase
 import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
@@ -11,28 +10,7 @@ import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import java.io.Serializable
 import kotlin.jvm.Throws
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = BankAccount::class,
-            parentColumns = ["bankAccountId"],
-            childColumns = ["bankAccountId"],
-            onDelete = ForeignKey.RESTRICT
-        ),
-        ForeignKey(
-            entity = Company::class,
-            parentColumns = ["companyId"],
-            childColumns = ["companyId"],
-            onDelete = ForeignKey.RESTRICT
-        )
-    ],
-    indices = [
-        Index("bankAccountId"),
-        Index("companyId")
-    ]
-)
 data class Card(
-    @PrimaryKey(autoGenerate = true)
     val cardId: Int = 0,
     val isLinkedToBank: Boolean,
     val bankAccountId: Int?,

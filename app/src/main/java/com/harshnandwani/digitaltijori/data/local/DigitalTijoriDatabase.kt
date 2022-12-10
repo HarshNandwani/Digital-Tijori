@@ -7,17 +7,17 @@ import com.harshnandwani.digitaltijori.data.local.dao.BankAccountDao
 import com.harshnandwani.digitaltijori.data.local.dao.CardDao
 import com.harshnandwani.digitaltijori.data.local.dao.CompanyDao
 import com.harshnandwani.digitaltijori.data.local.dao.CredentialDao
-import com.harshnandwani.digitaltijori.domain.model.BankAccount
-import com.harshnandwani.digitaltijori.domain.model.Card
-import com.harshnandwani.digitaltijori.domain.model.Company
-import com.harshnandwani.digitaltijori.domain.model.Credential
+import com.harshnandwani.digitaltijori.data.local.entity.BankAccountEntity
+import com.harshnandwani.digitaltijori.data.local.entity.CardEntity
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
+import com.harshnandwani.digitaltijori.data.local.entity.CredentialEntity
 
 @Database(
     entities = [
-        Company::class,
-        BankAccount::class,
-        Card::class,
-        Credential::class
+        CompanyEntity::class,
+        BankAccountEntity::class,
+        CardEntity::class,
+        CredentialEntity::class
     ],
     version = 1
 )
