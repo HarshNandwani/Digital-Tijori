@@ -6,11 +6,12 @@ import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
 import kotlin.jvm.Throws
 
 class AddBankAccountUseCase(
-    private val repository: BankAccountRepository
+    private val repository: BankAccountRepository,
+    private val isValid: ValidateBankAccountUseCase
 ) {
     @Throws(InvalidBankAccountException::class)
     suspend operator fun invoke(account: BankAccount): Long {
-        if(account.isValidBankAccount()){
+        if (isValid(account)) {
             return repository.add(account)
         }
         return -1L

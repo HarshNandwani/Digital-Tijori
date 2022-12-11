@@ -114,6 +114,13 @@ object AppModule {
         return GetCompaniesHavingCredentialsUseCase(repository)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideValidateBankAccountUseCase(): ValidateBankAccountUseCase {
+        return ValidateBankAccountUseCase()
+    }
+
     @Provides
     @Singleton
     fun provideBankAccountRepository(db: DigitalTijoriDatabase): BankAccountRepository {
@@ -123,7 +130,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAddBankAccountUseCase(repository: BankAccountRepository): AddBankAccountUseCase {
-        return AddBankAccountUseCase(repository)
+        return AddBankAccountUseCase(repository, provideValidateBankAccountUseCase())
     }
 
     @Provides
@@ -136,7 +143,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateBankAccountUseCase(repository: BankAccountRepository): UpdateBankAccountUseCase {
-        return UpdateBankAccountUseCase(repository)
+        return UpdateBankAccountUseCase(repository, provideValidateBankAccountUseCase())
     }
 
     @Provides
