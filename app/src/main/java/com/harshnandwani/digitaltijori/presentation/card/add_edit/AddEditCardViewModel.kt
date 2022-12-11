@@ -57,13 +57,13 @@ class AddEditCardViewModel @Inject constructor(
                     selectedIssuer = event.issuer
                 )
                 _state.value.card.value = state.value.card.value.copy(
-                    companyId = event.issuer.companyId
+                    company = event.issuer
                 )
             }
             is CardEvent.LinkToAccount -> {
                 _state.value.card.value = state.value.card.value.copy(
                     isLinkedToBank = true,
-                    bankAccountId = event.accountId
+                    bankAccount = event.account
                 )
             }
             is CardEvent.SelectedColorScheme -> {

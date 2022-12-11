@@ -154,7 +154,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCardRepository(db: DigitalTijoriDatabase): CardRepository {
-        return CardRepositoryImpl(db.cardDao)
+        return CardRepositoryImpl(
+            db.cardDao,
+            provideCompanyRepository(db),
+            provideBankAccountRepository(db)
+        )
     }
 
     @Provides

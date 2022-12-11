@@ -1,7 +1,11 @@
 package com.harshnandwani.digitaltijori.presentation.util
 
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
+import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
+import com.harshnandwani.digitaltijori.domain.util.CardNetwork
+import com.harshnandwani.digitaltijori.domain.util.CardType
+import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 
 object Constants {
     val emptyCompany = Company(
@@ -20,5 +24,23 @@ object Constants {
         "",
         "",
         ""
+    )
+
+    val emptyCard = Card(
+        0,
+        false,
+        null,
+        emptyCompany,
+        "",
+        14,
+        1,
+        "",
+        "",
+        null,
+        CardNetwork.Unknown,
+        "",
+        ColorScheme.DEFAULT,
+        null,
+        CardType.None
     )
 }

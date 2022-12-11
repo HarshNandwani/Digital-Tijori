@@ -91,6 +91,9 @@ class AddEditBankAccountViewModel @Inject constructor(
                         }
                         val accountId = data.await().toInt()
                         if (accountId != -1) {
+                            _state.value.bankAccount.value = state.value.bankAccount.value.copy(
+                                bankAccountId = accountId
+                            )
                             _eventFlow.emit(BankAccountSubmitResultEvent.BankAccountSaved(_state.value.selectedBank, accountId))
                         }
                     } else {

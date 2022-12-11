@@ -1,5 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit.util
 
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardType
@@ -7,7 +8,7 @@ import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 
 sealed class CardEvent {
     data class SelectIssuer(val issuer: Company) : CardEvent()
-    data class LinkToAccount(val accountId: Int) : CardEvent()
+    data class LinkToAccount(val account: BankAccount) : CardEvent()
     data class SelectedColorScheme(val colorScheme: ColorScheme) : CardEvent()
     data class SelectedCardType(val cardType: CardType) : CardEvent()
     data class EnteredCardNumber(val cardNumber: String) : CardEvent()

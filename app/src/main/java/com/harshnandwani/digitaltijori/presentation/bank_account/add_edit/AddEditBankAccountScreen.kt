@@ -180,7 +180,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ISSUER, event.linkedBank)
-                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, event.accountId)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT, state.bankAccount.value)
                             startActivity(activity, this, null)
                         }
                     }

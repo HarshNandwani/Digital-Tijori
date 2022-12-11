@@ -6,7 +6,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.domain.util.ColorScheme
@@ -57,8 +59,8 @@ data class CardEntity(
         fun toEntity(card: Card) = CardEntity(
             card.cardId,
             card.isLinkedToBank,
-            card.bankAccountId,
-            card.companyId,
+            card.bankAccount?.bankAccountId,
+            card.company.companyId,
             card.cardNumber,
             card.expiryMonth,
             card.expiryYear,
@@ -73,11 +75,11 @@ data class CardEntity(
         )
     }
 
-    fun toDomain() = Card(
+    fun toDomain(bankAccount: BankAccount?, issuer: Company) = Card(
         cardId,
         isLinkedToBank,
-        bankAccountId,
-        companyId,
+        bankAccount,
+        bankAccount?.linkedCompany ?: issuer,
         cardNumber,
         expiryMonth,
         expiryYear,

@@ -11,8 +11,8 @@ import kotlin.jvm.Throws
 data class Card(
     val cardId: Int = 0,
     val isLinkedToBank: Boolean,
-    val bankAccountId: Int?,
-    val companyId: Int?,
+    val bankAccount: BankAccount?,
+    val company: Company,
     val cardNumber: String,
     val expiryMonth: Byte,
     val expiryYear: Byte,
@@ -26,34 +26,10 @@ data class Card(
     val cardType: CardType,
 ) : Serializable {
 
-    companion object {
-
-        fun emptyCard(): Card {
-            return Card(
-                0,
-                false,
-                null,
-                null,
-                "",
-                14,
-                1,
-                "",
-                "",
-                null,
-                CardNetwork.Unknown,
-                "",
-                ColorScheme.DEFAULT,
-                null,
-                CardType.None
-            )
-        }
-
-    }
-
     @Throws(InvalidCardException::class)
     fun isValidCard(): Boolean {
-        if (bankAccountId == null && companyId == null) {
-            throw InvalidCardException("Please link card with issuer")
+        if (isLinkedToBank && bankAccount == null) {
+            throw InvalidCardException("Please link card with bank")
         }
         if (cardType == CardType.None) {
             throw InvalidCardException("Select card type Credit/Debit/Other")

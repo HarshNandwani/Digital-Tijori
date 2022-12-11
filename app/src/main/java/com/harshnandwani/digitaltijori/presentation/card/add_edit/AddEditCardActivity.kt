@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
@@ -36,9 +37,9 @@ class AddEditCardActivity : ComponentActivity() {
                 if (mode == Parameters.VAL_MODE_ADD) {
                     if (intent.getBooleanExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, false)) {
                         val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
-                        val bankAccountId = intent.getIntExtra(Parameters.KEY_BANK_ACCOUNT_ID, -1)
+                        val bankAccount = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
                         viewModel.onEvent(CardEvent.SelectIssuer(issuer))
-                        viewModel.onEvent(CardEvent.LinkToAccount(bankAccountId))
+                        viewModel.onEvent(CardEvent.LinkToAccount(bankAccount))
                     }
                 } else {
                     val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
