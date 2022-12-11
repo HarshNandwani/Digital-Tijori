@@ -228,8 +228,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideValidateCredentialUseCase(): ValidateCredentialUseCase {
+        return ValidateCredentialUseCase()
+    }
+
+    @Provides
+    @Singleton
     fun provideAddCredentialUseCase(repository: CredentialRepository): AddCredentialUseCase {
-        return AddCredentialUseCase(repository)
+        return AddCredentialUseCase(repository, provideValidateCredentialUseCase())
     }
 
     @Provides
@@ -241,7 +247,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateCredentialUseCase(repository: CredentialRepository): UpdateCredentialUseCase {
-        return UpdateCredentialUseCase(repository)
+        return UpdateCredentialUseCase(repository, provideValidateCredentialUseCase())
     }
 
     @Provides
