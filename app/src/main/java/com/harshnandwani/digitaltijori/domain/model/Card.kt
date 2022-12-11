@@ -1,7 +1,5 @@
 package com.harshnandwani.digitaltijori.domain.model
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardNumberLengthUseCase
 import com.harshnandwani.digitaltijori.domain.util.ColorScheme
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
@@ -23,10 +21,7 @@ data class Card(
     val variant: String?,
     val cardNetwork: CardNetwork,
     val pin: String,
-    val colorScheme: ColorScheme = ColorScheme(
-        Color(0xFF5FA2D7).toArgb(),
-        Color(0xFF9CBDE4).toArgb()
-    ),
+    val colorScheme: ColorScheme = ColorScheme.DEFAULT,
     val cardAlias: String?,
     val cardType: CardType,
 ) : Serializable {
@@ -47,7 +42,7 @@ data class Card(
                 null,
                 CardNetwork.Unknown,
                 "",
-                ColorScheme(Color(0xFF5FA2D7).toArgb(), Color(0xFF9CBDE4).toArgb()),
+                ColorScheme.DEFAULT,
                 null,
                 CardType.None
             )
