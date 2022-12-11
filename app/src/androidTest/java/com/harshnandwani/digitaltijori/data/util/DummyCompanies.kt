@@ -1,10 +1,10 @@
 package com.harshnandwani.digitaltijori.data.util
 
-import com.harshnandwani.digitaltijori.domain.model.Company
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
 
 object DummyCompanies {
 
-    val bank = Company(
+    val bank = CompanyEntity(
         companyId = 1,
         name = "Test Bank",
         isABank = true,
@@ -14,7 +14,7 @@ object DummyCompanies {
         logoResId = -10
     )
 
-    val bankIssuesCards = Company(
+    val bankIssuesCards = CompanyEntity(
         companyId = 2,
         name = "Test Bank 2",
         isABank = true,
@@ -24,7 +24,7 @@ object DummyCompanies {
         logoResId = -10
     )
 
-    val bankIssuesCardsHasCredentials = Company(
+    val bankIssuesCardsHasCredentials = CompanyEntity(
         companyId = 3,
         name = "Test Bank 3",
         isABank = true,
@@ -34,7 +34,7 @@ object DummyCompanies {
         logoResId = -10
     )
 
-    val cardIssuer = Company(
+    val cardIssuer = CompanyEntity(
         companyId = 4,
         name = "Test card issuer",
         isABank = false,
@@ -44,7 +44,7 @@ object DummyCompanies {
         logoResId = -10
     )
 
-    val entity = Company(
+    val entity = CompanyEntity(
         companyId = 5,
         name = "Test entity",
         isABank = false,
