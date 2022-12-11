@@ -6,7 +6,7 @@ import kotlin.jvm.Throws
 
 data class BankAccount(
     val bankAccountId: Int = 0,
-    val companyId: Int,
+    val linkedCompany: Company,
     val holderName: String,
     val accountNumber: String,
     val ifsc: String,
@@ -16,7 +16,7 @@ data class BankAccount(
 
     @Throws(InvalidBankAccountException::class)
     fun isValidBankAccount(): Boolean {
-        if (companyId == -1) {
+        if (linkedCompany.companyId == -1) {
             throw InvalidBankAccountException("Select bank")
         }
         if (accountNumber.isEmpty() || accountNumber.length < 8) {

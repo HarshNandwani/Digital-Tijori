@@ -49,7 +49,7 @@ class AddEditBankAccountViewModel @Inject constructor(
                     selectedBank = event.bank,
                 )
                 _state.value.bankAccount.value = state.value.bankAccount.value.copy(
-                    companyId = event.bank.companyId
+                    linkedCompany = event.bank
                 )
             }
             is BankAccountEvent.EnteredAccountNumber -> {

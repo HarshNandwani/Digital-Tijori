@@ -13,6 +13,9 @@ interface CompanyDao {
     @Insert
     suspend fun add(company: CompanyEntity)
 
+    @Query("SELECT * FROM Company WHERE companyId = :id")
+    suspend fun get(id: Int): CompanyEntity?
+
     @Query("SELECT * FROM Company")
     suspend fun getAll(): List<CompanyEntity>
 

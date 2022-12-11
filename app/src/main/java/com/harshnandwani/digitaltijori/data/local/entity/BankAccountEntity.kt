@@ -5,6 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
+import com.harshnandwani.digitaltijori.domain.model.Company
 
 @Entity(
     tableName = "BankAccount",
@@ -31,7 +32,7 @@ data class BankAccountEntity(
     companion object {
         fun toEntity(account: BankAccount) = BankAccountEntity(
             account.bankAccountId,
-            account.companyId,
+            account.linkedCompany.companyId,
             account.holderName,
             account.accountNumber,
             account.ifsc,
@@ -40,6 +41,6 @@ data class BankAccountEntity(
         )
     }
 
-    fun toDomain() =
-        BankAccount(bankAccountId, companyId, holderName, accountNumber, ifsc, phoneNumber, alias)
+    fun toDomain(company: Company) =
+        BankAccount(bankAccountId, company, holderName, accountNumber, ifsc, phoneNumber, alias)
 }

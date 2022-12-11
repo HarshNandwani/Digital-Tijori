@@ -117,7 +117,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideBankAccountRepository(db: DigitalTijoriDatabase): BankAccountRepository {
-        return BankAccountRepositoryImpl(db.bankAccountDao)
+        return BankAccountRepositoryImpl(db.bankAccountDao, provideCompanyRepository(db))
     }
 
     @Provides

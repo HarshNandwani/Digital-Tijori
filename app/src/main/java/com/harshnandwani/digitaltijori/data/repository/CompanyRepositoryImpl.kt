@@ -7,18 +7,14 @@ import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-/*
-* This may seem same as the dao,
-* it might not make sense to create a repository like this
-* but it is needed to better structure the project.
-* in case we need to add a new datasource in future
-* This repository will then contain more data logic
-* and will act as single source of truth
-* */
 class CompanyRepositoryImpl(private val dao: CompanyDao): CompanyRepository {
 
     override suspend fun add(company: Company) {
         dao.add(CompanyEntity.toEntity(company))
+    }
+
+    override suspend fun get(id: Int): Company? {
+        return dao.get(id)?.toDomain()
     }
 
     override suspend fun getAll(): List<Company> {
