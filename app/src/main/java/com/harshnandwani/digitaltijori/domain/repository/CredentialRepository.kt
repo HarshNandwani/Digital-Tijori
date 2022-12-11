@@ -8,11 +8,9 @@ interface CredentialRepository {
 
     suspend fun add(credential : Credential)
 
-    fun getAll(): Flow<List<Credential>>
-
     suspend fun get(id: Int): Credential?
 
-    fun getAllCredentialsWithEntityDetails(): Flow<Map<Company, List<Credential>>>
+    fun getAllCredentialsWithEntityDetails(): Flow<List<Credential>>
 
     fun getCredentialsLinkedToAccount(bankAccountId: Int): Flow<List<Credential>>
 

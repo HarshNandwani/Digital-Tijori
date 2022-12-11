@@ -1,6 +1,5 @@
 package com.harshnandwani.digitaltijori.domain.use_case.credential
 
-import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.repository.CredentialRepository
 import kotlinx.coroutines.flow.Flow
@@ -8,9 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetAllCredentialsWithEntityDetailsUseCase(
     private val repository: CredentialRepository
 ) {
-
-    operator fun invoke(): Flow<Map<Company, List<Credential>>> {
+    operator fun invoke(): Flow<List<Credential>> {
         return repository.getAllCredentialsWithEntityDetails()
     }
-
 }

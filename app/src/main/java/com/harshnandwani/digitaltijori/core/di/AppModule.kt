@@ -200,7 +200,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCredentialRepository(db: DigitalTijoriDatabase): CredentialRepository {
-        return CredentialRepositoryImpl(db.credentialDao)
+        return CredentialRepositoryImpl(
+            db.credentialDao,
+            provideCompanyRepository(db),
+            provideBankAccountRepository(db)
+        )
     }
 
     @Provides

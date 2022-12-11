@@ -18,10 +18,6 @@ class CardRepositoryImpl(
         dao.add(CardEntity.toEntity(card))
     }
 
-    override fun getAll(): Flow<List<Card?>> {
-        return dao.getAll().map { it.map { cardEntity -> mapEntityToDomain(cardEntity) } }
-    }
-
     override suspend fun get(id: Int): Card? {
         val cardEntity = dao.get(id) ?: return null
         return mapEntityToDomain(cardEntity)

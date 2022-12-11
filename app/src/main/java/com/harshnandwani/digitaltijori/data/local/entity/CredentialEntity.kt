@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.harshnandwani.digitaltijori.domain.model.BankAccount
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 
 @Entity(
@@ -43,19 +45,19 @@ data class CredentialEntity(
             credential.username,
             credential.password,
             credential.isLinkedToBank,
-            credential.bankAccountId,
-            credential.companyId,
+            credential.bankAccount?.bankAccountId,
+            credential.company.companyId,
             credential.alias
         )
     }
 
-    fun toDomain() = Credential(
+    fun toDomain(bankAccount: BankAccount?, entity: Company) = Credential(
         credentialId,
         username,
         password,
         isLinkedToBank,
-        bankAccountId,
-        companyId,
+        bankAccount,
+        bankAccount?.linkedCompany ?: entity,
         alias
     )
 }

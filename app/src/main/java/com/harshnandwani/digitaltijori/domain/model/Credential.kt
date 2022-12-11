@@ -9,31 +9,15 @@ data class Credential(
     val username: String,
     val password: String,
     val isLinkedToBank : Boolean,
-    val bankAccountId : Int?,
-    val companyId: Int?,
+    val bankAccount: BankAccount?,
+    val company: Company,
     val alias: String?
 ) : Serializable {
 
-    companion object {
-        fun emptyCredential(): Credential {
-            return Credential(
-                username = "",
-                password = "",
-                isLinkedToBank = false,
-                bankAccountId = null,
-                companyId = null,
-                alias = null
-            )
-        }
-    }
-
     @Throws(InvalidCredentialException::class)
     fun isValid(): Boolean {
-        if (isLinkedToBank && (bankAccountId == null || bankAccountId == -1)) {
-            throw InvalidCredentialException("Select entity")
-        }
-        if (!isLinkedToBank && (companyId == null || companyId == -1)) {
-            throw InvalidCredentialException("Select entity")
+        if (isLinkedToBank && bankAccount == null) {
+            throw InvalidCredentialException("Please link credential with bank")
         }
         if (username.isEmpty()) {
             throw InvalidCredentialException("Enter username")

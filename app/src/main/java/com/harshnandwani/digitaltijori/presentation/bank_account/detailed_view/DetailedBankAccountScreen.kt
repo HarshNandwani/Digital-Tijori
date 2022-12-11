@@ -204,7 +204,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                         putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                         putExtra(Parameters.KEY_ENTITY, state.bank)
-                        putExtra(Parameters.KEY_BANK_ACCOUNT_ID, state.account.bankAccountId)
+                        putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
                         ContextCompat.startActivity(context, this, null)
                     }
                 },

@@ -286,7 +286,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ENTITY, state.selectedIssuer)
-                            putExtra(Parameters.KEY_BANK_ACCOUNT_ID, card.bankAccount?.bankAccountId)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT, card.bankAccount)
                             ContextCompat.startActivity(context, this, null)
                         }
                     }
