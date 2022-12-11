@@ -170,8 +170,20 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGetCardNumberLengthUseCase(): GetCardNumberLengthUseCase {
+        return GetCardNumberLengthUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateCardUseCase(): ValidateCardUseCase {
+        return ValidateCardUseCase(provideGetCardNumberLengthUseCase())
+    }
+
+    @Provides
+    @Singleton
     fun provideAddCardUseCase(repository: CardRepository): AddCardUseCase {
-        return AddCardUseCase(repository)
+        return AddCardUseCase(repository, provideValidateCardUseCase())
     }
 
     @Provides
@@ -183,7 +195,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateCardUseCase(repository: CardRepository): UpdateCardUseCase {
-        return UpdateCardUseCase(repository)
+        return UpdateCardUseCase(repository, provideValidateCardUseCase())
     }
 
     @Provides

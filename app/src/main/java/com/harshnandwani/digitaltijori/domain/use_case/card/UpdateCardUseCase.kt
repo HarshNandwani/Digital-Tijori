@@ -6,14 +6,13 @@ import com.harshnandwani.digitaltijori.domain.util.InvalidCardException
 import kotlin.jvm.Throws
 
 class UpdateCardUseCase(
-    private val repository: CardRepository
+    private val repository: CardRepository,
+    private val isValid: ValidateCardUseCase
 ) {
-
     @Throws(InvalidCardException::class)
     suspend operator fun invoke(card: Card) {
-        if (card.isValidCard()) {
+        if (isValid(card)) {
             repository.update(card)
         }
     }
-
 }
