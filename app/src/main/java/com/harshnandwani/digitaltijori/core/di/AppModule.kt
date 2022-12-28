@@ -10,7 +10,7 @@ import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
@@ -154,8 +154,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllAccountsWithBankDetailsUseCase(repository: BankAccountRepository): GetAllAccountsWithBankDetailsUseCase {
-        return GetAllAccountsWithBankDetailsUseCase(repository)
+    fun provideGetAllAccountsUseCase(repository: BankAccountRepository): GetAllAccountsUseCase {
+        return GetAllAccountsUseCase(repository)
     }
 
     @Provides
@@ -206,8 +206,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllCardsWithIssuerDetailsUseCase(repository: CardRepository): GetAllCardsWithIssuerDetailsUseCase {
-        return GetAllCardsWithIssuerDetailsUseCase(repository)
+    fun provideGetAllCardsUseCase(repository: CardRepository): GetAllCardsUseCase {
+        return GetAllCardsUseCase(repository)
     }
 
     @Provides
@@ -258,8 +258,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllCredentialsWithEntityDetailsUseCase(repository: CredentialRepository): GetAllCredentialsWithEntityDetailsUseCase {
-        return GetAllCredentialsWithEntityDetailsUseCase(repository)
+    fun provideGetAllCredentialsUseCase(repository: CredentialRepository): GetAllCredentialsUseCase {
+        return GetAllCredentialsUseCase(repository)
     }
 
     @Provides

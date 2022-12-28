@@ -23,7 +23,7 @@ class CredentialRepositoryImpl(
         return mapEntityToDomain(credentialEntity)
     }
 
-    override fun getAllCredentialsWithEntityDetails(): Flow<List<Credential>> {
+    override fun getAll(): Flow<List<Credential>> {
         return dao.getAllCredentialsWithEntityDetails().transform {
             val result = it.flatMap { entry ->
                 entry.value.map { credentialEntity -> mapEntityToDomain(credentialEntity) }

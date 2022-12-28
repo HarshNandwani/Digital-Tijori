@@ -7,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssuerDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
@@ -28,11 +28,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
+    private val getAllAccountsWithBankDetails: GetAllAccountsUseCase,
     private val getBankAccountUseCase: GetBankAccountUseCase,
-    private val getAllCardsWithIssuerDetails: GetAllCardsWithIssuerDetailsUseCase,
+    private val getAllCardsWithIssuerDetails: GetAllCardsUseCase,
     private val getCardUseCase: GetCardUseCase,
-    private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase,
+    private val getAllCredentialsWithEntityDetails: GetAllCredentialsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase,
     private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
     private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase

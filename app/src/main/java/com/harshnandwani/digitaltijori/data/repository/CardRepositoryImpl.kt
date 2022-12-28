@@ -23,18 +23,18 @@ class CardRepositoryImpl(
         return mapEntityToDomain(cardEntity)
     }
 
-    override fun getCardsWithIssuerDetails(): Flow<List<Card?>> {
+    override fun getAll(): Flow<List<Card>> {
         return dao.getCardsWithIssuerDetails().transform {
             val result = it.flatMap { entry ->
                 entry.value.map { cardEntity -> mapEntityToDomain(cardEntity) }
             }
-            emit(result)
+            emit(result.filterNotNull())
         }
     }
 
-    override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card?>> {
+    override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>> {
         return dao.getCardsLinkedToABank(bankAccountId).map {
-            it.map { cardEntity -> mapEntityToDomain(cardEntity) }
+            it.mapNotNull { cardEntity -> mapEntityToDomain(cardEntity) }
         }
     }
 

@@ -22,7 +22,7 @@ class BankAccountRepositoryImpl(
         return account.toDomain(company)
     }
 
-    override fun getAccountsWithBankDetails(): Flow<List<BankAccount>> {
+    override fun getAll(): Flow<List<BankAccount>> {
         //TODO: Try to convert below flow transformation to util function
         return dao.getAccountsWithBankDetails().transform {
             val result = it.flatMap { entry ->
