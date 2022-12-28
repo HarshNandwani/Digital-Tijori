@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.di
+package com.harshnandwani.digitaltijori.core.di
 
 import android.app.Application
 import androidx.room.Room
@@ -10,7 +10,7 @@ import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.*
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
@@ -114,16 +114,23 @@ object AppModule {
         return GetCompaniesHavingCredentialsUseCase(repository)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideValidateBankAccountUseCase(): ValidateBankAccountUseCase {
+        return ValidateBankAccountUseCase()
+    }
+
     @Provides
     @Singleton
     fun provideBankAccountRepository(db: DigitalTijoriDatabase): BankAccountRepository {
-        return BankAccountRepositoryImpl(db.bankAccountDao)
+        return BankAccountRepositoryImpl(db.bankAccountDao, provideCompanyRepository(db))
     }
 
     @Provides
     @Singleton
     fun provideAddBankAccountUseCase(repository: BankAccountRepository): AddBankAccountUseCase {
-        return AddBankAccountUseCase(repository)
+        return AddBankAccountUseCase(repository, provideValidateBankAccountUseCase())
     }
 
     @Provides
@@ -136,7 +143,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateBankAccountUseCase(repository: BankAccountRepository): UpdateBankAccountUseCase {
-        return UpdateBankAccountUseCase(repository)
+        return UpdateBankAccountUseCase(repository, provideValidateBankAccountUseCase())
     }
 
     @Provides
@@ -147,20 +154,36 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllAccountsWithBankDetailsUseCase(repository: BankAccountRepository): GetAllAccountsWithBankDetailsUseCase {
-        return GetAllAccountsWithBankDetailsUseCase(repository)
+    fun provideGetAllAccountsUseCase(repository: BankAccountRepository): GetAllAccountsUseCase {
+        return GetAllAccountsUseCase(repository)
     }
 
     @Provides
     @Singleton
     fun provideCardRepository(db: DigitalTijoriDatabase): CardRepository {
-        return CardRepositoryImpl(db.cardDao)
+        return CardRepositoryImpl(
+            db.cardDao,
+            provideCompanyRepository(db),
+            provideBankAccountRepository(db)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCardNumberLengthUseCase(): GetCardNumberLengthUseCase {
+        return GetCardNumberLengthUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateCardUseCase(): ValidateCardUseCase {
+        return ValidateCardUseCase(provideGetCardNumberLengthUseCase())
     }
 
     @Provides
     @Singleton
     fun provideAddCardUseCase(repository: CardRepository): AddCardUseCase {
-        return AddCardUseCase(repository)
+        return AddCardUseCase(repository, provideValidateCardUseCase())
     }
 
     @Provides
@@ -172,7 +195,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateCardUseCase(repository: CardRepository): UpdateCardUseCase {
-        return UpdateCardUseCase(repository)
+        return UpdateCardUseCase(repository, provideValidateCardUseCase())
     }
 
     @Provides
@@ -183,8 +206,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllCardsWithIssuerDetailsUseCase(repository: CardRepository): GetAllCardsWithIssuerDetailsUseCase {
-        return GetAllCardsWithIssuerDetailsUseCase(repository)
+    fun provideGetAllCardsUseCase(repository: CardRepository): GetAllCardsUseCase {
+        return GetAllCardsUseCase(repository)
     }
 
     @Provides
@@ -196,13 +219,23 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCredentialRepository(db: DigitalTijoriDatabase): CredentialRepository {
-        return CredentialRepositoryImpl(db.credentialDao)
+        return CredentialRepositoryImpl(
+            db.credentialDao,
+            provideCompanyRepository(db),
+            provideBankAccountRepository(db)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateCredentialUseCase(): ValidateCredentialUseCase {
+        return ValidateCredentialUseCase()
     }
 
     @Provides
     @Singleton
     fun provideAddCredentialUseCase(repository: CredentialRepository): AddCredentialUseCase {
-        return AddCredentialUseCase(repository)
+        return AddCredentialUseCase(repository, provideValidateCredentialUseCase())
     }
 
     @Provides
@@ -214,7 +247,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdateCredentialUseCase(repository: CredentialRepository): UpdateCredentialUseCase {
-        return UpdateCredentialUseCase(repository)
+        return UpdateCredentialUseCase(repository, provideValidateCredentialUseCase())
     }
 
     @Provides
@@ -225,8 +258,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllCredentialsWithEntityDetailsUseCase(repository: CredentialRepository): GetAllCredentialsWithEntityDetailsUseCase {
-        return GetAllCredentialsWithEntityDetailsUseCase(repository)
+    fun provideGetAllCredentialsUseCase(repository: CredentialRepository): GetAllCredentialsUseCase {
+        return GetAllCredentialsUseCase(repository)
     }
 
     @Provides

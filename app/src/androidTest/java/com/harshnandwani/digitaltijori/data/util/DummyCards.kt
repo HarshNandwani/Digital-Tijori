@@ -1,17 +1,17 @@
 package com.harshnandwani.digitaltijori.data.util
 
+import com.harshnandwani.digitaltijori.data.local.entity.CardEntity
 import com.harshnandwani.digitaltijori.data.util.DummyAccounts.accountWithBank2
 import com.harshnandwani.digitaltijori.data.util.DummyAccounts.accountWithBank3
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.cardIssuer
-import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
 
 object DummyCards {
 
-    val cardWithInvalidCompany = Card(
+    val cardWithInvalidCompany = CardEntity(
         companyId = -1,
         isLinkedToBank = false,
         bankAccountId = null,
@@ -27,7 +27,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val cardWithInvalidAccount = Card(
+    val cardWithInvalidAccount = CardEntity(
         companyId = cardIssuer.companyId,
         isLinkedToBank = true,
         bankAccountId = -1,
@@ -49,7 +49,7 @@ object DummyCards {
     * Issuer 3 - bankIssuesCardsHasCredentials
     * */
 
-    val cardWithIssuer1 = Card(
+    val cardWithIssuer1 = CardEntity(
         cardId = 1,
         companyId = cardIssuer.companyId,
         isLinkedToBank = false,
@@ -66,7 +66,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val card2WithIssuer1 = Card(
+    val card2WithIssuer1 = CardEntity(
         cardId = 2,
         companyId = cardIssuer.companyId,
         isLinkedToBank = false,
@@ -83,7 +83,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val cardWithIssuer2 = Card(
+    val cardWithIssuer2 = CardEntity(
         cardId = 3,
         companyId = bankIssuesCards.companyId,
         isLinkedToBank = false,
@@ -100,7 +100,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val card2WithIssuer2 = Card(
+    val card2WithIssuer2 = CardEntity(
         cardId = 4,
         companyId = bankIssuesCards.companyId,
         isLinkedToBank = true,
@@ -117,7 +117,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val cardWithIssuer3 = Card(
+    val cardWithIssuer3 = CardEntity(
         cardId = 5,
         companyId = bankIssuesCardsHasCredentials.companyId,
         isLinkedToBank = false,
@@ -134,7 +134,7 @@ object DummyCards {
         cardType = CardType.Other
     )
 
-    val card2WithIssuer3 = Card(
+    val card2WithIssuer3 = CardEntity(
         cardId = 6,
         companyId = bankIssuesCardsHasCredentials.companyId,
         isLinkedToBank = true,

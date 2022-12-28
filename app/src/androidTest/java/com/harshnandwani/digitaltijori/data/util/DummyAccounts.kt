@@ -1,13 +1,13 @@
 package com.harshnandwani.digitaltijori.data.util
 
+import com.harshnandwani.digitaltijori.data.local.entity.BankAccountEntity
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bank
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials
-import com.harshnandwani.digitaltijori.domain.model.BankAccount
 
 object DummyAccounts {
 
-    val account = BankAccount(
+    val account = BankAccountEntity(
         companyId = -1,
         holderName = "Bank 1 Account 1",
         accountNumber = "11111111111",
@@ -16,7 +16,7 @@ object DummyAccounts {
         alias = "alias"
     )
 
-    val accountWithBank1 = BankAccount(
+    val accountWithBank1 = BankAccountEntity(
         bankAccountId = 1,
         companyId = bank.companyId,
         holderName = "Bank 1 Account 1",
@@ -26,7 +26,7 @@ object DummyAccounts {
         alias = "alias_of_account_1"
     )
 
-    val account2WithBank1 = BankAccount(
+    val account2WithBank1 = BankAccountEntity(
         bankAccountId = 2,
         companyId = bank.companyId,
         holderName = "Bank 1 Account 2",
@@ -36,7 +36,7 @@ object DummyAccounts {
         alias = "alias_of_account_2"
     )
     
-    val accountWithBank2 = BankAccount(
+    val accountWithBank2 = BankAccountEntity(
         bankAccountId = 3,
         companyId = bankIssuesCards.companyId,
         holderName = "Bank 2 Account 1",
@@ -46,7 +46,7 @@ object DummyAccounts {
         alias = "alias_of_account_3"
     )
     
-    val account2WithBank2 = BankAccount(
+    val account2WithBank2 = BankAccountEntity(
         bankAccountId = 4,
         companyId = bankIssuesCards.companyId,
         holderName = "Bank 2 Account 2",
@@ -56,7 +56,7 @@ object DummyAccounts {
         alias = "alias_of_account_4"
     )
     
-    val accountWithBank3 = BankAccount(
+    val accountWithBank3 = BankAccountEntity(
         bankAccountId = 5,
         companyId = bankIssuesCardsHasCredentials.companyId,
         holderName = "Bank 3 Account 1",
@@ -66,7 +66,7 @@ object DummyAccounts {
         alias = "alias_of_account_5"
     )
 
-    val account2WithBank3 = BankAccount(
+    val account2WithBank3 = BankAccountEntity(
         bankAccountId = 6,
         companyId = bankIssuesCardsHasCredentials.companyId,
         holderName = "Bank 3 Account 2",

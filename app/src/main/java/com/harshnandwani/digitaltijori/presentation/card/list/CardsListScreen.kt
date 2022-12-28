@@ -57,85 +57,81 @@ fun CardsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        for ((issuer, cardsList) in state.filteredCards) {
-            cardsList.forEach { card ->
-                item {
-                    Column(Modifier.padding(16.dp)) {
-                        Box(Modifier.clip(RoundedCornerShape(24.dp))) {
-                            Swipeable(
-                                swipeToLeftEnabled = true,
-                                rightColor = Color.Green,
-                                rightIcon = Icons.Default.ContentCopy,
-                                leftSwipeAction = {
-                                    coroutineScope.launch {
-                                        val data = coroutineScope.async(Dispatchers.IO) {
-                                            viewModel.getCard(card.cardId)
-                                        }
-                                        withContext(Dispatchers.Main) {
-                                            val cardToCopy = data.await()
-                                            if (cardToCopy == null) {
-                                                Toast.makeText(context, "Card is null", Toast.LENGTH_SHORT)
-                                                    .show()
-                                                return@withContext
-                                            }
-                                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                            val clip: ClipData = ClipData.newPlainText("Card Number", cardToCopy.cardNumber)
-                                            clipboard.setPrimaryClip(clip)
-                                            Toast.makeText(context, "Card number Copied", Toast.LENGTH_SHORT).show()
-                                        }
+        state.filteredCards.forEach { card ->
+            item {
+                Column(Modifier.padding(16.dp)) {
+                    Box(Modifier.clip(RoundedCornerShape(24.dp))) {
+                        Swipeable(
+                            swipeToLeftEnabled = true,
+                            rightColor = Color.Green,
+                            rightIcon = Icons.Default.ContentCopy,
+                            leftSwipeAction = {
+                                coroutineScope.launch {
+                                    val data = coroutineScope.async(Dispatchers.IO) {
+                                        viewModel.getCard(card.cardId)
                                     }
-                                },
-                                swipeToRightEnabled = true,
-                                leftColor = Color.Magenta,
-                                leftIcon = Icons.Default.Edit,
-                                rightSwipeAction = {
-                                    coroutineScope.launch {
-                                        val data = coroutineScope.async(Dispatchers.IO) {
-                                            viewModel.getCard(card.cardId)
+                                    withContext(Dispatchers.Main) {
+                                        val cardToCopy = data.await()
+                                        if (cardToCopy == null) {
+                                            Toast.makeText(context, "Card is null", Toast.LENGTH_SHORT).show()
+                                            return@withContext
                                         }
-                                        withContext(Dispatchers.Main) {
-                                            val cardToEdit = data.await()
-                                            if (cardToEdit == null) {
-                                                Toast.makeText(context, "Card is null", Toast.LENGTH_SHORT)
-                                                    .show()
-                                                return@withContext
-                                            }
-                                            Intent(context, AddEditCardActivity::class.java).apply {
-                                                putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
-                                                putExtra(Parameters.KEY_ISSUER, issuer)
-                                                putExtra(Parameters.KEY_CARD, cardToEdit)
-                                                ContextCompat.startActivity(context, this, null)
-                                            }
-                                        }
+                                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                        val clip: ClipData = ClipData.newPlainText("Card Number", cardToCopy.cardNumber)
+                                        clipboard.setPrimaryClip(clip)
+                                        Toast.makeText(context, "Card number Copied", Toast.LENGTH_SHORT).show()
                                     }
                                 }
-                            ) {
-                                val cardNumberDisplay =
-                                    "x".repeat(card.cardNumber.length - 4) +
-                                            card.cardNumber.takeLast(4)
-
-                                val cardToDisplay = card.copy(
-                                    cardNumber = cardNumberDisplay,
-                                    expiryMonth = -1,
-                                    expiryYear = -1,
-                                    cvv = "",
-                                    pin = ""
-                                )
-
-                                FlipCardLayout(
-                                    company = issuer,
-                                    expiryNumber = "xxxx",
-                                    card = cardToDisplay,
-                                    backVisible = false,
-                                    onCardClick = {
-                                        Intent(context, DetailedCardActivity::class.java).apply {
-                                            putExtra(Parameters.KEY_ISSUER, issuer)
-                                            putExtra(Parameters.KEY_CARD, card)
+                            },
+                            swipeToRightEnabled = true,
+                            leftColor = Color.Magenta,
+                            leftIcon = Icons.Default.Edit,
+                            rightSwipeAction = {
+                                coroutineScope.launch {
+                                    val data = coroutineScope.async(Dispatchers.IO) {
+                                        viewModel.getCard(card.cardId)
+                                    }
+                                    withContext(Dispatchers.Main) {
+                                        val cardToEdit = data.await()
+                                        if (cardToEdit == null) {
+                                            Toast.makeText(context, "Card is null", Toast.LENGTH_SHORT).show()
+                                            return@withContext
+                                        }
+                                        Intent(context, AddEditCardActivity::class.java).apply {
+                                            putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
+                                            putExtra(Parameters.KEY_ISSUER, card.company)
+                                            putExtra(Parameters.KEY_CARD, cardToEdit)
                                             ContextCompat.startActivity(context, this, null)
                                         }
                                     }
-                                )
+                                }
                             }
+                        ) {
+                            val cardNumberDisplay =
+                                "x".repeat(card.cardNumber.length - 4) +
+                                        card.cardNumber.takeLast(4)
+
+                            val cardToDisplay = card.copy(
+                                cardNumber = cardNumberDisplay,
+                                expiryMonth = -1,
+                                expiryYear = -1,
+                                cvv = "",
+                                pin = ""
+                            )
+
+                            FlipCardLayout(
+                                company = card.company,
+                                expiryNumber = "xxxx",
+                                card = cardToDisplay,
+                                backVisible = false,
+                                onCardClick = {
+                                    Intent(context, DetailedCardActivity::class.java).apply {
+                                        putExtra(Parameters.KEY_ISSUER, card.company)
+                                        putExtra(Parameters.KEY_CARD, card)
+                                        ContextCompat.startActivity(context, this, null)
+                                    }
+                                }
+                            )
                         }
                     }
                 }

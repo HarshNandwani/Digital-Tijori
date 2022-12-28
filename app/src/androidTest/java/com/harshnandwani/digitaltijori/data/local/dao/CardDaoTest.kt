@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.data.local
+package com.harshnandwani.digitaltijori.data.local.dao
 
 import android.database.sqlite.SQLiteConstraintException
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDatabase
 import com.harshnandwani.digitaltijori.data.util.DummyAccounts.accountWithBank2
 import com.harshnandwani.digitaltijori.data.util.DummyAccounts.accountWithBank3
 import com.harshnandwani.digitaltijori.data.util.DummyCards.card2WithIssuer1

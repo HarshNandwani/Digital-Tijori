@@ -56,81 +56,80 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        for ((linkedBank, bankAccountsList) in state.filteredBankAccounts) {
-            bankAccountsList.forEach { bankAccount ->
-                item {
-                    Swipeable(
-                        swipeToLeftEnabled = true,
-                        rightColor = Color.Green,
-                        rightIcon = Icons.Default.Share,
-                        leftSwipeAction = {
-                            /*
-                            * The account is set in this lambda for one time,
-                            * if user edits and then tries to share we will not
-                            * be having the latest account details as it was set at first
-                            *
-                            * So, loading bank account again with the ID
-                            * */
-                            coroutineScope.launch {
-                                val data = coroutineScope.async(Dispatchers.IO) {
-                                    viewModel.getBankAccount(bankAccount.bankAccountId)
-                                }
-                                withContext(Dispatchers.Main) {
-                                    val accountToShare = data.await()
-                                    if (accountToShare == null) {
-                                        Toast.makeText(context, "Account is null", Toast.LENGTH_SHORT)
-                                            .show()
-                                        return@withContext
-                                    }
-                                    val shareIntent = BankAccountHelperFunctions.getShareIntent(linkedBank.name, accountToShare)
-                                    startActivity(context, shareIntent, null)
-                                }
+        state.filteredBankAccounts.forEach { bankAccount ->
+            val linkedBank = bankAccount.linkedCompany
+            item {
+                Swipeable(
+                    swipeToLeftEnabled = true,
+                    rightColor = Color.Green,
+                    rightIcon = Icons.Default.Share,
+                    leftSwipeAction = {
+                        /*
+                        * The account is set in this lambda for one time,
+                        * if user edits and then tries to share we will not
+                        * be having the latest account details as it was set at first
+                        *
+                        * So, loading bank account again with the ID
+                        * */
+                        coroutineScope.launch {
+                            val data = coroutineScope.async(Dispatchers.IO) {
+                                viewModel.getBankAccount(bankAccount.bankAccountId)
                             }
-                        },
-                        swipeToRightEnabled = true,
-                        leftColor = Color.Magenta,
-                        leftIcon = Icons.Default.Edit,
-                        rightSwipeAction = {
-                            /*
-                           * The account is set in this lambda for one time,
-                           * if user edits and then tries to edit again we will not
-                           * be having the latest account details as it was set at first
-                           *
-                           * So, loading bank account again with the ID
-                           * */
-                            coroutineScope.launch {
-                                val data = coroutineScope.async(Dispatchers.IO) {
-                                    viewModel.getBankAccount(bankAccount.bankAccountId)
+                            withContext(Dispatchers.Main) {
+                                val accountToShare = data.await()
+                                if (accountToShare == null) {
+                                    Toast.makeText(context, "Account is null", Toast.LENGTH_SHORT)
+                                        .show()
+                                    return@withContext
                                 }
-                                withContext(Dispatchers.Main) {
-                                    val accountToEdit = data.await()
-                                    if (accountToEdit == null) {
-                                        Toast.makeText(context, "Account is null", Toast.LENGTH_SHORT)
-                                            .show()
-                                        return@withContext
-                                    }
-                                    Intent(context, AddEditBankAccountActivity::class.java).apply {
-                                        putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
-                                        putExtra(Parameters.KEY_BANK, linkedBank)
-                                        putExtra(Parameters.KEY_BANK_ACCOUNT, accountToEdit)
-                                        startActivity(context, this, null)
-                                    }
-                                }
+                                val shareIntent = BankAccountHelperFunctions.getShareIntent(linkedBank.name, accountToShare)
+                                startActivity(context, shareIntent, null)
                             }
                         }
-                    ) {
-                        SingleBankAccountItem(
-                            linkedBank = linkedBank,
-                            account = bankAccount,
-                            onClick = {
-                                Intent(context, DetailedBankAccountActivity::class.java).apply {
+                    },
+                    swipeToRightEnabled = true,
+                    leftColor = Color.Magenta,
+                    leftIcon = Icons.Default.Edit,
+                    rightSwipeAction = {
+                        /*
+                       * The account is set in this lambda for one time,
+                       * if user edits and then tries to edit again we will not
+                       * be having the latest account details as it was set at first
+                       *
+                       * So, loading bank account again with the ID
+                       * */
+                        coroutineScope.launch {
+                            val data = coroutineScope.async(Dispatchers.IO) {
+                                viewModel.getBankAccount(bankAccount.bankAccountId)
+                            }
+                            withContext(Dispatchers.Main) {
+                                val accountToEdit = data.await()
+                                if (accountToEdit == null) {
+                                    Toast.makeText(context, "Account is null", Toast.LENGTH_SHORT)
+                                        .show()
+                                    return@withContext
+                                }
+                                Intent(context, AddEditBankAccountActivity::class.java).apply {
+                                    putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                     putExtra(Parameters.KEY_BANK, linkedBank)
-                                    putExtra(Parameters.KEY_BANK_ACCOUNT, bankAccount)
+                                    putExtra(Parameters.KEY_BANK_ACCOUNT, accountToEdit)
                                     startActivity(context, this, null)
                                 }
                             }
-                        )
+                        }
                     }
+                ) {
+                    SingleBankAccountItem(
+                        linkedBank = linkedBank,
+                        account = bankAccount,
+                        onClick = {
+                            Intent(context, DetailedBankAccountActivity::class.java).apply {
+                                putExtra(Parameters.KEY_BANK, linkedBank)
+                                putExtra(Parameters.KEY_BANK_ACCOUNT, bankAccount)
+                                startActivity(context, this, null)
+                            }
+                        }
+                    )
                 }
             }
         }

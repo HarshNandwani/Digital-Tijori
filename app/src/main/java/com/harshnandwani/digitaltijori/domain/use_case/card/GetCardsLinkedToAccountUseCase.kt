@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetCardsLinkedToAccountUseCase(
     private val repository: CardRepository
 ) {
-
     operator fun invoke(accountId: Int): Flow<List<Card>> {
         return repository.getCardsLinkedToABank(accountId)
     }
-
 }

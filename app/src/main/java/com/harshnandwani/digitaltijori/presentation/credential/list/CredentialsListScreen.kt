@@ -54,68 +54,66 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        for((entity, credentialList) in state.filteredCredentials) {
-            credentialList.forEach { credential ->
-                item {
-                    Swipeable(
-                        swipeToLeftEnabled = true,
-                        rightColor = Color.Green,
-                        rightIcon = Icons.Default.ContentCopy,
-                        leftSwipeAction = {
-                            coroutineScope.launch {
-                                val data = coroutineScope.async(Dispatchers.IO) {
-                                    viewModel.getCredential(credential.credentialId)
-                                }
-                                withContext(Dispatchers.Main) {
-                                    val credentialToCopy = data.await()
-                                    if (credentialToCopy == null) {
-                                        Toast.makeText(context, "Credential is null", Toast.LENGTH_SHORT).show()
-                                        return@withContext
-                                    }
-                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                    val clip: ClipData = ClipData.newPlainText("Username", credentialToCopy.username)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(context, "Username Copied", Toast.LENGTH_SHORT).show()
-                                }
+        state.filteredCredentials.forEach { credential ->
+            item {
+                Swipeable(
+                    swipeToLeftEnabled = true,
+                    rightColor = Color.Green,
+                    rightIcon = Icons.Default.ContentCopy,
+                    leftSwipeAction = {
+                        coroutineScope.launch {
+                            val data = coroutineScope.async(Dispatchers.IO) {
+                                viewModel.getCredential(credential.credentialId)
                             }
-                        },
-                        swipeToRightEnabled = true,
-                        leftColor = Color.Magenta,
-                        leftIcon = Icons.Default.Edit,
-                        rightSwipeAction = {
-                            coroutineScope.launch {
-                                val data = coroutineScope.async(Dispatchers.IO) {
-                                    viewModel.getCredential(credential.credentialId)
+                            withContext(Dispatchers.Main) {
+                                val credentialToCopy = data.await()
+                                if (credentialToCopy == null) {
+                                    Toast.makeText(context, "Credential is null", Toast.LENGTH_SHORT).show()
+                                    return@withContext
                                 }
-                                withContext(Dispatchers.Main) {
-                                    val credentialToEdit = data.await()
-                                    if (credentialToEdit == null) {
-                                        Toast.makeText(context, "Credential is null", Toast.LENGTH_SHORT).show()
-                                        return@withContext
-                                    }
-                                    Intent(context, AddEditCredentialActivity::class.java).apply {
-                                        putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
-                                        putExtra(Parameters.KEY_ENTITY, entity)
-                                        putExtra(Parameters.KEY_Credential, credentialToEdit)
-                                        ContextCompat.startActivity(context, this, null)
-                                    }
-                                }
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip: ClipData = ClipData.newPlainText("Username", credentialToCopy.username)
+                                clipboard.setPrimaryClip(clip)
+                                Toast.makeText(context, "Username Copied", Toast.LENGTH_SHORT).show()
                             }
                         }
-
-                    ) {
-                        SingleCredentialItem(
-                            linkedEntity = entity,
-                            credential = credential,
-                            onClick = {
-                                Intent(context, DetailedCredentialActivity::class.java).apply {
-                                    putExtra(Parameters.KEY_ENTITY, entity)
-                                    putExtra(Parameters.KEY_Credential, credential)
+                    },
+                    swipeToRightEnabled = true,
+                    leftColor = Color.Magenta,
+                    leftIcon = Icons.Default.Edit,
+                    rightSwipeAction = {
+                        coroutineScope.launch {
+                            val data = coroutineScope.async(Dispatchers.IO) {
+                                viewModel.getCredential(credential.credentialId)
+                            }
+                            withContext(Dispatchers.Main) {
+                                val credentialToEdit = data.await()
+                                if (credentialToEdit == null) {
+                                    Toast.makeText(context, "Credential is null", Toast.LENGTH_SHORT).show()
+                                    return@withContext
+                                }
+                                Intent(context, AddEditCredentialActivity::class.java).apply {
+                                    putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
+                                    putExtra(Parameters.KEY_ENTITY, credential.company)
+                                    putExtra(Parameters.KEY_Credential, credentialToEdit)
                                     ContextCompat.startActivity(context, this, null)
                                 }
                             }
-                        )
+                        }
                     }
+
+                ) {
+                    SingleCredentialItem(
+                        linkedEntity = credential.company,
+                        credential = credential,
+                        onClick = {
+                            Intent(context, DetailedCredentialActivity::class.java).apply {
+                                putExtra(Parameters.KEY_ENTITY, credential.company)
+                                putExtra(Parameters.KEY_Credential, credential)
+                                ContextCompat.startActivity(context, this, null)
+                            }
+                        }
+                    )
                 }
             }
         }

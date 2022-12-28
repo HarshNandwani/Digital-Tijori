@@ -1,46 +1,60 @@
 package com.harshnandwani.digitaltijori.data.repository
 
-import com.harshnandwani.digitaltijori.data.local.CardDao
+import com.harshnandwani.digitaltijori.data.local.dao.CardDao
+import com.harshnandwani.digitaltijori.data.local.entity.CardEntity
 import com.harshnandwani.digitaltijori.domain.model.Card
-import com.harshnandwani.digitaltijori.domain.model.Company
+import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
-import kotlinx.coroutines.flow.Flow
+import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
+import kotlinx.coroutines.flow.*
 
-/*
-* This may seem same as the dao,
-* it might not make sense to create a repository like this
-* but it is needed to better structure the project.
-* in case we need to add a new datasource in future
-* This repository will then contain more data logic
-* and will act as single source of truth
-* */
-class CardRepositoryImpl(private val dao: CardDao): CardRepository {
+class CardRepositoryImpl(
+    private val dao: CardDao,
+    private val companyRepository: CompanyRepository,
+    private val accountRepository: BankAccountRepository
+) : CardRepository {
 
     override suspend fun add(card: Card) {
-        dao.add(card)
-    }
-
-    override fun getAll(): Flow<List<Card>> {
-        return dao.getAll()
+        dao.add(CardEntity.toEntity(card))
     }
 
     override suspend fun get(id: Int): Card? {
-        return dao.get(id)
+        val cardEntity = dao.get(id) ?: return null
+        return mapEntityToDomain(cardEntity)
     }
 
-    override fun getCardsWithIssuerDetails(): Flow<Map<Company, List<Card>>> {
-        return dao.getCardsWithIssuerDetails()
+    override fun getAll(): Flow<List<Card>> {
+        return dao.getCardsWithIssuerDetails().transform {
+            val result = it.flatMap { entry ->
+                entry.value.map { cardEntity -> mapEntityToDomain(cardEntity) }
+            }
+            emit(result.filterNotNull())
+        }
     }
 
     override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>> {
-        return dao.getCardsLinkedToABank(bankAccountId)
+        return dao.getCardsLinkedToABank(bankAccountId).map {
+            it.mapNotNull { cardEntity -> mapEntityToDomain(cardEntity) }
+        }
     }
 
     override suspend fun update(card: Card) {
-        dao.update(card)
+        dao.update(CardEntity.toEntity(card))
     }
 
     override suspend fun delete(card: Card) {
-        dao.delete(card)
+        dao.delete(CardEntity.toEntity(card))
     }
+
+    private suspend fun mapEntityToDomain(cardEntity: CardEntity): Card? {
+        cardEntity.bankAccountId?.let {
+            val linkedAccount = accountRepository.get(it) ?: return@let
+            return cardEntity.toDomain(linkedAccount, linkedAccount.linkedCompany)
+        }
+        cardEntity.companyId?.let {
+            val linkedCompany = companyRepository.get(it) ?: return null
+            return cardEntity.toDomain(null, linkedCompany)
+        } ?: return null
+    }
+
 }

@@ -7,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsWithBankDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsWithIssuerDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetCardUseCase
-import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsWithEntityDetailsUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
@@ -28,11 +28,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllAccountsWithBankDetails: GetAllAccountsWithBankDetailsUseCase,
+    private val getAllAccountsWithBankDetails: GetAllAccountsUseCase,
     private val getBankAccountUseCase: GetBankAccountUseCase,
-    private val getAllCardsWithIssuerDetails: GetAllCardsWithIssuerDetailsUseCase,
+    private val getAllCardsWithIssuerDetails: GetAllCardsUseCase,
     private val getCardUseCase: GetCardUseCase,
-    private val getAllCredentialsWithEntityDetails: GetAllCredentialsWithEntityDetailsUseCase,
+    private val getAllCredentialsWithEntityDetails: GetAllCredentialsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase,
     private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
     private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase
@@ -65,27 +65,31 @@ class HomeViewModel @Inject constructor(
                 )
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
-                        _state.value.bankAccounts.forEach { (bank, accountsList) ->
-                            _state.value.filteredBankAccounts[bank] = accountsList.filter {
+                        _state.value.filteredBankAccounts.clear()
+                        _state.value.filteredBankAccounts.addAll(
+                            state.value.bankAccounts.filter {
                                 it.holderName.contains(event.searchText, ignoreCase = true)
                                         || it.alias?.contains(event.searchText, ignoreCase = true) ?: false
                             }
-                        }
+                        )
                     }
                     HomeScreens.CardsList.route -> {
-                        _state.value.cards.forEach { (issuer, cardsList) ->
-                            _state.value.filteredCards[issuer] = cardsList.filter {
+                        _state.value.filteredCards.clear()
+                        _state.value.filteredCards.addAll(
+                            state.value.cards.filter {
                                 it.nameOnCard.contains(event.searchText, ignoreCase = true) ||
-                                        it.cardAlias?.contains(event.searchText, ignoreCase = true) == true
+                                it.cardAlias?.contains(event.searchText, ignoreCase = true) == true ||
+                                it.variant?.contains(event.searchText, ignoreCase = true) == true
                             }
-                        }
+                        )
                     }
                     HomeScreens.CredentialsList.route -> {
-                        _state.value.credentials.forEach { (entity, credentialList) ->
-                            _state.value.filteredCredentials[entity] = credentialList.filter {
+                        _state.value.filteredCredentials.clear()
+                        _state.value.filteredCredentials.addAll(
+                            state.value.credentials.filter {
                                 it.username.contains(event.searchText, ignoreCase = true)
                             }
-                        }
+                        )
                     }
                 }
             }
@@ -96,17 +100,17 @@ class HomeViewModel @Inject constructor(
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
                         _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts.toMutableMap()
+                            filteredBankAccounts = state.value.bankAccounts.toMutableList()
                         )
                     }
                     HomeScreens.CardsList.route -> {
                         _state.value = state.value.copy(
-                            filteredCards = state.value.cards.toMutableMap()
+                            filteredCards = state.value.cards.toMutableList()
                         )
                     }
                     HomeScreens.CredentialsList.route -> {
                         _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials.toMutableMap()
+                            filteredCredentials = state.value.credentials.toMutableList()
                         )
                     }
                 }
@@ -138,7 +142,7 @@ class HomeViewModel @Inject constructor(
             .onEach { accounts ->
                 _state.value = state.value.copy(
                     bankAccounts = accounts,
-                    filteredBankAccounts = accounts.toMutableMap()
+                    filteredBankAccounts = accounts.toMutableList()
                 )
             }
             .launchIn(viewModelScope)
@@ -150,7 +154,7 @@ class HomeViewModel @Inject constructor(
             .onEach { cards ->
                 _state.value = state.value.copy(
                     cards = cards,
-                    filteredCards = cards.toMutableMap()
+                    filteredCards = cards.toMutableList()
                 )
             }
             .launchIn(viewModelScope)
@@ -162,7 +166,7 @@ class HomeViewModel @Inject constructor(
             .onEach { credentials ->
                 _state.value = state.value.copy(
                     credentials = credentials,
-                    filteredCredentials = credentials.toMutableMap()
+                    filteredCredentials = credentials.toMutableList()
                 )
             }
             .launchIn(viewModelScope)
