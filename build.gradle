@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlinVersion = '1.6.10'
-        composeVersion = '1.1.1'
-        daggerHiltVerison = '2.40.5'
+        kotlinVersion = '1.8.10'
+        composeVersion = '1.4.2'
+        daggerHiltVerison = '2.47'
     }
     repositories {
         google()
@@ -16,6 +16,6 @@ buildscript {
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
