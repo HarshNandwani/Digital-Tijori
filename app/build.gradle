@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.harshnandwani.digitaltijori"
         minSdk 26
-        targetSdk 32
+        targetSdk 34
         versionCode 3
         versionName "1.0.2"
 
@@ -106,6 +106,4 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$composeVersion"
     debugImplementation "androidx.compose.ui:ui-tooling:$composeVersion"
 
-    //Leak Canary https://square.github.io/leakcanary/getting_started/
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 }
