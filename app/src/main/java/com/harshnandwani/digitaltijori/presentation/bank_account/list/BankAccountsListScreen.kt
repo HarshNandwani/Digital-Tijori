@@ -2,7 +2,6 @@ package com.harshnandwani.digitaltijori.presentation.bank_account.list
 
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,7 +30,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun BankAccountsListScreen(viewModel: HomeViewModel) {
