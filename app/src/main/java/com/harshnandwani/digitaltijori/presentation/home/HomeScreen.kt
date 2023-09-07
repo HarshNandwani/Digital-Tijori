@@ -2,7 +2,6 @@ package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -26,7 +25,6 @@ import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
-@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
