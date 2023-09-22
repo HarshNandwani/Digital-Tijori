@@ -50,7 +50,16 @@ fun BackupDialog(
     AlertDialog(
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         onDismissRequest = { onDismissRequest(true, false, "") },
-        title = { Text(text = "Create an encrypted backup") },
+        title = {
+            Text(
+                text = when (backupStatus) {
+                    NOT_STARTED -> "Create an encrypted backup"
+                    STARTED -> "Creating backup"
+                    FAILED -> "Failed"
+                    COMPLETED -> "Backup file created, please save it"
+                }
+            )
+        },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -117,7 +126,7 @@ fun BackupDialog(
                     }
                     onDismissRequest(false, true, key)
                 },
-                text = if (backupStatus == COMPLETED) "Share" else "Create Backup",
+                text = if (backupStatus == COMPLETED) "Save" else "Create Backup",
                 modifier = Modifier
             )
         },

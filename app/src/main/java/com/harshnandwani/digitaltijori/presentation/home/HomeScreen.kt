@@ -169,6 +169,9 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 viewModel.onEvent(HomeScreenEvent.CreateBackup(key))
             }
         },
-        shareBackup = shareBackup
+        shareBackup = {
+            shareBackup()
+            viewModel.onEvent(HomeScreenEvent.BackupCancelled)
+        }
     )
 }
