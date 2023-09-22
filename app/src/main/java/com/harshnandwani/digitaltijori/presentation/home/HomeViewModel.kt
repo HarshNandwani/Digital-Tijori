@@ -16,6 +16,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.credential.GetAllCredenti
 import com.harshnandwani.digitaltijori.domain.use_case.credential.GetCredentialUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
+import com.harshnandwani.digitaltijori.presentation.home.util.BackupStatus
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
@@ -141,12 +142,15 @@ class HomeViewModel @Inject constructor(
             }
             is HomeScreenEvent.CreateBackup -> {
                 // TODO: Dispatchers.IO?
+                _state.value = state.value.copy(backupStatus = BackupStatus.STARTED)
                 viewModelScope.launch {
                     try {
                         createBackup(event.key, event.saveBackupFile)
+                        _state.value = state.value.copy(backupStatus = BackupStatus.COMPLETED)
                         _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(true, "Backup success"))
                     } catch (e: Exception) {
                         val msg = "Backup failed"
+                        _state.value = state.value.copy(backupStatus = BackupStatus.FAILED)
                         _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(false, "$msg - ${e.message}"))
                     }
                 }
