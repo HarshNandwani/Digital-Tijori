@@ -268,4 +268,10 @@ object AppModule {
         return GetCredentialsLinkedToAccountUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideBackupRepository(app: Application): BackupRepository {
+        return BackupRepositoryImpl(app.filesDir)
+    }
+
 }
