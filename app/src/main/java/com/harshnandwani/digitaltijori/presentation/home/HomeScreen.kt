@@ -144,7 +144,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
         }
     )
 
-    val shareBackup = fun(backupFile: File) {
+    val shareBackup = fun() {
         Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -152,7 +152,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
             val backupFileURI = FileProvider.getUriForFile(
                 context,
                 context.packageName + ".fileprovider",
-                backupFile
+                File("${context.filesDir}/backups/digital_tijori_encrypted_backup.txt")
             )
             putExtra(Intent.EXTRA_STREAM, backupFileURI)
             context.startActivity(Intent.createChooser(this, "Save your encrypted backup file"))
@@ -161,11 +161,14 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
     BackupDialog(
         isVisible = viewModel.state.value.showBackup,
-        onDismissRequest = { shouldCreateBackup, key ->
-            viewModel.onEvent(HomeScreenEvent.ShowBackupToggle(false))
+        backupStatus = viewModel.state.value.backupStatus,
+        onDismissRequest = { shouldDismiss, shouldCreateBackup, key ->
+            if (shouldDismiss)
+                viewModel.onEvent(HomeScreenEvent.BackupCancelled)
             if (shouldCreateBackup) {
-                viewModel.onEvent(HomeScreenEvent.CreateBackup(key, shareBackup))
+                viewModel.onEvent(HomeScreenEvent.CreateBackup(key))
             }
-        }
+        },
+        shareBackup = shareBackup
     )
 }

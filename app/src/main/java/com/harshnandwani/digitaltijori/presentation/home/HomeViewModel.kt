@@ -20,12 +20,9 @@ import com.harshnandwani.digitaltijori.presentation.home.util.BackupStatus
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
-import com.harshnandwani.digitaltijori.presentation.home.util.ResultantHomeScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -48,12 +45,10 @@ class HomeViewModel @Inject constructor(
     private val _state = mutableStateOf(HomeScreenState())
     val state: State<HomeScreenState> = _state
 
-    private val _eventFlow = MutableSharedFlow <ResultantHomeScreenEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     private var getAllAccountsJob: Job? = null
     private var getAllCredentialsJob: Job? = null
     private var getAllCardsJob: Job? = null
+    private var backupJob: Job? = null
 
     init {
         checkIfAboutAppShouldShow()
@@ -141,19 +136,22 @@ class HomeViewModel @Inject constructor(
                 )
             }
             is HomeScreenEvent.CreateBackup -> {
-                // TODO: Dispatchers.IO?
                 _state.value = state.value.copy(backupStatus = BackupStatus.STARTED)
-                viewModelScope.launch {
+                backupJob = viewModelScope.launch(Dispatchers.IO) {
                     try {
-                        createBackup(event.key, event.saveBackupFile)
+                        createBackup(event.key)
                         _state.value = state.value.copy(backupStatus = BackupStatus.COMPLETED)
-                        _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(true, "Backup success"))
                     } catch (e: Exception) {
-                        val msg = "Backup failed"
                         _state.value = state.value.copy(backupStatus = BackupStatus.FAILED)
-                        _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(false, "$msg - ${e.message}"))
                     }
                 }
+            }
+            HomeScreenEvent.BackupCancelled -> {
+                backupJob?.cancel()
+                _state.value = state.value.copy(
+                    backupStatus = BackupStatus.NOT_STARTED,
+                    showBackup = false
+                )
             }
         }
     }

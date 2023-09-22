@@ -10,7 +10,7 @@ class BackupRepositoryImpl(
     private val directoryName = "backups"
     private val backupFileName = "digital_tijori_encrypted_backup.txt"
 
-    override fun saveBackup(data: String): File {
+    override fun saveBackup(data: String) {
         val myDir = File(filesDir, directoryName)
         myDir.mkdir()
 
@@ -25,7 +25,5 @@ class BackupRepositoryImpl(
             it.write(data.toByteArray())
             it.close()
         }
-
-        return backupFile
     }
 }

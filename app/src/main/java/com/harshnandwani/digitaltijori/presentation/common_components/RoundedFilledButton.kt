@@ -13,13 +13,14 @@ import androidx.compose.ui.unit.dp
 fun RoundedFilledButton(
     onClick: () -> Unit,
     text: String,
-    cornerSize: Dp = 4.dp
+    cornerSize: Dp = 4.dp,
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     Button(
         onClick = onClick,
         elevation = null,
         shape = RoundedCornerShape(cornerSize),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         Text(text = text)
     }
