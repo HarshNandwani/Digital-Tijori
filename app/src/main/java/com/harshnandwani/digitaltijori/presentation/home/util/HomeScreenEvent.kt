@@ -8,5 +8,6 @@ sealed class HomeScreenEvent {
     object OnSearchDone: HomeScreenEvent()
     data class ShowAboutAppToggle(val show: Boolean): HomeScreenEvent()
     object DoNotShowAboutAppAgain: HomeScreenEvent()
+    data class ShowBackupToggle(val show: Boolean): HomeScreenEvent()
     data class CreateBackup(val key: String, val saveBackupFile: (File) -> Unit): HomeScreenEvent()
 }

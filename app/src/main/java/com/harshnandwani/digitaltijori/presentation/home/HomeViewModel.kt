@@ -134,6 +134,11 @@ class HomeViewModel @Inject constructor(
                     setDoNotShowAboutApp()
                 }
             }
+            is HomeScreenEvent.ShowBackupToggle -> {
+                _state.value = state.value.copy(
+                    showBackup = event.show
+                )
+            }
             is HomeScreenEvent.CreateBackup -> {
                 // TODO: Dispatchers.IO?
                 viewModelScope.launch {

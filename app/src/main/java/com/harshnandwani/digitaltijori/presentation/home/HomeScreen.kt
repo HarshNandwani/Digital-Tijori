@@ -9,9 +9,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
@@ -19,12 +21,15 @@ import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardAct
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.home.components.AboutAppDialog
 import com.harshnandwani.digitaltijori.presentation.home.components.AppBarWithSearchView
+import com.harshnandwani.digitaltijori.presentation.home.components.BackupDialog
 import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBar
 import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import java.io.File
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
@@ -57,6 +62,14 @@ fun HomeScreen(viewModel: HomeViewModel) {
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                viewModel.onEvent(HomeScreenEvent.ShowBackupToggle(true))
+                                showMenu = false
+                            }
+                        ) {
+                            Text(text = "Backup")
+                        }
                         DropdownMenuItem(
                             onClick = {
                                 showMenu = false
@@ -131,4 +144,28 @@ fun HomeScreen(viewModel: HomeViewModel) {
         }
     )
 
+    val shareBackup = fun(backupFile: File) {
+        Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            putExtra(Intent.EXTRA_SUBJECT, "Digital Tijori encrypted backup file")
+            val backupFileURI = FileProvider.getUriForFile(
+                context,
+                context.packageName + ".fileprovider",
+                backupFile
+            )
+            putExtra(Intent.EXTRA_STREAM, backupFileURI)
+            context.startActivity(Intent.createChooser(this, "Save your encrypted backup file"))
+        }
+    }
+
+    BackupDialog(
+        isVisible = viewModel.state.value.showBackup,
+        onDismissRequest = { shouldCreateBackup, key ->
+            viewModel.onEvent(HomeScreenEvent.ShowBackupToggle(false))
+            if (shouldCreateBackup) {
+                viewModel.onEvent(HomeScreenEvent.CreateBackup(key, shareBackup))
+            }
+        }
+    )
 }
