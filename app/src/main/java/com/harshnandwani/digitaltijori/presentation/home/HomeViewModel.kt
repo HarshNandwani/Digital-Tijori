@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsUseCase
@@ -18,12 +19,16 @@ import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAbou
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenState
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
+import com.harshnandwani.digitaltijori.presentation.home.util.ResultantHomeScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,11 +40,15 @@ class HomeViewModel @Inject constructor(
     private val getAllCredentialsWithEntityDetails: GetAllCredentialsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase,
     private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
-    private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase
+    private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase,
+    private val createBackup: CreateBackupUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeScreenState())
     val state: State<HomeScreenState> = _state
+
+    private val _eventFlow = MutableSharedFlow <ResultantHomeScreenEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private var getAllAccountsJob: Job? = null
     private var getAllCredentialsJob: Job? = null
@@ -123,6 +132,18 @@ class HomeViewModel @Inject constructor(
             is HomeScreenEvent.DoNotShowAboutAppAgain -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     setDoNotShowAboutApp()
+                }
+            }
+            is HomeScreenEvent.CreateBackup -> {
+                // TODO: Dispatchers.IO?
+                viewModelScope.launch {
+                    try {
+                        createBackup(event.key, event.saveBackupFile)
+                        _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(true, "Backup success"))
+                    } catch (e: Exception) {
+                        val msg = "Backup failed"
+                        _eventFlow.emit(ResultantHomeScreenEvent.BackupResult(false, "$msg - ${e.message}"))
+                    }
                 }
             }
         }
