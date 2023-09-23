@@ -22,6 +22,21 @@ Digital Tijori lets you store your bank accounts, cards and credentials. So that
 </string>
 
 
+    <string name="backup_description">
+        Digital Tijori uses Advanced Encryption Standard (AES-256) for encrypting which is one of the most strongest encryption algorithm. This encryption is done on your device locally.
+        \n\nThis is how backup works:
+        \n -> You enter a secret key which is hashed with SHA-256.
+        \n -> The hash is then used to encrypt your sensitive data with AES-256 algorithm.
+        \n -> The encrypted data is save to .txt file which is safe to share and store.
+
+    </string>
+
+    <string name="backup_completed_message">
+        Your encrypted backup is created please save/share it (to Google drive etc..)
+        \n\nAt the time of restore you will need this backup file and your secret key. Restores can be done on new app installs.
+        \nMake sure to keep your secret key a secret!
+    </string>
+
     <string name="url_to_github_repo">https://github.com/HarshNandwani/Digital-Tijori</string>
 
     <string name="url_to_manifest_file_source">https://github.com/HarshNandwani/Digital-Tijori/blob/main/app/src/main/AndroidManifest.xml</string>

@@ -8,6 +8,9 @@ import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDatabase
 import com.harshnandwani.digitaltijori.data.repository.*
 import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EncryptDecryptDataUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.GetAllDataInJsonUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
@@ -268,4 +271,39 @@ object AppModule {
         return GetCredentialsLinkedToAccountUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideBackupRepository(app: Application): BackupRepository {
+        return BackupRepositoryImpl(app.filesDir)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllDataInJsonUseCase(
+        getAllAccountsUseCase: GetAllAccountsUseCase,
+        getAllCardsUseCase: GetAllCardsUseCase,
+        getAllCredentialsUseCase: GetAllCredentialsUseCase
+    ): GetAllDataInJsonUseCase {
+        return GetAllDataInJsonUseCase(
+            getAllAccountsUseCase,
+            getAllCardsUseCase,
+            getAllCredentialsUseCase
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideEncryptDecryptDataUseCase(): EncryptDecryptDataUseCase {
+        return EncryptDecryptDataUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateBackupUseCase(
+        getAllDataInJsonUseCase: GetAllDataInJsonUseCase,
+        encryptDecryptDataUseCase: EncryptDecryptDataUseCase,
+        repository: BackupRepository
+    ): CreateBackupUseCase {
+        return CreateBackupUseCase(getAllDataInJsonUseCase, encryptDecryptDataUseCase, repository)
+    }
 }
