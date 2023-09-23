@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.core.di
 
 import android.app.Application
+import android.content.ContentResolver
 import androidx.room.Room
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDataStore
@@ -348,4 +349,8 @@ object AppModule {
         )
     }
 
+    // Is this a good idea? TODO: Check if this can lead to memory leak
+    @Provides
+    @Singleton
+    fun provideContentResolver(app: Application): ContentResolver = app.contentResolver
 }
