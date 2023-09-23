@@ -12,6 +12,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBack
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.IsEligibleForRestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EncryptDecryptDataUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.GetAllDataInJsonUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.RestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
@@ -330,4 +331,21 @@ object AppModule {
     fun provideSetAppOpenedUseCase(repository: PreferenceRepository): SetAppOpenedUseCase {
         return SetAppOpenedUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideRestoreUseCase(
+        encryptDecryptDataUseCase: EncryptDecryptDataUseCase,
+        addBankAccountUseCase: AddBankAccountUseCase,
+        addCardUseCase: AddCardUseCase,
+        addCredentialUseCase: AddCredentialUseCase
+    ): RestoreUseCase {
+        return RestoreUseCase(
+            encryptDecryptDataUseCase,
+            addBankAccountUseCase,
+            addCardUseCase,
+            addCredentialUseCase
+        )
+    }
+
 }
