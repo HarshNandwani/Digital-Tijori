@@ -9,6 +9,7 @@ import com.harshnandwani.digitaltijori.data.repository.*
 import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EligibleForRestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EncryptDecryptDataUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.GetAllDataInJsonUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
@@ -19,6 +20,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCas
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.*
+import com.harshnandwani.digitaltijori.domain.use_case.preference.SetAppOpenedUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
@@ -305,5 +307,19 @@ object AppModule {
         repository: BackupRepository
     ): CreateBackupUseCase {
         return CreateBackupUseCase(getAllDataInJsonUseCase, encryptDecryptDataUseCase, repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEligibleForRestoreUseCase(
+        repository: PreferenceRepository
+    ): EligibleForRestoreUseCase {
+        return EligibleForRestoreUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetAppOpenedUseCase(repository: PreferenceRepository): SetAppOpenedUseCase {
+        return SetAppOpenedUseCase(repository)
     }
 }

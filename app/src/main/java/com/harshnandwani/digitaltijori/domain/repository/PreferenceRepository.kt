@@ -10,4 +10,7 @@ interface PreferenceRepository {
 
     suspend fun getShouldShowAboutApp(): Boolean
 
+    suspend fun isAppOpenedFirstTime(): Boolean
+
+    suspend fun setAppOpened()
 }

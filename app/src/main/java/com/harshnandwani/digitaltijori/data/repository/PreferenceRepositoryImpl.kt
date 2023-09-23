@@ -21,4 +21,12 @@ class PreferenceRepositoryImpl(private val dataStore: DigitalTijoriDataStore) : 
         return dataStore.getShowAboutApp()
     }
 
+    override suspend fun isAppOpenedFirstTime(): Boolean {
+        return dataStore.getOpenedFirstTime()
+    }
+
+    override suspend fun setAppOpened() {
+        dataStore.setOpenedFirstTime()
+    }
+
 }
