@@ -15,4 +15,6 @@ interface BankAccountRepository {
 
     suspend fun delete(account: BankAccount)
 
+    suspend fun dataExists(): Boolean
+
 }

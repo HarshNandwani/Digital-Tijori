@@ -17,4 +17,6 @@ interface CardRepository {
 
     suspend fun delete(card: Card)
 
+    suspend fun dataExists(): Boolean
+
 }

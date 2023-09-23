@@ -24,6 +24,9 @@ interface CardDao {
     @Query("SELECT * FROM Card WHERE bankAccountId = :bankAccountId")
     fun getCardsLinkedToABank(bankAccountId :Int): Flow<List<CardEntity>>
 
+    @Query("SELECT EXISTS (SELECT 1 FROM Card) AS result")
+    suspend fun dataExists(): Boolean
+
     @Update
     suspend fun update(card: CardEntity)
 

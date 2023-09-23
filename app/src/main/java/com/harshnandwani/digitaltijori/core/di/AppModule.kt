@@ -312,9 +312,17 @@ object AppModule {
     @Provides
     @Singleton
     fun provideEligibleForRestoreUseCase(
-        repository: PreferenceRepository
+        preferenceRepository: PreferenceRepository,
+        bankAccountRepository: BankAccountRepository,
+        cardRepository: CardRepository,
+        credentialRepository: CredentialRepository
     ): IsEligibleForRestoreUseCase {
-        return IsEligibleForRestoreUseCase(repository)
+        return IsEligibleForRestoreUseCase(
+            preferenceRepository,
+            bankAccountRepository,
+            cardRepository,
+            credentialRepository
+        )
     }
 
     @Provides
