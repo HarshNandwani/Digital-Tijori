@@ -26,10 +26,12 @@ class AddEditCredentialActivity : ComponentActivity() {
 
             val mode = intent.getStringExtra(Parameters.KEY_MODE)
             if (mode == Parameters.VAL_MODE_ADD) {
-                val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company?
-                val linkedAccount = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount?
-                entity?.let { viewModel.onEvent(CredentialEvent.SelectEntity(it)) }
-                linkedAccount?.let { viewModel.onEvent(CredentialEvent.LinkToAccount(it)) }
+                if (intent.getBooleanExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, false)) {
+                    val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company
+                    val linkedAccount = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
+                    viewModel.onEvent(CredentialEvent.SelectEntity(entity))
+                    viewModel.onEvent(CredentialEvent.LinkToAccount(linkedAccount))
+                }
             } else {
                 val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company
                 val credential = intent.getSerializableExtra(Parameters.KEY_Credential) as Credential
