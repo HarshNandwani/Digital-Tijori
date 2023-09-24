@@ -27,7 +27,6 @@ import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 
-@ExperimentalMaterialApi
 @Composable
 fun FlipCardLayout(
     company: Company?,

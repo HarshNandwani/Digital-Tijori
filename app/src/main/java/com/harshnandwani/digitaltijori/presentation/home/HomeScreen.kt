@@ -28,7 +28,6 @@ import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import java.io.File
 
-@ExperimentalMaterialApi
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val navController = rememberNavController()

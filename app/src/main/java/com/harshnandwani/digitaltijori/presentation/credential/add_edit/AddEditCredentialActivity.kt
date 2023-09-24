@@ -3,7 +3,6 @@ package com.harshnandwani.digitaltijori.presentation.credential.add_edit
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -18,7 +17,6 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-@ExperimentalMaterialApi
 class AddEditCredentialActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

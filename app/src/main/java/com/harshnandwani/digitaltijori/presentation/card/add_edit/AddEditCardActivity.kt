@@ -3,7 +3,6 @@ package com.harshnandwani.digitaltijori.presentation.card.add_edit
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -21,7 +20,6 @@ import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import dagger.hilt.android.AndroidEntryPoint
 
-@ExperimentalMaterialApi
 @AndroidEntryPoint
 class AddEditCardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
