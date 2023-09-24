@@ -1,10 +1,13 @@
 package com.harshnandwani.digitaltijori.presentation.startup
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -42,14 +45,20 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 36.dp, vertical = 24.dp)
+            modifier = Modifier.padding(24.dp)
         ) {
             Text(text = stringResource(id = R.string.restore_backup_description))
             Spacer(modifier = Modifier.size(32.dp))
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable(enabled = true, onClick = pickBackupFile)
+                modifier = Modifier
+                    .clickable(enabled = true, onClick = pickBackupFile)
+                    .border(
+                        BorderStroke(width = 1.dp, color = Color.Gray),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val backupFileSelected = viewModel.state.value.backupFileUri != null
                 val iconId = if (backupFileSelected) R.drawable.ic_file_attached else R.drawable.ic_attach_file
@@ -81,8 +90,6 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
                 RestoreStatus.STARTED -> CircularProgressIndicator()
                 else -> Text(text = "Restore success!")
             }
-
-            Spacer(modifier = Modifier.weight(1f))
 
             if (restoreStatus != RestoreStatus.STARTED)
                 RoundedFilledButton(
