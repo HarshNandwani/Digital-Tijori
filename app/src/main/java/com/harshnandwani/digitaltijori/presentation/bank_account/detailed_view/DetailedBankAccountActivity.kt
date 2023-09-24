@@ -20,6 +20,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.u
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.presentation.util.serializable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,8 +37,8 @@ class DetailedBankAccountActivity : ComponentActivity() {
             var eventSent by remember { mutableStateOf(false) }
 
             if (!eventSent) {
-                val bank = intent.getSerializableExtra(Parameters.KEY_BANK) as Company
-                val account = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
+                val bank = intent.serializable<Company>(Parameters.KEY_BANK)
+                val account = intent.serializable<BankAccount>(Parameters.KEY_BANK_ACCOUNT)
                 viewModel.onEvent(DetailedBankAccountEvent.LoadBank(bank))
                 viewModel.onEvent(DetailedBankAccountEvent.LoadAccount(account))
                 eventSent = true //fixme:  setContent is being refreshed repeatedly

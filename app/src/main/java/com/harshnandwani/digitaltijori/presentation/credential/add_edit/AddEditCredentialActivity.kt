@@ -14,6 +14,7 @@ import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarW
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialEvent
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.presentation.util.serializable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,13 +27,15 @@ class AddEditCredentialActivity : ComponentActivity() {
 
             val mode = intent.getStringExtra(Parameters.KEY_MODE)
             if (mode == Parameters.VAL_MODE_ADD) {
-                val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company?
-                val linkedAccount = intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount?
-                entity?.let { viewModel.onEvent(CredentialEvent.SelectEntity(it)) }
-                linkedAccount?.let { viewModel.onEvent(CredentialEvent.LinkToAccount(it)) }
+                if (intent.getBooleanExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, false)) {
+                    val entity = intent.serializable<Company>(Parameters.KEY_ENTITY)
+                    val linkedAccount = intent.serializable<BankAccount>(Parameters.KEY_BANK_ACCOUNT)
+                    viewModel.onEvent(CredentialEvent.SelectEntity(entity))
+                    viewModel.onEvent(CredentialEvent.LinkToAccount(linkedAccount))
+                }
             } else {
-                val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company
-                val credential = intent.getSerializableExtra(Parameters.KEY_Credential) as Credential
+                val entity = intent.serializable<Company>(Parameters.KEY_ENTITY)
+                val credential = intent.serializable<Credential>(Parameters.KEY_Credential)
                 viewModel.onEvent(CredentialEvent.ChangeToEditMode(entity, credential))
             }
 
