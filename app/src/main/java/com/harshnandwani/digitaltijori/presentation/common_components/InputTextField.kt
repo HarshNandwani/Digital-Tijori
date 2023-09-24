@@ -9,15 +9,12 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
-@ExperimentalComposeUiApi
 @Composable
 fun InputTextField(
     label: String,
@@ -32,7 +29,6 @@ fun InputTextField(
 ) {
 
     val focusManager = LocalFocusManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
         value = value,
@@ -45,9 +41,9 @@ fun InputTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(
             onNext = { focusManager.moveFocus(FocusDirection.Next) },
-            onDone = { keyboardController?.hide() },
+            onDone = { focusManager.clearFocus() },
             onGo = {
-                keyboardController?.hide()
+                focusManager.clearFocus()
                 onImeAction()
             }
         ),

@@ -11,10 +11,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -33,7 +32,6 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@ExperimentalComposeUiApi
 @ExperimentalMaterialApi //TODO: As its Experimental keep looking into changes
 @Composable
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
@@ -43,7 +41,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     var addCardsClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
@@ -72,7 +70,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
                     if (state.mode == Parameters.VAL_MODE_ADD) {
-                        keyboardController?.hide()
+                        focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 }

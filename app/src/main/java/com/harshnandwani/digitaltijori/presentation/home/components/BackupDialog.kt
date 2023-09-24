@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +30,6 @@ import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFil
 import com.harshnandwani.digitaltijori.presentation.home.util.BackupStatus
 import com.harshnandwani.digitaltijori.presentation.home.util.BackupStatus.*
 
-@ExperimentalComposeUiApi
 @Composable
 fun BackupDialog(
     isVisible: Boolean,
