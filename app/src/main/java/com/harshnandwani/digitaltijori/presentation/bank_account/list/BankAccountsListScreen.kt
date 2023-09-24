@@ -30,7 +30,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@ExperimentalMaterialApi
 @Composable
 fun BankAccountsListScreen(viewModel: HomeViewModel) {
 

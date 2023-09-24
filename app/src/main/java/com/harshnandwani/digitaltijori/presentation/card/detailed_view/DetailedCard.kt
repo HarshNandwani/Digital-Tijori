@@ -1,6 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.card.detailed_view
 
-import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +10,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -23,7 +21,6 @@ import com.harshnandwani.digitaltijori.presentation.common_components.Confirmati
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
-@ExperimentalMaterialApi
 @Composable
 fun DetailedCard(
     titleText: String,

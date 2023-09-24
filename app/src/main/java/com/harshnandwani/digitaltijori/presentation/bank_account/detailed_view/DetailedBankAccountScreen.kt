@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -29,7 +28,6 @@ import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditC
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredential
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
-@ExperimentalMaterialApi
 @Composable
 fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
 

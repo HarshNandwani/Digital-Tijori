@@ -31,7 +31,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
 

@@ -26,7 +26,6 @@ import com.harshnandwani.digitaltijori.presentation.common_components.Confirmati
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
-@ExperimentalMaterialApi
 @Composable
 fun DetailedCredential(
     entity: Company,

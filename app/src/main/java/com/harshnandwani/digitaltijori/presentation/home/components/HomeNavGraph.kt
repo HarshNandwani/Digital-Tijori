@@ -1,6 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.home.components
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,7 +11,6 @@ import com.harshnandwani.digitaltijori.presentation.home.HomeViewModel
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 
-@ExperimentalMaterialApi
 @Composable
 fun HomeNavGraph(viewModel: HomeViewModel, navController: NavHostController) {
     NavHost(

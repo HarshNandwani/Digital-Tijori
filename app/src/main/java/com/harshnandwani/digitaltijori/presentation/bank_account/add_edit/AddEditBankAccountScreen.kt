@@ -32,7 +32,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@ExperimentalMaterialApi //TODO: As its Experimental keep looking into changes
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
 
