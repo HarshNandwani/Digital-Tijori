@@ -24,11 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,12 +42,11 @@ import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFil
 import com.harshnandwani.digitaltijori.presentation.startup.util.RestoreStatus
 import com.harshnandwani.digitaltijori.presentation.startup.util.StartupEvent
 
-@ExperimentalComposeUiApi
 @Composable
 fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextAction: () -> Unit) {
 
     val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     var passwordVisibility by remember { mutableStateOf(false) }
     val icon = if(passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
@@ -115,7 +113,7 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
                     RoundedFilledButton(
                         onClick = {
                             viewModel.onEvent(StartupEvent.StartRestore)
-                            keyboardController?.hide()
+                            focusManager.clearFocus()
                         },
                         text = "Restore data"
                     )

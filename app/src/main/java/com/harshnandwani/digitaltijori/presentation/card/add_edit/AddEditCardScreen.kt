@@ -16,13 +16,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,7 +43,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Composable
 fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
 
@@ -53,7 +51,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     var addCredentialClicked by remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
@@ -84,7 +82,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                 card = card,
                 onIssuerLogoClick = {
                     if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
-                        keyboardController?.hide()
+                        focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 },

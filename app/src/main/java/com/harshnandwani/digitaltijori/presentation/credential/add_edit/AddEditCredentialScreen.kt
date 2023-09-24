@@ -12,10 +12,9 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,7 +31,6 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
@@ -42,7 +40,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     var passwordVisibility by remember { mutableStateOf(false) }
 
@@ -75,7 +73,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
                     if (state.mode == Parameters.VAL_MODE_ADD && !credential.isLinkedToBank) {
-                        keyboardController?.hide()
+                        focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 }
