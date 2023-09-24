@@ -19,6 +19,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.card.DeleteCardUseCase
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.presentation.util.serializable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,8 +36,8 @@ class DetailedCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val issuer = intent.getSerializableExtra(Parameters.KEY_ISSUER) as Company
-            val card = intent.getSerializableExtra(Parameters.KEY_CARD) as Card
+            val issuer = intent.serializable<Company>(Parameters.KEY_ISSUER)
+            val card = intent.serializable<Card>(Parameters.KEY_CARD)
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {

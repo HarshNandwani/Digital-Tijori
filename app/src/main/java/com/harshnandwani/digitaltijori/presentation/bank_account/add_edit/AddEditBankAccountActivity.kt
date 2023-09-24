@@ -13,6 +13,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.B
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.presentation.util.serializable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,11 +26,9 @@ class AddEditBankAccountActivity : ComponentActivity() {
 
             val mode = intent.getStringExtra(Parameters.KEY_MODE)
             if (mode == Parameters.VAL_MODE_EDIT) {
-                val bank = intent.getSerializableExtra(Parameters.KEY_BANK) as Company
-                val account =
-                    intent.getSerializableExtra(Parameters.KEY_BANK_ACCOUNT) as BankAccount
+                val bank = intent.serializable<Company>(Parameters.KEY_BANK)
+                val account = intent.serializable<BankAccount>(Parameters.KEY_BANK_ACCOUNT)
                 viewModel.onEvent(BankAccountEvent.ChangeToEditMode(bank, account))
-
             }
 
             DigitalTijoriTheme {

@@ -19,6 +19,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredenti
 import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
+import com.harshnandwani.digitaltijori.presentation.util.serializable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,8 +36,8 @@ class DetailedCredentialActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val entity = intent.getSerializableExtra(Parameters.KEY_ENTITY) as Company
-            val credential = intent.getSerializableExtra(Parameters.KEY_Credential) as Credential
+            val entity = intent.serializable<Company>(Parameters.KEY_ENTITY)
+            val credential = intent.serializable<Credential>(Parameters.KEY_Credential)
 
             DigitalTijoriTheme {
                 Surface(color = MaterialTheme.colors.background) {
