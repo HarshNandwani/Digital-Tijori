@@ -32,8 +32,8 @@ Digital Tijori lets you store your bank accounts, cards and credentials. So that
     </string>
 
     <string name="backup_completed_message">
-        Your encrypted backup is created please save/share it (to Google drive etc..)
-        \n\nAt the time of restore you will need this backup file and your secret key. Restores can be done on new app installs.
+        Your encrypted backup is created please proceed to save/share it (to Google drive etc..)
+        \n\nRestores can be done on new app installs, with this backup file and your secret key.
         \nMake sure to keep your secret key a secret!
     </string>
 
