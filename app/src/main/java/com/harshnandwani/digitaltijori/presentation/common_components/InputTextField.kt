@@ -25,6 +25,7 @@ fun InputTextField(
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions,
     modifier: Modifier = Modifier,
+    onImeAction: () -> Unit = {  },
     placeholder: String? = null,
     trailingIcon: @Composable () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None
@@ -44,7 +45,11 @@ fun InputTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(
             onNext = { focusManager.moveFocus(FocusDirection.Next) },
-            onDone = { keyboardController?.hide() }
+            onDone = { keyboardController?.hide() },
+            onGo = {
+                keyboardController?.hide()
+                onImeAction()
+            }
         ),
         modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
         trailingIcon = trailingIcon,

@@ -23,6 +23,9 @@ interface CredentialDao {
     @Query("SELECT * FROM Credential WHERE bankAccountId = :bankAccountId")
     fun getCredentialsLinkedToAccount(bankAccountId: Int): Flow<List<CredentialEntity>>
 
+    @Query("SELECT EXISTS (SELECT 1 FROM Credential) AS result")
+    suspend fun dataExists(): Boolean
+
     @Update
     suspend fun update(credential: CredentialEntity)
 

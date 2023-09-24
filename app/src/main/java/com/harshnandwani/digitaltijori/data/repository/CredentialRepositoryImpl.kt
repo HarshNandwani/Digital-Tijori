@@ -46,6 +46,10 @@ class CredentialRepositoryImpl(
         dao.delete(CredentialEntity.toEntity(credential))
     }
 
+    override suspend fun dataExists(): Boolean {
+        return dao.dataExists()
+    }
+
     private suspend fun mapEntityToDomain(credentialEntity: CredentialEntity): Credential? {
         credentialEntity.bankAccountId?.let {
             val linkedAccount = accountRepository.get(it) ?: return@let

@@ -39,4 +39,8 @@ class BankAccountRepositoryImpl(
     override suspend fun delete(account: BankAccount) {
         dao.delete(BankAccountEntity.toEntity(account))
     }
+
+    override suspend fun dataExists(): Boolean {
+        return dao.dataExists()
+    }
 }

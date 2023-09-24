@@ -32,6 +32,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        uat {
+            applicationIdSuffix ".uat"
+            versionNameSuffix ".uat"
+            debuggable false
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

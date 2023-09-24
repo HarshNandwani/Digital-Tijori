@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.core.di
 
 import android.app.Application
+import android.content.ContentResolver
 import androidx.room.Room
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.data.local.DigitalTijoriDataStore
@@ -9,8 +10,10 @@ import com.harshnandwani.digitaltijori.data.repository.*
 import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.IsEligibleForRestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EncryptDecryptDataUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.GetAllDataInJsonUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.RestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.*
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.AddBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
@@ -19,6 +22,7 @@ import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllBanksUseCas
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetAllCardIssuersUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.credential.*
+import com.harshnandwani.digitaltijori.domain.use_case.preference.SetAppOpenedUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.SetDoNotShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.preference.ShouldShowAboutAppUseCase
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
@@ -306,4 +310,47 @@ object AppModule {
     ): CreateBackupUseCase {
         return CreateBackupUseCase(getAllDataInJsonUseCase, encryptDecryptDataUseCase, repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideEligibleForRestoreUseCase(
+        preferenceRepository: PreferenceRepository,
+        bankAccountRepository: BankAccountRepository,
+        cardRepository: CardRepository,
+        credentialRepository: CredentialRepository
+    ): IsEligibleForRestoreUseCase {
+        return IsEligibleForRestoreUseCase(
+            preferenceRepository,
+            bankAccountRepository,
+            cardRepository,
+            credentialRepository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetAppOpenedUseCase(repository: PreferenceRepository): SetAppOpenedUseCase {
+        return SetAppOpenedUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRestoreUseCase(
+        encryptDecryptDataUseCase: EncryptDecryptDataUseCase,
+        addBankAccountUseCase: AddBankAccountUseCase,
+        addCardUseCase: AddCardUseCase,
+        addCredentialUseCase: AddCredentialUseCase
+    ): RestoreUseCase {
+        return RestoreUseCase(
+            encryptDecryptDataUseCase,
+            addBankAccountUseCase,
+            addCardUseCase,
+            addCredentialUseCase
+        )
+    }
+
+    // Is this a good idea? TODO: Check if this can lead to memory leak
+    @Provides
+    @Singleton
+    fun provideContentResolver(app: Application): ContentResolver = app.contentResolver
 }

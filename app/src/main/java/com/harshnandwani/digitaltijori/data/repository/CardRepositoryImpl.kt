@@ -46,6 +46,10 @@ class CardRepositoryImpl(
         dao.delete(CardEntity.toEntity(card))
     }
 
+    override suspend fun dataExists(): Boolean {
+        return dao.dataExists()
+    }
+
     private suspend fun mapEntityToDomain(cardEntity: CardEntity): Card? {
         cardEntity.bankAccountId?.let {
             val linkedAccount = accountRepository.get(it) ?: return@let

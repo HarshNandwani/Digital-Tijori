@@ -21,6 +21,9 @@ interface BankAccountDao {
     @Query("SELECT * FROM Company JOIN BankAccount ON Company.companyId = BankAccount.companyId")
     fun getAccountsWithBankDetails(): Flow<Map<CompanyEntity, List<BankAccountEntity>>>
 
+    @Query("SELECT EXISTS (SELECT 1 FROM BankAccount) AS result")
+    suspend fun dataExists(): Boolean
+
     @Update
     suspend fun update(account: BankAccountEntity)
 

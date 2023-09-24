@@ -17,4 +17,6 @@ interface CredentialRepository {
 
     suspend fun delete(credential: Credential)
 
+    suspend fun dataExists(): Boolean
+
 }

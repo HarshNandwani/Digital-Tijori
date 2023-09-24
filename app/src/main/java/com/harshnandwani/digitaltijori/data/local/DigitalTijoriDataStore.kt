@@ -17,6 +17,7 @@ class DigitalTijoriDataStore(private val context: Context) {
 
         private val LAST_AUTHENTICATED = longPreferencesKey("last_authenticated")
         private val SHOW_ABOUT_APP = booleanPreferencesKey("show_about_app")
+        private val OPENED_FIRST_TIME = booleanPreferencesKey("opened_first_time")
     }
 
     suspend fun setAuthenticatedTimestamp(time: Long) {
@@ -37,4 +38,11 @@ class DigitalTijoriDataStore(private val context: Context) {
     suspend fun getShowAboutApp(): Boolean =
         context.dataStore.data.firstOrNull()?.get(SHOW_ABOUT_APP) ?: true
 
+    suspend fun setOpenedFirstTime() {
+        context.dataStore.edit { preferences ->
+            preferences[OPENED_FIRST_TIME] = false
+        }
+    }
+
+    suspend fun getOpenedFirstTime(): Boolean = context.dataStore.data.firstOrNull()?.get(OPENED_FIRST_TIME) ?: true
 }

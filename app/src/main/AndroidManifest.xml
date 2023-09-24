@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DigitalTijori">
         <activity
+            android:name=".presentation.startup.StartupActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DigitalTijori">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".presentation.card.detailed_view.DetailedCardActivity"
             android:exported="false"
             android:label="@string/title_activity_detailed_card"
@@ -44,16 +54,6 @@
             android:exported="false"
             android:label="@string/title_activity_bottom_navigation"
             android:theme="@style/Theme.DigitalTijori.NoActionBar" />
-        <activity
-            android:name=".presentation.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.DigitalTijori.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -64,7 +64,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-
     </application>
 
 </manifest>

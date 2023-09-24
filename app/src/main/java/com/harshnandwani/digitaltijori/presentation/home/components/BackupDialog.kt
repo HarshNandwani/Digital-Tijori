@@ -3,6 +3,7 @@ package com.harshnandwani.digitaltijori.presentation.home.components
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.harshnandwani.digitaltijori.R
@@ -46,6 +48,19 @@ fun BackupDialog(
 
     var infoVisible by remember { mutableStateOf(true) }
     var showMore by remember { mutableStateOf(false) }
+
+
+    fun createBackup() {
+        if (key.length < 8) {
+            Toast.makeText(
+                context,
+                "Your key should contain at least 8 characters",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        onDismissRequest(false, true, key)
+    }
 
     AlertDialog(
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
@@ -82,7 +97,8 @@ fun BackupDialog(
                             label = "Enter secret key",
                             value = key,
                             onValueChange = { key = it },
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go)
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
+                            onImeAction = { createBackup() }
                         )
 
                         Text(text = "You must remember this key for restoring your backup.")
@@ -116,18 +132,10 @@ fun BackupDialog(
                         shareBackup()
                         return@RoundedFilledButton
                     }
-                    if (key.length < 8) {
-                        Toast.makeText(
-                            context,
-                            "Your key should contain at least 8 characters",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@RoundedFilledButton
-                    }
-                    onDismissRequest(false, true, key)
+                    createBackup()
                 },
-                text = if (backupStatus == COMPLETED) "Save" else "Create Backup",
-                modifier = Modifier
+                text = if (backupStatus == COMPLETED) "Proceed to save" else "Create Backup",
+                modifier = Modifier.padding(end = 8.dp, bottom = 8.dp)
             )
         },
         dismissButton = {
