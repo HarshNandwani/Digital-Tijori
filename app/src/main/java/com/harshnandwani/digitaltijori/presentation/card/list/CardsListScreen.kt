@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
@@ -100,7 +99,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                             putExtra(Parameters.KEY_ISSUER, card.company)
                                             putExtra(Parameters.KEY_CARD, cardToEdit)
-                                            ContextCompat.startActivity(context, this, null)
+                                            context.startActivity(this)
                                         }
                                     }
                                 }
@@ -127,7 +126,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                     Intent(context, DetailedCardActivity::class.java).apply {
                                         putExtra(Parameters.KEY_ISSUER, card.company)
                                         putExtra(Parameters.KEY_CARD, card)
-                                        ContextCompat.startActivity(context, this, null)
+                                        context.startActivity(this)
                                     }
                                 }
                             )

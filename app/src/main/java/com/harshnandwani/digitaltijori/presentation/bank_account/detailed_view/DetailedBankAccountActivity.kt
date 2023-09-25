@@ -39,7 +39,10 @@ class DetailedBankAccountActivity : ComponentActivity() {
             }
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Account details") {
+                TopAppBarScaffold(
+                    title = "Account details",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
                     DetailedBankAccountScreen(viewModel)
                 }
 

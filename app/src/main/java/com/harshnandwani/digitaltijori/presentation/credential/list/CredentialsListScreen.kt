@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredentialActivity
@@ -95,7 +94,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                                     putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                     putExtra(Parameters.KEY_ENTITY, credential.company)
                                     putExtra(Parameters.KEY_Credential, credentialToEdit)
-                                    ContextCompat.startActivity(context, this, null)
+                                    context.startActivity(this)
                                 }
                             }
                         }
@@ -109,7 +108,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                             Intent(context, DetailedCredentialActivity::class.java).apply {
                                 putExtra(Parameters.KEY_ENTITY, credential.company)
                                 putExtra(Parameters.KEY_Credential, credential)
-                                ContextCompat.startActivity(context, this, null)
+                                context.startActivity(this)
                             }
                         }
                     )

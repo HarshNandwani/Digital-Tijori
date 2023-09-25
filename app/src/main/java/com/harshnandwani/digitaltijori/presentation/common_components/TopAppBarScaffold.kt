@@ -10,11 +10,12 @@ import androidx.compose.ui.Modifier
 @Composable
 fun TopAppBarScaffold(
     title: String,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Scaffold(
-        topBar = { TopAppBarWithBackButton(title = title) }
+        topBar = { TopAppBarWithBackButton(title, onBack) }
     ) { paddingValues ->
         Box(
             modifier

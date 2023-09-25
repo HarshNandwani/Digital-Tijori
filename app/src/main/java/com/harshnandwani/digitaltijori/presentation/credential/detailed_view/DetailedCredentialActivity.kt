@@ -35,7 +35,10 @@ class DetailedCredentialActivity : ComponentActivity() {
             val credential = intent.serializable<Credential>(Parameters.KEY_Credential)
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Credential details") {
+                TopAppBarScaffold(
+                    title = "Credential details",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
                     DetailedCredential(
                         entity = entity,
                         credential = credential,
@@ -48,7 +51,8 @@ class DetailedCredentialActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
+                        onDone = { finish() }
                     )
                 }
             }

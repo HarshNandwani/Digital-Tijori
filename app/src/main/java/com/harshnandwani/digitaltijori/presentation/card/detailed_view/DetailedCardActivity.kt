@@ -35,7 +35,10 @@ class DetailedCardActivity : ComponentActivity() {
             val card = intent.serializable<Card>(Parameters.KEY_CARD)
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Card details") {
+                TopAppBarScaffold(
+                    title = "Card details",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
                     DetailedCard(
                         titleText = "${issuer.name} ${card.cardType.name} Details",
                         issuer = issuer,
@@ -49,7 +52,8 @@ class DetailedCardActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        modifier = Modifier.padding(24.dp)
+                        modifier = Modifier.padding(24.dp),
+                        onDone = { finish() }
                     )
                 }
             }

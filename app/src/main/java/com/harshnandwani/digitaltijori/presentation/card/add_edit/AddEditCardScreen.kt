@@ -26,7 +26,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.domain.util.cardsTypesList
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
@@ -44,7 +43,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
+fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
 
     val state = viewModel.state.value
     val card = state.card.value
@@ -285,10 +284,10 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ENTITY, state.selectedIssuer)
                             putExtra(Parameters.KEY_BANK_ACCOUNT, card.bankAccount)
-                            ContextCompat.startActivity(context, this, null)
+                            context.startActivity(this)
                         }
                     }
-                    (context as AddEditCardActivity).onBackPressed()
+                    onDone()
                 }
             }
         }

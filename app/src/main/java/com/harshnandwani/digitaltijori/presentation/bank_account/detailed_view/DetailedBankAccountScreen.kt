@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
@@ -72,7 +71,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                                 putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                 putExtra(Parameters.KEY_BANK, state.bank)
                                 putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
-                                ContextCompat.startActivity(context, this, null)
+                                context.startActivity(this)
                             }
                         }
                     )
@@ -168,7 +167,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                         putExtra(Parameters.KEY_ISSUER, state.bank)
                         putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
-                        ContextCompat.startActivity(context, this, null)
+                        context.startActivity(this)
                     }
                 },
                 text = "add more cards",
@@ -203,7 +202,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                         putExtra(Parameters.KEY_ENTITY, state.bank)
                         putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
-                        ContextCompat.startActivity(context, this, null)
+                        context.startActivity(this)
                     }
                 },
                 text = "add more credentials",

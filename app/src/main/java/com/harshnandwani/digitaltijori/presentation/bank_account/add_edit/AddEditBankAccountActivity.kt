@@ -29,8 +29,11 @@ class AddEditBankAccountActivity : ComponentActivity() {
             }
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Provide account details") {
-                    AddEditBankAccountScreen(viewModel)
+                TopAppBarScaffold(
+                    title = "Provide account details",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
+                    AddEditBankAccountScreen(viewModel, onDone = { finish() })
                 }
             }
         }

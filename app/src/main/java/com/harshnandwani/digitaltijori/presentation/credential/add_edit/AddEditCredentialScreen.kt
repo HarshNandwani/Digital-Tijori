@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
+fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () -> Unit) {
 
     val state = viewModel.state.value
     val credential = state.credential.value
@@ -147,7 +147,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel) {
                 }
                 is CredentialSubmitResultEvent.CredentialSaved -> {
                     Toast.makeText(context, "Credentials saved!", Toast.LENGTH_SHORT).show()
-                    (context as AddEditCredentialActivity).onBackPressed()
+                    onDone()
                 }
 
             }
