@@ -1,6 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.credential.detailed_view
 
-import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,8 @@ fun DetailedCredential(
     entity: Company,
     credential: Credential,
     onDeleteAction: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDone: () -> Unit = {}
 ) {
 
     val context = LocalContext.current
@@ -71,8 +70,7 @@ fun DetailedCredential(
                             putExtra(Parameters.KEY_Credential, credential)
                             ContextCompat.startActivity(context, this, null)
                         }
-                        if (context is DetailedCredentialActivity)
-                            context.finish()
+                        onDone()
                     }
                 )
                 Spacer(modifier = Modifier.size(8.dp))

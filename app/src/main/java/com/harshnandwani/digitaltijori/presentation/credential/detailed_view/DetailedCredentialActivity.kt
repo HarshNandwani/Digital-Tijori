@@ -48,7 +48,8 @@ class DetailedCredentialActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
+                        onDone = { finish() }
                     )
                 }
             }
