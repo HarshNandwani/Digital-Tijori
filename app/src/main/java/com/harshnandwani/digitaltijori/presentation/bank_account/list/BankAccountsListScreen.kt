@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.DetailedBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.SingleBankAccountItem
@@ -80,7 +79,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                                     return@withContext
                                 }
                                 val shareIntent = BankAccountHelperFunctions.getShareIntent(linkedBank.name, accountToShare)
-                                startActivity(context, shareIntent, null)
+                                context.startActivity(shareIntent)
                             }
                         }
                     },
@@ -110,7 +109,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                                     putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                                     putExtra(Parameters.KEY_BANK, linkedBank)
                                     putExtra(Parameters.KEY_BANK_ACCOUNT, accountToEdit)
-                                    startActivity(context, this, null)
+                                    context.startActivity(this)
                                 }
                             }
                         }
@@ -123,7 +122,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                             Intent(context, DetailedBankAccountActivity::class.java).apply {
                                 putExtra(Parameters.KEY_BANK, linkedBank)
                                 putExtra(Parameters.KEY_BANK_ACCOUNT, bankAccount)
-                                startActivity(context, this, null)
+                                context.startActivity(this)
                             }
                         }
                     )

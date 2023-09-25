@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
@@ -68,7 +67,7 @@ fun DetailedCredential(
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                             putExtra(Parameters.KEY_ENTITY, entity)
                             putExtra(Parameters.KEY_Credential, credential)
-                            ContextCompat.startActivity(context, this, null)
+                            context.startActivity(this)
                         }
                         onDone()
                     }

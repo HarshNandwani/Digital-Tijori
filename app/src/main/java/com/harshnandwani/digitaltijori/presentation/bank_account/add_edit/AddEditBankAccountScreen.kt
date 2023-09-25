@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
@@ -182,7 +181,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ISSUER, event.linkedBank)
                             putExtra(Parameters.KEY_BANK_ACCOUNT, state.bankAccount.value)
-                            startActivity(context, this, null)
+                            context.startActivity(this)
                         }
                     }
                     onDone()

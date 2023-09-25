@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.R
@@ -83,7 +82,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                                     data = Uri.parse("mailto:")
                                     putExtra(Intent.EXTRA_EMAIL, addresses)
                                     putExtra(Intent.EXTRA_SUBJECT, "Digital Tijori app feedback")
-                                    startActivity(context, this, null)
+                                    context.startActivity(this)
                                 }
                             }
                         ) {

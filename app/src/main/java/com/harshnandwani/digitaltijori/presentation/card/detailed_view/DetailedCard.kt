@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
@@ -54,7 +53,7 @@ fun DetailedCard(
                         putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
                         putExtra(Parameters.KEY_ISSUER, issuer)
                         putExtra(Parameters.KEY_CARD, card)
-                        ContextCompat.startActivity(context, this, null)
+                        context.startActivity(this)
                     }
                     onDone()
                 }
