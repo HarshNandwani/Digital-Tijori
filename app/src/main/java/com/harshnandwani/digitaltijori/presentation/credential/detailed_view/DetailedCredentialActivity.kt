@@ -4,19 +4,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.use_case.credential.DeleteCredentialUseCase
-import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
+import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarScaffold
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 import com.harshnandwani.digitaltijori.presentation.util.serializable
@@ -40,29 +35,24 @@ class DetailedCredentialActivity : ComponentActivity() {
             val credential = intent.serializable<Credential>(Parameters.KEY_Credential)
 
             DigitalTijoriTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    Scaffold(
-                        topBar = { TopAppBarWithBackButton(title = "Credential details") }
-                    ) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            DetailedCredential(
-                                entity = entity,
-                                credential = credential,
-                                onDeleteAction = {
-                                    lifecycleScope.launch {
-                                        deleteCredentialUseCase(credential)
-                                        withContext(Dispatchers.Main) {
-                                            Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
-                                            finish()
-                                        }
-                                    }
-                                },
-                                modifier = Modifier.padding(16.dp)
-                            )
-                        }
-                    }
+                TopAppBarScaffold(title = "Credential details") {
+                    DetailedCredential(
+                        entity = entity,
+                        credential = credential,
+                        onDeleteAction = {
+                            lifecycleScope.launch {
+                                deleteCredentialUseCase(credential)
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                }
+                            }
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             }
+
         }
     }
 }
