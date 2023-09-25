@@ -44,7 +44,10 @@ class AddEditCardActivity : ComponentActivity() {
             }
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Provide card details") {
+                TopAppBarScaffold(
+                    title = "Provide card details",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
                     AddEditCardScreen(viewModel, onDone = { finish() })
                 }
             }

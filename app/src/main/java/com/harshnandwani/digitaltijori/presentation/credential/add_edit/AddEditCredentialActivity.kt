@@ -37,7 +37,10 @@ class AddEditCredentialActivity : ComponentActivity() {
             }
 
             DigitalTijoriTheme {
-                TopAppBarScaffold(title = "Provide credentials") {
+                TopAppBarScaffold(
+                    title = "Provide credentials",
+                    onBack = { onBackPressedDispatcher.onBackPressed() }
+                ) {
                     AddEditCredentialScreen(viewModel, onDone = { finish() })
                 }
             }
