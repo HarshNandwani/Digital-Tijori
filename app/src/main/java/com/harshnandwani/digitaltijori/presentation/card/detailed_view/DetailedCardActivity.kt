@@ -49,7 +49,8 @@ class DetailedCardActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        modifier = Modifier.padding(24.dp)
+                        modifier = Modifier.padding(24.dp),
+                        onDone = { finish() }
                     )
                 }
             }

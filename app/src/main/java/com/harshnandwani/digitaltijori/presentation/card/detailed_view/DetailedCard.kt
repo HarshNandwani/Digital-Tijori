@@ -27,7 +27,8 @@ fun DetailedCard(
     issuer: Company,
     card: Card,
     onDeleteAction: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDone: () -> Unit = {}
 ) {
 
     val context = LocalContext.current
@@ -55,8 +56,7 @@ fun DetailedCard(
                         putExtra(Parameters.KEY_CARD, card)
                         ContextCompat.startActivity(context, this, null)
                     }
-                    if (context is DetailedCardActivity)
-                        context.finish()
+                    onDone()
                 }
             )
             Spacer(modifier = Modifier.size(8.dp))
