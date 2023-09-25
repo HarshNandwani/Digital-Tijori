@@ -349,7 +349,7 @@ object AppModule {
         )
     }
 
-    // Is this a good idea? TODO: Check if this can lead to memory leak
+    // Is this a good idea?
     @Provides
     @Singleton
     fun provideContentResolver(app: Application): ContentResolver = app.contentResolver

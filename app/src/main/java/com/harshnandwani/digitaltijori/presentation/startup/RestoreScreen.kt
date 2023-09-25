@@ -120,7 +120,6 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
                 }
                 RestoreStatus.STARTED -> CircularProgressIndicator()
                 else -> {
-                    // TODO: check if memory leak occurs!
                     Toast.makeText(context, "Restore success", Toast.LENGTH_SHORT).show()
                     nextAction()
                 }

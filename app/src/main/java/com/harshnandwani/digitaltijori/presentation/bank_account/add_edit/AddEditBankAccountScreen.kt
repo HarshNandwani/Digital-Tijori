@@ -152,6 +152,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             if(state.selectedBank?.issuesCards == true && state.mode == Parameters.VAL_MODE_ADD) {
                 RoundedFilledButton(
                     onClick = {
+                        focusManager.clearFocus()
                         addCardsClicked = true
                         viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
                     },
@@ -161,7 +162,10 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
             }
 
             RoundedOutlineButton(
-                onClick = { viewModel.onEvent(BankAccountEvent.BankAccountSubmit) },
+                onClick = {
+                    focusManager.clearFocus()
+                    viewModel.onEvent(BankAccountEvent.BankAccountSubmit)
+                },
                 text = "Save account"
             )
 
