@@ -30,7 +30,7 @@ class AddEditBankAccountActivity : ComponentActivity() {
 
             DigitalTijoriTheme {
                 TopAppBarScaffold(title = "Provide account details") {
-                    AddEditBankAccountScreen(viewModel)
+                    AddEditBankAccountScreen(viewModel, onDone = { finish() })
                 }
             }
         }

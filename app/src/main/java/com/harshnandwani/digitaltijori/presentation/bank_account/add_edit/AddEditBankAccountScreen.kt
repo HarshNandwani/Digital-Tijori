@@ -1,6 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.add_edit
 
-import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -34,9 +33,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
+fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () -> Unit) {
 
-    val activity = LocalContext.current as Activity
+    val context = LocalContext.current
     val state = viewModel.state.value
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -176,21 +175,21 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is BankAccountSubmitResultEvent.BankAccountSaved -> {
-                    Toast.makeText(activity, "Bank Account saved!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Bank Account saved!", Toast.LENGTH_SHORT).show()
                     if(addCardsClicked){
-                        Intent(activity, AddEditCardActivity::class.java).apply {
+                        Intent(context, AddEditCardActivity::class.java).apply {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ISSUER, event.linkedBank)
                             putExtra(Parameters.KEY_BANK_ACCOUNT, state.bankAccount.value)
-                            startActivity(activity, this, null)
+                            startActivity(context, this, null)
                         }
                     }
-                    activity.finish()
+                    onDone()
                 }
                 is BankAccountSubmitResultEvent.ShowError -> {
                     addCardsClicked = false
-                    Toast.makeText(activity, event.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
