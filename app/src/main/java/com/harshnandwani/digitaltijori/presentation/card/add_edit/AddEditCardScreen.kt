@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
+fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
 
     val state = viewModel.state.value
     val card = state.card.value
@@ -288,7 +288,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel) {
                             ContextCompat.startActivity(context, this, null)
                         }
                     }
-                    (context as AddEditCardActivity).onBackPressed()
+                    onDone()
                 }
             }
         }
