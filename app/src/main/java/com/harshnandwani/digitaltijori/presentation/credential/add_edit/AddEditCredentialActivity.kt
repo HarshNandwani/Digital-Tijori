@@ -3,14 +3,11 @@ package com.harshnandwani.digitaltijori.presentation.credential.add_edit
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
-import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarWithBackButton
+import com.harshnandwani.digitaltijori.presentation.common_components.TopAppBarScaffold
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.util.CredentialEvent
 import com.harshnandwani.digitaltijori.presentation.ui.theme.DigitalTijoriTheme
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -40,12 +37,8 @@ class AddEditCredentialActivity : ComponentActivity() {
             }
 
             DigitalTijoriTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    Scaffold(
-                        topBar = { TopAppBarWithBackButton(title = "Provide credentials") }
-                    ) {
-                        AddEditCredentialScreen(viewModel)
-                    }
+                TopAppBarScaffold(title = "Provide credentials") {
+                    AddEditCredentialScreen(viewModel)
                 }
             }
         }
