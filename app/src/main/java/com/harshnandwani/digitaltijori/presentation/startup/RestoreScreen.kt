@@ -41,9 +41,15 @@ import com.harshnandwani.digitaltijori.presentation.common_components.InputTextF
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.startup.util.RestoreStatus
 import com.harshnandwani.digitaltijori.presentation.startup.util.StartupEvent
+import com.harshnandwani.digitaltijori.presentation.startup.util.StartupState
 
 @Composable
-fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextAction: () -> Unit) {
+fun RestoreScreen(
+    viewModel: StartupViewModel,
+    uiState: StartupState,
+    pickBackupFile: () -> Unit,
+    nextAction: () -> Unit
+) {
 
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -79,19 +85,19 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val backupFileSelected = viewModel.state.value.backupFileUri != null
+                val backupFileSelected = uiState.backupFileUri != null
                 val iconId = if (backupFileSelected) R.drawable.ic_file_attached else R.drawable.ic_attach_file
                 Icon(
                     painter = painterResource(id = iconId),
                     contentDescription = "Icon attach file",
                     Modifier.size(48.dp)
                 )
-                Text(text = viewModel.state.value.backupFileName ?: "Choose backup file")
+                Text(text = uiState.backupFileName ?: "Choose backup file")
             }
 
             InputTextField(
                 label = "Enter your secret key",
-                value = viewModel.state.value.secretKey,
+                value = uiState.secretKey,
                 onValueChange = { viewModel.onEvent(StartupEvent.EnteredSecretKey(it)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -105,11 +111,11 @@ fun RestoreScreen(viewModel: StartupViewModel, pickBackupFile: () -> Unit, nextA
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.size(16.dp))
-            val restoreStatus = viewModel.state.value.restoreStatus
+            val restoreStatus = uiState.restoreStatus
             when (restoreStatus) {
                 RestoreStatus.NOT_STARTED, RestoreStatus.FAILED -> {
                     if (restoreStatus == RestoreStatus.FAILED)
-                        Text(text = viewModel.state.value.restoreErrorMessage, color = Color.Red)
+                        Text(text = uiState.restoreErrorMessage, color = Color.Red)
                     RoundedFilledButton(
                         onClick = {
                             viewModel.onEvent(StartupEvent.StartRestore)

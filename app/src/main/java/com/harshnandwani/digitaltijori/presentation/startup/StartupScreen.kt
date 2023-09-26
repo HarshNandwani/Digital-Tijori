@@ -10,9 +10,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun StartupScreen(
@@ -22,27 +24,27 @@ fun StartupScreen(
     nextAction: () -> Unit
 ) {
 
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
 
-    if (state.restoreEligible == false && state.authSuccessful == true) {
+    if (uiState.restoreEligible == false && uiState.authSuccessful == true) {
         nextAction()
         return
     }
 
     Column {
 
-        if (state.restoreEligible == null || state.shouldAuthenticate == null) {
+        if (uiState.restoreEligible == null || uiState.shouldAuthenticate == null) {
             AppIconBackground()
             CircularProgressIndicator()
             return
         }
 
-        if (state.restoreEligible == true) {
-            RestoreScreen(viewModel, pickBackupFile, nextAction)
-        } else if (state.shouldAuthenticate == true) {
+        if (uiState.restoreEligible == true) {
+            RestoreScreen(viewModel, uiState, pickBackupFile, nextAction)
+        } else if (uiState.shouldAuthenticate == true) {
             AppIconBackground()
-            AuthScreen(viewModel, promptForAuth)
-        } else if (state.restoreEligible == false && state.authSuccessful == true) {
+            AuthScreen(uiState.authAvailable, promptForAuth)
+        } else if (uiState.restoreEligible == false && uiState.authSuccessful == true) {
             nextAction()
         }
 
