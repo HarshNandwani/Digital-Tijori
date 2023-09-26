@@ -44,7 +44,7 @@ class DetailedCardActivity : ComponentActivity() {
                         issuer = issuer,
                         card = card,
                         onDeleteAction = {
-                            lifecycleScope.launch {
+                            lifecycleScope.launch(Dispatchers.IO) {
                                 deleteCardUseCase(card)
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(this@DetailedCardActivity, "Card deleted", Toast.LENGTH_SHORT).show()

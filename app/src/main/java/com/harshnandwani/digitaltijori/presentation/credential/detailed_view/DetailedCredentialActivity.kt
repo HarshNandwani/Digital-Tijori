@@ -43,7 +43,7 @@ class DetailedCredentialActivity : ComponentActivity() {
                         entity = entity,
                         credential = credential,
                         onDeleteAction = {
-                            lifecycleScope.launch {
+                            lifecycleScope.launch(Dispatchers.IO) {
                                 deleteCredentialUseCase(credential)
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(this@DetailedCredentialActivity, "Credential deleted!", Toast.LENGTH_SHORT).show()
