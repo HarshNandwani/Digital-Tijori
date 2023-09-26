@@ -12,12 +12,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredentialActivity
@@ -32,11 +34,11 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CredentialsListScreen(viewModel: HomeViewModel) {
 
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    if (state.credentials.isEmpty()) {
+    if (uiState.credentials.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -52,7 +54,7 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        state.filteredCredentials.forEach { credential ->
+        uiState.filteredCredentials.forEach { credential ->
             item {
                 Swipeable(
                     swipeToLeftEnabled = true,

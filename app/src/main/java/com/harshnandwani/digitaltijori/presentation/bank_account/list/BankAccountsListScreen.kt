@@ -11,12 +11,14 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.DetailedBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.list.components.SingleBankAccountItem
@@ -32,11 +34,11 @@ import kotlinx.coroutines.withContext
 @Composable
 fun BankAccountsListScreen(viewModel: HomeViewModel) {
 
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    if (state.bankAccounts.isEmpty()) {
+    if (uiState.bankAccounts.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -52,7 +54,7 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        state.filteredBankAccounts.forEach { bankAccount ->
+        uiState.filteredBankAccounts.forEach { bankAccount ->
             val linkedBank = bankAccount.linkedCompany
             item {
                 Swipeable(

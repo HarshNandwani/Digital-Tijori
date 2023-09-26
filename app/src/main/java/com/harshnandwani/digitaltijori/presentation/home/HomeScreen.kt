@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
@@ -29,14 +30,17 @@ import java.io.File
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
+
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val navController = rememberNavController()
     var showMenu by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
     Scaffold(
         topBar = {
             AppBarWithSearchView(
-                titleText = viewModel.state.value.currentPage,
-                searchText = viewModel.state.value.searchText,
+                titleText = uiState.currentPage,
+                searchText = uiState.searchText,
                 onSearchTextChange = {
                     viewModel.onEvent(HomeScreenEvent.OnSearchTextChanged(it))
                 },
@@ -132,7 +136,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
 
     AboutAppDialog(
-        isVisible = viewModel.state.value.showAboutApp,
+        isVisible = uiState.showAboutApp,
         onDismissRequest = { doNotShowAgain ->
             viewModel.onEvent(HomeScreenEvent.ShowAboutAppToggle(false))
             if (doNotShowAgain)
@@ -156,8 +160,8 @@ fun HomeScreen(viewModel: HomeViewModel) {
     }
 
     BackupDialog(
-        isVisible = viewModel.state.value.showBackup,
-        backupStatus = viewModel.state.value.backupStatus,
+        isVisible = uiState.showBackup,
+        backupStatus = uiState.backupStatus,
         onDismissRequest = { shouldDismiss, shouldCreateBackup, key ->
             if (shouldDismiss)
                 viewModel.onEvent(HomeScreenEvent.BackupCancelled)
