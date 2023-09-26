@@ -1,7 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.credential.add_edit
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.company.GetCompaniesHavingCredentialsUseCase
@@ -16,9 +14,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,8 +31,8 @@ class AddEditCredentialViewModel @Inject constructor(
 
     private var getAllEntitiesJob: Job? = null
 
-    private val _state = mutableStateOf(CredentialState())
-    val state: State<CredentialState> = _state
+    private val _state = MutableStateFlow(CredentialState())
+    val state: StateFlow<CredentialState> = _state
 
     private val _eventFlow = MutableSharedFlow<CredentialSubmitResultEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -45,31 +45,29 @@ class AddEditCredentialViewModel @Inject constructor(
     fun onEvent(event: CredentialEvent) {
         when (event) {
             is CredentialEvent.SelectEntity -> {
-                _state.value = state.value.copy(
-                    selectedEntity = event.entity
-                )
-                _state.value.credential.value = state.value.credential.value.copy(
+                _state.update { it.copy(selectedEntity = event.entity) }
+                _state.value.credential.value = _state.value.credential.value.copy(
                     company = event.entity
                 )
             }
             is CredentialEvent.LinkToAccount -> {
-                _state.value.credential.value = state.value.credential.value.copy(
+                _state.value.credential.value = _state.value.credential.value.copy(
                     isLinkedToBank = true,
                     bankAccount = event.linkedAccount
                 )
             }
             is CredentialEvent.EnteredUsername -> {
-                _state.value.credential.value = state.value.credential.value.copy(
+                _state.value.credential.value = _state.value.credential.value.copy(
                     username = event.username
                 )
             }
             is CredentialEvent.EnteredPassword -> {
-                _state.value.credential.value = state.value.credential.value.copy(
+                _state.value.credential.value = _state.value.credential.value.copy(
                     password = event.password
                 )
             }
             is CredentialEvent.EnteredAlias -> {
-                _state.value.credential.value = state.value.credential.value.copy(
+                _state.value.credential.value = _state.value.credential.value.copy(
                     alias = event.alias
                 )
             }
@@ -98,10 +96,9 @@ class AddEditCredentialViewModel @Inject constructor(
             }
             is CredentialEvent.ChangeToEditMode -> {
                 getAllEntitiesJob?.cancel()
-                _state.value = state.value.copy(
-                    mode = Parameters.VAL_MODE_EDIT,
-                    selectedEntity = event.linkedEntity
-                )
+                _state.update {
+                    it.copy(mode = Parameters.VAL_MODE_EDIT, selectedEntity = event.linkedEntity)
+                }
                 _state.value.credential.value = event.credential
                 _state.value.previouslyEnteredCredential = event.credential
             }
@@ -110,12 +107,10 @@ class AddEditCredentialViewModel @Inject constructor(
 
     private fun getAllEntities() {
         getAllEntitiesJob?.cancel()
-        getAllEntitiesJob = getCompaniesHavingCredentialsUseCase()
-            .onEach { entities ->
-                _state.value = state.value.copy(
-                    allEntities = entities
-                )
+        getAllEntitiesJob = viewModelScope.launch(Dispatchers.IO) {
+            getCompaniesHavingCredentialsUseCase().collectLatest { entities ->
+                _state.update { it.copy(allEntities = entities) }
             }
-            .launchIn(viewModelScope)
+        }
     }
 }
