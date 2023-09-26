@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
@@ -35,8 +36,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () -> Unit) {
 
-    val state = viewModel.state.value
-    val credential = state.credential.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val credential = uiState.credential.value
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -50,7 +51,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () ->
         sheetContent = {
             CompaniesList(
                 titleText = "Select entity",
-                companies = state.allEntities,
+                companies = uiState.allEntities,
                 onSelect = {
                     viewModel.onEvent(CredentialEvent.SelectEntity(it))
                     coroutineScope.launch {
@@ -72,19 +73,19 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
-                    if (state.mode == Parameters.VAL_MODE_ADD && !credential.isLinkedToBank) {
+                    if (uiState.mode == Parameters.VAL_MODE_ADD && !credential.isLinkedToBank) {
                         focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 }
             ) {
                 Image(
-                    painter = painterResource(id = state.selectedEntity?.iconResId ?: R.drawable.default_company_icon),
+                    painter = painterResource(id = uiState.selectedEntity?.iconResId ?: R.drawable.default_company_icon),
                     contentDescription = "Entity Icon",
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = state.selectedEntity?.name ?: "Select entity")
+                Text(text = uiState.selectedEntity?.name ?: "Select entity")
             }
             Spacer(modifier = Modifier.size(16.dp))
             InputTextField(

@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
@@ -35,11 +37,11 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CardsListScreen(viewModel: HomeViewModel) {
 
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    if (state.cards.isEmpty()) {
+    if (uiState.cards.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -55,7 +57,7 @@ fun CardsListScreen(viewModel: HomeViewModel) {
     }
 
     LazyColumn {
-        state.filteredCards.forEach { card ->
+        uiState.filteredCards.forEach { card ->
             item {
                 Column(Modifier.padding(16.dp)) {
                     Box(Modifier.clip(RoundedCornerShape(24.dp))) {

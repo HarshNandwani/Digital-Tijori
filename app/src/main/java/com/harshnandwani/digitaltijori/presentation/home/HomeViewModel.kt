@@ -1,7 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.home
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
@@ -23,27 +21,29 @@ import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllAccountsWithBankDetails: GetAllAccountsUseCase,
+    private val getAllAccountsUseCase: GetAllAccountsUseCase,
     private val getBankAccountUseCase: GetBankAccountUseCase,
-    private val getAllCardsWithIssuerDetails: GetAllCardsUseCase,
+    private val getAllCardsUseCase: GetAllCardsUseCase,
     private val getCardUseCase: GetCardUseCase,
-    private val getAllCredentialsWithEntityDetails: GetAllCredentialsUseCase,
+    private val getAllCredentialsUseCase: GetAllCredentialsUseCase,
     private val getCredentialUseCase: GetCredentialUseCase,
     private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
     private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase,
     private val createBackup: CreateBackupUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(HomeScreenState())
-    val state: State<HomeScreenState> = _state
+    private val _state = MutableStateFlow(HomeScreenState())
+    val state: StateFlow<HomeScreenState> = _state
 
     private var getAllAccountsJob: Job? = null
     private var getAllCredentialsJob: Job? = null
@@ -60,19 +60,15 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeScreenEvent) {
         when (event) {
             is HomeScreenEvent.OnPageChanged -> {
-                _state.value = state.value.copy(
-                    currentPage = event.page
-                )
+                _state.update { it.copy(currentPage = event.page) }
             }
             is HomeScreenEvent.OnSearchTextChanged -> {
-                _state.value = state.value.copy(
-                    searchText = event.searchText
-                )
+                _state.update { it.copy(searchText = event.searchText) }
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
                         _state.value.filteredBankAccounts.clear()
                         _state.value.filteredBankAccounts.addAll(
-                            state.value.bankAccounts.filter {
+                            _state.value.bankAccounts.filter {
                                 it.holderName.contains(event.searchText, ignoreCase = true)
                                         || it.alias?.contains(event.searchText, ignoreCase = true) ?: false
                             }
@@ -81,7 +77,7 @@ class HomeViewModel @Inject constructor(
                     HomeScreens.CardsList.route -> {
                         _state.value.filteredCards.clear()
                         _state.value.filteredCards.addAll(
-                            state.value.cards.filter {
+                            _state.value.cards.filter {
                                 it.nameOnCard.contains(event.searchText, ignoreCase = true) ||
                                 it.cardAlias?.contains(event.searchText, ignoreCase = true) == true ||
                                 it.variant?.contains(event.searchText, ignoreCase = true) == true
@@ -91,7 +87,7 @@ class HomeViewModel @Inject constructor(
                     HomeScreens.CredentialsList.route -> {
                         _state.value.filteredCredentials.clear()
                         _state.value.filteredCredentials.addAll(
-                            state.value.credentials.filter {
+                            _state.value.credentials.filter {
                                 it.username.contains(event.searchText, ignoreCase = true)
                             }
                         )
@@ -99,31 +95,21 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenEvent.OnSearchDone -> {
-                _state.value = state.value.copy(
-                    searchText = ""
-                )
+                _state.update { it.copy(searchText = "") }
                 when (_state.value.currentPage) {
                     HomeScreens.BankAccountsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredBankAccounts = state.value.bankAccounts.toMutableList()
-                        )
+                        _state.update { it.copy(filteredBankAccounts = _state.value.bankAccounts.toMutableList()) }
                     }
                     HomeScreens.CardsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredCards = state.value.cards.toMutableList()
-                        )
+                        _state.update { it.copy(filteredCards = _state.value.cards.toMutableList()) }
                     }
                     HomeScreens.CredentialsList.route -> {
-                        _state.value = state.value.copy(
-                            filteredCredentials = state.value.credentials.toMutableList()
-                        )
+                        _state.update { it.copy(filteredCredentials = _state.value.credentials.toMutableList()) }
                     }
                 }
             }
             is HomeScreenEvent.ShowAboutAppToggle -> {
-                _state.value = state.value.copy(
-                    showAboutApp = event.show
-                )
+                _state.update { it.copy(showAboutApp = event.show) }
             }
             is HomeScreenEvent.DoNotShowAboutAppAgain -> {
                 viewModelScope.launch(Dispatchers.IO) {
@@ -131,73 +117,69 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenEvent.ShowBackupToggle -> {
-                _state.value = state.value.copy(
-                    showBackup = event.show
-                )
+                _state.update { it.copy(showBackup = event.show) }
             }
             is HomeScreenEvent.CreateBackup -> {
-                _state.value = state.value.copy(backupStatus = BackupStatus.STARTED)
+                _state.update { it.copy(backupStatus = BackupStatus.STARTED) }
                 backupJob = viewModelScope.launch(Dispatchers.IO) {
                     try {
                         createBackup(event.key)
-                        _state.value = state.value.copy(backupStatus = BackupStatus.COMPLETED)
+                        _state.update { it.copy(backupStatus = BackupStatus.COMPLETED) }
                     } catch (e: Exception) {
-                        _state.value = state.value.copy(backupStatus = BackupStatus.FAILED)
+                        _state.update { it.copy(backupStatus = BackupStatus.FAILED) }
                     }
                 }
             }
             HomeScreenEvent.BackupCancelled -> {
                 backupJob?.cancel()
-                _state.value = state.value.copy(
-                    backupStatus = BackupStatus.NOT_STARTED,
-                    showBackup = false
-                )
+                _state.update { it.copy(backupStatus = BackupStatus.NOT_STARTED, showBackup = false) }
             }
         }
     }
 
     private fun checkIfAboutAppShouldShow() {
-        viewModelScope.launch {
-            _state.value = state.value.copy(
-                showAboutApp = shouldShowAboutApp()
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(showAboutApp = shouldShowAboutApp()) }
         }
     }
 
-    private fun getAllBankAccounts(){
+    private fun getAllBankAccounts() {
         getAllAccountsJob?.cancel()
-        getAllAccountsJob = getAllAccountsWithBankDetails()
-            .onEach { accounts ->
-                _state.value = state.value.copy(
-                    bankAccounts = accounts,
-                    filteredBankAccounts = accounts.toMutableList()
-                )
+        getAllAccountsJob = viewModelScope.launch(Dispatchers.IO) {
+            getAllAccountsUseCase().collectLatest { accounts ->
+                _state.update {
+                    it.copy(
+                        bankAccounts = accounts,
+                        filteredBankAccounts = accounts.toMutableList()
+                    )
+                }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     private fun getAllCards() {
         getAllCardsJob?.cancel()
-        getAllCardsJob = getAllCardsWithIssuerDetails()
-            .onEach { cards ->
-                _state.value = state.value.copy(
-                    cards = cards,
-                    filteredCards = cards.toMutableList()
-                )
+        getAllCardsJob = viewModelScope.launch(Dispatchers.IO) {
+            getAllCardsUseCase().collectLatest { cards ->
+                _state.update {
+                    it.copy(cards = cards, filteredCards = cards.toMutableList())
+                }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     private fun getAllCredentials() {
         getAllCredentialsJob?.cancel()
-        getAllCredentialsJob = getAllCredentialsWithEntityDetails()
-            .onEach { credentials ->
-                _state.value = state.value.copy(
-                    credentials = credentials,
-                    filteredCredentials = credentials.toMutableList()
-                )
+        getAllCredentialsJob = viewModelScope.launch(Dispatchers.IO) {
+            getAllCredentialsUseCase().collectLatest { credentials ->
+                _state.update {
+                    it.copy(
+                        credentials = credentials,
+                        filteredCredentials = credentials.toMutableList()
+                    )
+                }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     suspend fun getBankAccount(id: Int): BankAccount? {

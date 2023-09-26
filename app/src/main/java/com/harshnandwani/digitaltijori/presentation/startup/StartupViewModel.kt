@@ -2,8 +2,6 @@ package com.harshnandwani.digitaltijori.presentation.startup
 
 import android.content.ContentResolver
 import android.provider.OpenableColumns
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.auth.SetAuthenticatedUseCase
@@ -16,6 +14,9 @@ import com.harshnandwani.digitaltijori.presentation.startup.util.StartupEvent
 import com.harshnandwani.digitaltijori.presentation.startup.util.StartupState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -31,81 +32,83 @@ class StartupViewModel @Inject constructor(
     private val setAuthenticated: SetAuthenticatedUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(StartupState())
-    val state: State<StartupState> = _state
+    private val _state = MutableStateFlow(StartupState())
+    val state: StateFlow<StartupState> = _state
 
     init {
-        viewModelScope.launch {
-            _state.value = state.value.copy(
-                restoreEligible = isEligibleForRestore(),
-                shouldAuthenticate = shouldAuthenticate()
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update {
+                it.copy(
+                    restoreEligible = isEligibleForRestore(),
+                    shouldAuthenticate = shouldAuthenticate()
+                )
+            }
             if (_state.value.shouldAuthenticate == false)
-                _state.value = state.value.copy(authSuccessful = true)
+                _state.update { it.copy(authSuccessful = true) }
         }
     }
 
     fun onEvent(event: StartupEvent) {
         when (event) {
             StartupEvent.AuthenticationUnavailable -> {
-                _state.value = state.value.copy(
-                    authAvailable = false
-                )
+                _state.update { it.copy(authAvailable = false) }
             }
 
             StartupEvent.AuthenticatedSuccessfully -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    _state.value = state.value.copy(authSuccessful = true)
                     setAuthenticated()
+                    _state.update { it.copy(authSuccessful = true) }
                 }
             }
 
             is StartupEvent.BackupFileSelected -> {
-                _state.value = state.value.copy(
-                    restoreStatus = RestoreStatus.NOT_STARTED,
-                    backupFileUri = event.uri
-                )
+                _state.update {
+                    it.copy(restoreStatus = RestoreStatus.NOT_STARTED, backupFileUri = event.uri)
+                }
                 readBackupFileName()
             }
 
             is StartupEvent.EnteredSecretKey -> {
-                _state.value = state.value.copy(
-                    restoreStatus = RestoreStatus.NOT_STARTED,
-                    secretKey = event.key
-                )
+                _state.update {
+                    it.copy(restoreStatus = RestoreStatus.NOT_STARTED, secretKey = event.key)
+                }
             }
 
             StartupEvent.StartRestore -> {
                 if (_state.value.backupFileUri == null) {
-                    _state.value = state.value.copy(
-                        restoreStatus = RestoreStatus.FAILED,
-                        restoreErrorMessage = "Please select backup file",
-                    )
+                    _state.update {
+                        it.copy(
+                            restoreStatus = RestoreStatus.FAILED,
+                            restoreErrorMessage = "Please select backup file"
+                        )
+                    }
                     return
                 }
                 if (_state.value.secretKey.length < 8) {
-                    _state.value = state.value.copy(
-                        restoreStatus = RestoreStatus.FAILED,
-                        restoreErrorMessage = "Secret key should be of length more than 8"
-                    )
+                    _state.update {
+                        it.copy(
+                            restoreStatus = RestoreStatus.FAILED,
+                            restoreErrorMessage = "Secret key should be of length more than 8"
+                        )
+                    }
                     return
                 }
-                _state.value = state.value.copy(restoreStatus = RestoreStatus.STARTED)
-                viewModelScope.launch(Dispatchers.Unconfined) {
+                _state.update { it.copy(restoreStatus = RestoreStatus.STARTED) }
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         restore(readBackupFileContent(), _state.value.secretKey)
-                        _state.value = state.value.copy(
-                            restoreStatus = RestoreStatus.SUCCESS
-                        )
+                        _state.update { it.copy(restoreStatus = RestoreStatus.SUCCESS) }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        _state.value = state.value.copy(
-                            backupFileUri = null,
-                            backupFileName = null,
-                            secretKey = "",
-                            restoreStatus = RestoreStatus.FAILED,
-                            restoreErrorMessage = "Restore failed, either secret key is incorrect or wrong backup file is chosen"
-                        )
+                        _state.update {
+                            it.copy(
+                                backupFileUri = null,
+                                backupFileName = null,
+                                secretKey = "",
+                                restoreStatus = RestoreStatus.FAILED,
+                                restoreErrorMessage = "Restore failed, either secret key is incorrect or wrong backup file is chosen"
+                            )
+                        }
                     }
                 }
             }
@@ -122,9 +125,7 @@ class StartupViewModel @Inject constructor(
         val cursor = contentResolver.query(uri, null, null, null, null)
         cursor?.moveToFirst()
         val fileName = cursor?.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
-        _state.value = state.value.copy(
-            backupFileName = fileName
-        )
+        _state.update { it.copy(backupFileName = fileName) }
         cursor?.close()
     }
 

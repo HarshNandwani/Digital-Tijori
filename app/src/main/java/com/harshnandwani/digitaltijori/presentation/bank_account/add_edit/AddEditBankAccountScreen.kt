@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
@@ -35,7 +36,7 @@ import kotlinx.coroutines.launch
 fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () -> Unit) {
 
     val context = LocalContext.current
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -46,7 +47,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
         sheetContent = {
             CompaniesList(
                 titleText = "Select a bank",
-                companies = state.allBanks,
+                companies = uiState.allBanks,
                 onSelect = {
                     viewModel.onEvent(BankAccountEvent.SelectBank(it))
                     coroutineScope.launch {
@@ -67,22 +68,22 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {
-                    if (state.mode == Parameters.VAL_MODE_ADD) {
+                    if (uiState.mode == Parameters.VAL_MODE_ADD) {
                         focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 }
             ) {
                 Image(
-                    painter = painterResource(id = state.selectedBank?.iconResId ?: R.drawable.default_company_icon),
+                    painter = painterResource(id = uiState.selectedBank?.iconResId ?: R.drawable.default_company_icon),
                     contentDescription = "Bank Icon",
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = state.selectedBank?.name ?: "Select bank")
+                Text(text = uiState.selectedBank?.name ?: "Select bank")
             }
             Spacer(modifier = Modifier.size(16.dp))
-            val account = state.bankAccount.value
+            val account = uiState.bankAccount.value
             InputTextField(
                 label = "Account Number",
                 value = account.accountNumber,
@@ -147,7 +148,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
             )
             Spacer(modifier = Modifier.size(32.dp))
 
-            if(state.selectedBank?.issuesCards == true && state.mode == Parameters.VAL_MODE_ADD) {
+            if(uiState.selectedBank?.issuesCards == true && uiState.mode == Parameters.VAL_MODE_ADD) {
                 RoundedFilledButton(
                     onClick = {
                         focusManager.clearFocus()
@@ -180,7 +181,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
                             putExtra(Parameters.KEY_ISSUER, event.linkedBank)
-                            putExtra(Parameters.KEY_BANK_ACCOUNT, state.bankAccount.value)
+                            putExtra(Parameters.KEY_BANK_ACCOUNT, uiState.bankAccount.value)
                             context.startActivity(this)
                         }
                     }

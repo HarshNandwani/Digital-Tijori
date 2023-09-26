@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import com.harshnandwani.digitaltijori.domain.util.cardsTypesList
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
@@ -45,8 +46,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
 
-    val state = viewModel.state.value
-    val card = state.card.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val card = uiState.card.value
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -57,7 +58,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
         sheetContent = {
             CompaniesList(
                 titleText = "Select card issuer",
-                companies = state.allCardIssuers,
+                companies = uiState.allCardIssuers,
                 onSelect = {
                     viewModel.onEvent(CardEvent.SelectIssuer(it))
                     coroutineScope.launch {
@@ -76,17 +77,17 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FlipCardLayout(
-                company = state.selectedIssuer,
-                expiryNumber = state.expiryMonth + state.expiryYear,
+                company = uiState.selectedIssuer,
+                expiryNumber = uiState.expiryMonth + uiState.expiryYear,
                 card = card,
                 onIssuerLogoClick = {
-                    if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
+                    if(uiState.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
                         focusManager.clearFocus()
                         coroutineScope.launch { bottomSheetState.show() }
                     }
                 },
-                backVisible = state.backVisible.value,
-                onCardClick = { state.backVisible.value = !state.backVisible.value }
+                backVisible = uiState.backVisible.value,
+                onCardClick = { uiState.backVisible.value = !uiState.backVisible.value }
             )
 
             Spacer(modifier = Modifier.size(16.dp))
@@ -123,7 +124,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
             Row {
                 InputTextField(
                     label = "Expiry",
-                    value = state.expiryMonth + state.expiryYear,
+                    value = uiState.expiryMonth + uiState.expiryYear,
                     onValueChange = { viewModel.onEvent(CardEvent.EnteredCardExpiry(it)) },
                     placeholder = "mm/yy",
                     keyboardOptions = KeyboardOptions(
@@ -240,7 +241,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
 
             Spacer(modifier = Modifier.size(32.dp))
 
-            if(state.selectedIssuer?.hasCredentials == true && state.mode == Parameters.VAL_MODE_ADD && card.isLinkedToBank){
+            if(uiState.selectedIssuer?.hasCredentials == true && uiState.mode == Parameters.VAL_MODE_ADD && card.isLinkedToBank){
                 RoundedFilledButton(
                     onClick = {
                         addCredentialClicked = true
@@ -262,7 +263,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
     }
 
     LaunchedEffect(key1 = true) {
-        if(state.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
+        if(uiState.mode == Parameters.VAL_MODE_ADD && !card.isLinkedToBank) {
             coroutineScope.launch { bottomSheetState.show() }
         }
         viewModel.eventFlow.collectLatest { event ->
@@ -282,7 +283,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
                         Intent(context, AddEditCredentialActivity::class.java).apply {
                             putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                             putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
-                            putExtra(Parameters.KEY_ENTITY, state.selectedIssuer)
+                            putExtra(Parameters.KEY_ENTITY, uiState.selectedIssuer)
                             putExtra(Parameters.KEY_BANK_ACCOUNT, card.bankAccount)
                             context.startActivity(this)
                         }

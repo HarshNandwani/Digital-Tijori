@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import kotlin.system.exitProcess
 
 @Composable
-fun AuthScreen(viewModel: StartupViewModel, promptForAuth: () -> Unit) {
+fun AuthScreen(authAvailable: Boolean, promptForAuth: () -> Unit) {
 
     promptForAuth()
 
-    if (viewModel.state.value.authAvailable) {
+    if (authAvailable) {
         return
     }
 

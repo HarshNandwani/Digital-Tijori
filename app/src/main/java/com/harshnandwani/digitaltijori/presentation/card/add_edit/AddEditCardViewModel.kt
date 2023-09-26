@@ -1,7 +1,5 @@
 package com.harshnandwani.digitaltijori.presentation.card.add_edit
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.card.AddCardUseCase
@@ -20,9 +18,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 import javax.inject.Inject
@@ -36,8 +36,8 @@ class AddEditCardViewModel @Inject constructor(
 
     private var getAllCardIssuersJob: Job? = null
 
-    private val _state = mutableStateOf(CardState())
-    val state: State<CardState> = _state
+    private val _state = MutableStateFlow(CardState())
+    val state: StateFlow<CardState> = _state
 
     private val _eventFlow = MutableSharedFlow<CardSubmitResultEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -53,27 +53,25 @@ class AddEditCardViewModel @Inject constructor(
     fun onEvent(event: CardEvent) {
         when (event) {
             is CardEvent.SelectIssuer -> {
-                _state.value = state.value.copy(
-                    selectedIssuer = event.issuer
-                )
-                _state.value.card.value = state.value.card.value.copy(
+                _state.update { it.copy(selectedIssuer = event.issuer) }
+                _state.value.card.value = _state.value.card.value.copy(
                     company = event.issuer
                 )
             }
             is CardEvent.LinkToAccount -> {
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     isLinkedToBank = true,
                     bankAccount = event.account
                 )
             }
             is CardEvent.SelectedColorScheme -> {
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     colorScheme = event.colorScheme
                 )
             }
             is CardEvent.SelectedCardType -> {
                 _state.value.backVisible.value = false
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     cardType = event.cardType
                 )
             }
@@ -82,7 +80,7 @@ class AddEditCardViewModel @Inject constructor(
                 if (event.cardNumber.length > maxCardSizeNumber) return
                 val cardNetwork = identifyCardNetwork(event.cardNumber)
                 maxCardSizeNumber = getCardNumberLength(cardNetwork)
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     cardNumber = event.cardNumber.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     },
@@ -92,17 +90,18 @@ class AddEditCardViewModel @Inject constructor(
             is CardEvent.EnteredCardExpiry -> {
                 _state.value.backVisible.value = false
                 if (event.expiry.length > 4) return
-                _state.value = state.value.copy(
-                    expiryMonth = if (event.expiry.length > 2) event.expiry.take(2) else event.expiry
-                )
-                _state.value = state.value.copy(
-                    expiryYear = if (event.expiry.length > 2) event.expiry.substring(2) else ""
-                )
+
+                _state.update {
+                    it.copy(
+                        expiryMonth = if (event.expiry.length > 2) event.expiry.take(2) else event.expiry,
+                        expiryYear = if (event.expiry.length > 2) event.expiry.substring(2) else ""
+                    )
+                }
             }
             is CardEvent.EnteredCvv -> {
                 _state.value.backVisible.value = true
                 if (event.cvv.length > 3) return
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     cvv = event.cvv.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     }
@@ -110,20 +109,20 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredNameOnCard -> {
                 _state.value.backVisible.value = false
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     nameOnCard = event.name
                 )
             }
             is CardEvent.EnteredVariant -> {
                 _state.value.backVisible.value = false
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     variant = event.variant
                 )
             }
             is CardEvent.EnteredPin -> {
                 _state.value.backVisible.value = true
                 if (event.pin.length > 4) return
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     pin = event.pin.filter {
                         it != '.' && it != ',' && it != '-' && it != ' '
                     }
@@ -131,7 +130,7 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.EnteredCardAlias -> {
                 _state.value.backVisible.value = false
-                _state.value.card.value = state.value.card.value.copy(
+                _state.value.card.value = _state.value.card.value.copy(
                     cardAlias = event.alias
                 )
             }
@@ -149,7 +148,7 @@ class AddEditCardViewModel @Inject constructor(
                         ))
                         return@launch
                     }
-                    val card = state.value.card.value.copy(
+                    val card = _state.value.card.value.copy(
                         expiryMonth = expiryMonth,
                         expiryYear = expiryYear
                     )
@@ -178,13 +177,15 @@ class AddEditCardViewModel @Inject constructor(
             }
             is CardEvent.ChangeToEditMode -> {
                 getAllCardIssuersJob?.cancel()
-                _state.value = state.value.copy(
-                    selectedIssuer = event.issuer,
-                    mode = Parameters.VAL_MODE_EDIT,
-                    expiryMonth = CardHelperFunctions.getMonthAsString(event.card.expiryMonth),
-                    expiryYear = event.card.expiryYear.toString(),
-                    previouslyEnteredCard = event.card
-                )
+                _state.update {
+                    it.copy(
+                        selectedIssuer = event.issuer,
+                        mode = Parameters.VAL_MODE_EDIT,
+                        expiryMonth = CardHelperFunctions.getMonthAsString(event.card.expiryMonth),
+                        expiryYear = event.card.expiryYear.toString(),
+                        previouslyEnteredCard = event.card
+                    )
+                }
                 _state.value.card.value = event.card
             }
         }
@@ -192,13 +193,11 @@ class AddEditCardViewModel @Inject constructor(
 
     private fun getAllCardIssuers() {
         getAllCardIssuersJob?.cancel()
-        getAllCardIssuersJob = getAllCardIssuersUseCase()
-            .onEach { cardIssuers ->
-                _state.value = state.value.copy(
-                    allCardIssuers = cardIssuers
-                )
+        getAllCardIssuersJob = viewModelScope.launch(Dispatchers.IO) {
+            getAllCardIssuersUseCase().collectLatest { cardIssuers ->
+                _state.update { it.copy(allCardIssuers = cardIssuers) }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
 }
