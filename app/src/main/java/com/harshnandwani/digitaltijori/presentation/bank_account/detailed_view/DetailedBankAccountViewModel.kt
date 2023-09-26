@@ -1,8 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view
 
 import android.database.sqlite.SQLiteConstraintException
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.DeleteBankAccountUseCase
@@ -17,9 +15,11 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.u
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
@@ -34,8 +34,8 @@ class DetailedBankAccountViewModel @Inject constructor(
     private val deleteCredentialUseCase: DeleteCredentialUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(DetailedBankAccountState())
-    val state: State<DetailedBankAccountState> = _state
+    private val _state = MutableStateFlow(DetailedBankAccountState())
+    val state: StateFlow<DetailedBankAccountState> = _state
 
     private val _eventFlow = MutableSharedFlow<DetailedBankAccountEventResult>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -43,31 +43,25 @@ class DetailedBankAccountViewModel @Inject constructor(
     fun onEvent(event: DetailedBankAccountEvent) {
         when (event) {
             is DetailedBankAccountEvent.LoadBank -> {
-                _state.value = state.value.copy(
-                    bank = event.bank
-                )
+                _state.update { it.copy(bank = event.bank) }
             }
             is DetailedBankAccountEvent.LoadAccount -> {
-                _state.value = state.value.copy(
-                    account = event.account
-                )
+                _state.update { it.copy(account = event.account) }
                 getAllLinkedCards()
                 getAllLinkedCredentials()
             }
             is DetailedBankAccountEvent.RefreshBankAccount -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val refreshedAccount = getBankAccountUseCase(state.value.account.bankAccountId)
-                    if (refreshedAccount != null) {
-                        _state.value = state.value.copy(
-                            account = refreshedAccount
-                        )
+                    val refreshedAccount = getBankAccountUseCase(_state.value.account.bankAccountId)
+                    refreshedAccount?.let { account ->
+                        _state.update { it.copy(account = account) }
                     }
                 }
             }
             is DetailedBankAccountEvent.DeleteBankAccount -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     try {
-                        deleteBankAccountUseCase(state.value.account)
+                        deleteBankAccountUseCase(_state.value.account)
                         _eventFlow.emit(DetailedBankAccountEventResult.BankAccountDeleted)
                     } catch (_: SQLiteConstraintException) {
                         _eventFlow.emit(
@@ -110,26 +104,22 @@ class DetailedBankAccountViewModel @Inject constructor(
     }
 
     private fun getAllLinkedCards() {
-        if (state.value.bank.issuesCards) {
-            getCardsLinkedToAccount(state.value.account.bankAccountId)
-                .onEach { cards ->
-                    _state.value = state.value.copy(
-                        linkedCards = cards
-                    )
-                }
-                .launchIn(viewModelScope)
+        if (_state.value.bank.issuesCards.not())
+            return
+        viewModelScope.launch(Dispatchers.IO) {
+            getCardsLinkedToAccount(_state.value.account.bankAccountId).collectLatest { cards ->
+                _state.update { it.copy(linkedCards = cards) }
+            }
         }
     }
 
     private fun getAllLinkedCredentials() {
-        if (state.value.bank.hasCredentials) {
-            getCredentialsLinkedToAccount(state.value.account.bankAccountId)
-                .onEach { credentials ->
-                    _state.value = state.value.copy(
-                        linkedCredentials = credentials
-                    )
-                }
-                .launchIn(viewModelScope)
+        if (_state.value.bank.hasCredentials.not())
+            return
+        viewModelScope.launch(Dispatchers.IO) {
+            getCredentialsLinkedToAccount(_state.value.account.bankAccountId).collectLatest { credentials ->
+                _state.update { it.copy(linkedCredentials = credentials) }
+            }
         }
     }
 

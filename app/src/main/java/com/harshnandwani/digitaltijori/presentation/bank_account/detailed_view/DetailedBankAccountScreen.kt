@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
@@ -30,7 +31,7 @@ import com.harshnandwani.digitaltijori.presentation.util.Parameters
 @Composable
 fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
 
-    val state = viewModel.state.value
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var showAccountDialog by remember { mutableStateOf(false) }
 
@@ -52,13 +53,13 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = state.bank.iconResId),
+                        painter = painterResource(id = uiState.bank.iconResId),
                         contentDescription = "Bank Icon",
                         modifier = Modifier.size(40.dp)
                     )
                     Spacer(modifier = Modifier.size(16.dp))
                     Text(
-                        text = state.bank.name,
+                        text = uiState.bank.name,
                         style = MaterialTheme.typography.h2,
                         modifier = Modifier.weight(weight = 1f)
                     )
@@ -69,8 +70,8 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                         modifier = Modifier.clickable {
                             Intent(context, AddEditBankAccountActivity::class.java).apply {
                                 putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_EDIT)
-                                putExtra(Parameters.KEY_BANK, state.bank)
-                                putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
+                                putExtra(Parameters.KEY_BANK, uiState.bank)
+                                putExtra(Parameters.KEY_BANK_ACCOUNT, uiState.account)
                                 context.startActivity(this)
                             }
                         }
@@ -100,15 +101,15 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     }
                     Spacer(modifier = Modifier.size(32.dp))
                     Column {
-                        Text(text = state.account.holderName)
+                        Text(text = uiState.account.holderName)
                         Spacer(modifier = Modifier.size(12.dp))
-                        Text(text = state.account.accountNumber)
+                        Text(text = uiState.account.accountNumber)
                         Spacer(modifier = Modifier.size(12.dp))
-                        Text(text = state.account.ifsc)
+                        Text(text = uiState.account.ifsc)
                         Spacer(modifier = Modifier.size(12.dp))
-                        Text(text = state.account.phoneNumber ?: "-")
+                        Text(text = uiState.account.phoneNumber ?: "-")
                         Spacer(modifier = Modifier.size(12.dp))
-                        Text(text = state.account.alias ?: "-")
+                        Text(text = uiState.account.alias ?: "-")
                         Spacer(modifier = Modifier.size(12.dp))
                     }
                 }
@@ -116,7 +117,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                 ConfirmationAlertDialog(
                     visible = showAccountDialog,
                     onDismiss = { showAccountDialog = false },
-                    title = "Do you want to delete ${state.bank.name} account",
+                    title = "Do you want to delete ${uiState.bank.name} account",
                     text = "This action cannot be undone, do you want to proceed?",
                     confirmButton = {
                         TextButton(
@@ -146,13 +147,13 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             modifier = Modifier.padding(vertical = 24.dp)
         )
 
-        if (state.bank.issuesCards) {
+        if (uiState.bank.issuesCards) {
             Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
-            state.linkedCards.forEach { card ->
+            uiState.linkedCards.forEach { card ->
                 Spacer(modifier = Modifier.size(16.dp))
                 DetailedCard(
                     titleText = "${card.cardType.name} Details",
-                    issuer = state.bank,
+                    issuer = uiState.bank,
                     card = card,
                     onDeleteAction = {
                         viewModel.onEvent(DetailedBankAccountEvent.DeleteCard(card))
@@ -165,8 +166,8 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     Intent(context, AddEditCardActivity::class.java).apply {
                         putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                         putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
-                        putExtra(Parameters.KEY_ISSUER, state.bank)
-                        putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
+                        putExtra(Parameters.KEY_ISSUER, uiState.bank)
+                        putExtra(Parameters.KEY_BANK_ACCOUNT, uiState.account)
                         context.startActivity(this)
                     }
                 },
@@ -182,12 +183,12 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             modifier = Modifier.padding(vertical = 24.dp)
         )
 
-        if (state.bank.hasCredentials) {
+        if (uiState.bank.hasCredentials) {
             Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)
-            state.linkedCredentials.forEach { credential ->
+            uiState.linkedCredentials.forEach { credential ->
                 Spacer(modifier = Modifier.size(16.dp))
                 DetailedCredential(
-                    entity = state.bank,
+                    entity = uiState.bank,
                     credential = credential,
                     onDeleteAction = {
                         viewModel.onEvent(DetailedBankAccountEvent.DeleteCredential(credential))
@@ -200,8 +201,8 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     Intent(context, AddEditCredentialActivity::class.java).apply {
                         putExtra(Parameters.KEY_MODE, Parameters.VAL_MODE_ADD)
                         putExtra(Parameters.KEY_IS_LINKED_TO_ACCOUNT, true)
-                        putExtra(Parameters.KEY_ENTITY, state.bank)
-                        putExtra(Parameters.KEY_BANK_ACCOUNT, state.account)
+                        putExtra(Parameters.KEY_ENTITY, uiState.bank)
+                        putExtra(Parameters.KEY_BANK_ACCOUNT, uiState.account)
                         context.startActivity(this)
                     }
                 },
