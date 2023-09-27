@@ -4,7 +4,7 @@ import android.app.Application
 import com.harshnandwani.digitaltijori.presentation.util.UpdateCompaniesOnAppStart
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
-
+//Test commit
 @HiltAndroidApp
 class DigitalTijoriApp : Application() {
 
