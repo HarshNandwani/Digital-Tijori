@@ -1,4 +1,4 @@
-name: Build debug apk on pull-request
+name: Build debug apk on pr
 
 on: pull_request
 
