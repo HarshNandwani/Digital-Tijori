@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -22,11 +23,15 @@ fun BottomSheetLayout(
     val surfacePrimary: Color =
         if (isSystemInDarkTheme()) MaterialTheme.colors.primary else MaterialTheme.colors.surface
 
+    val customScrimColor: Color =
+        if (isSystemInDarkTheme()) MaterialTheme.colors.primary.copy(alpha = 0.6f) else ModalBottomSheetDefaults.scrimColor
+
     ModalBottomSheetLayout(
         sheetContent = sheetContent,
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-        sheetBackgroundColor = surfacePrimary
+        sheetBackgroundColor = surfacePrimary,
+        scrimColor = customScrimColor
     ) {
         layoutContent()
     }
