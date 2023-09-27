@@ -11,11 +11,11 @@ fun TopAppBarWithBackButton(title: String, onBack: () -> Unit) {
         title = {
             Text(text = title)
         },
+        backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
             IconButton(onClick = { onBack() }) {
                 Icon(Icons.Default.ArrowBack,"Back")
             }
-        },
-        backgroundColor = MaterialTheme.colors.primary
+        }
     )
 }

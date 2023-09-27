@@ -15,7 +15,7 @@ Digital Tijori lets you store your bank accounts, cards and credentials. So that
 \n\nEvery information stored here is sensitive and following things are ensured to make users trust the app
 \n\n1) No secrets! Digital Tijori is a completely opensource project, the source code is open for all to see on Github.
 \n\n2) Digital Tijori DOES NOT connect to internet. So all the data is on your local app storage.
-\nHow to verify?
+\n\nHow to verify?
 \n\nYou can check Digital Tijori\'s Data usage in your phone\'s settings -> apps -> Digital Tijori, the data usage will always be 0.
 \n\nFor an android app to use Internet it must declare that it uses Internet in AndroidManifest.xml file, otherwise the app cannot use/connect to Internet at all.
 \nDigital Tijori does not declare this and it can be verified by checking the source code of Digital Tijori on Github.

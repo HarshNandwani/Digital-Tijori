@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.R
+import com.harshnandwani.digitaltijori.presentation.common_components.BottomSheetLayout
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
 import com.harshnandwani.digitaltijori.presentation.company.CompaniesList
@@ -47,7 +47,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () ->
 
     val icon = if(passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
 
-    ModalBottomSheetLayout(
+    BottomSheetLayout(
         sheetContent = {
             CompaniesList(
                 titleText = "Select entity",
@@ -60,8 +60,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () ->
                 }
             )
         },
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+        sheetState = bottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -80,7 +79,7 @@ fun AddEditCredentialScreen(viewModel: AddEditCredentialViewModel, onDone: () ->
                 }
             ) {
                 Image(
-                    painter = painterResource(id = uiState.selectedEntity?.iconResId ?: R.drawable.default_company_icon),
+                    painter = painterResource(id = uiState.selectedEntity?.iconResId ?: R.drawable.ic_default_company),
                     contentDescription = "Entity Icon",
                     modifier = Modifier.size(40.dp)
                 )

@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -32,6 +31,7 @@ import com.harshnandwani.digitaltijori.domain.util.cardsTypesList
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.util.CardSubmitResultEvent
+import com.harshnandwani.digitaltijori.presentation.common_components.BottomSheetLayout
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
@@ -54,7 +54,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
     val focusManager = LocalFocusManager.current
     var addCredentialClicked by remember { mutableStateOf(false) }
 
-    ModalBottomSheetLayout(
+    BottomSheetLayout(
         sheetContent = {
             CompaniesList(
                 titleText = "Select card issuer",
@@ -67,8 +67,7 @@ fun AddEditCardScreen(viewModel: AddEditCardViewModel, onDone: () -> Unit) {
                 }
             )
         },
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+        sheetState = bottomSheetState
     ) {
         Column(
             modifier = Modifier

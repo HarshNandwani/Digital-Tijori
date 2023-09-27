@@ -37,8 +37,8 @@ class StartupActivity : FragmentActivity() {
         setContent {
             DigitalTijoriTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     StartupScreen(viewModel, pickBackupFile, promptForAuth, nextAction)
                 }

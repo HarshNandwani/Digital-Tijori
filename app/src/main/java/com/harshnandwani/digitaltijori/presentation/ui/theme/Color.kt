@@ -2,13 +2,14 @@ package com.harshnandwani.digitaltijori.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
 val RoyalBlue = Color(0xFF4169E2)
-val Teal200 = Color(0xFF03DAC5)
+val White = Color(0xFFFFFFFF)
+val LightGreen = Color(0xFF5EC339)
+val ErrorRed = Color(0xFFB00020)
+
+val EerieBlack = Color(0xFF181818)
+val LighterSilver = Color(0xFFD7D7D7)
+val LighterRoyalBlue = Color(0xFF0C53A9)
+val DarkGreen = Color(0xFF183A0B)
 val Black = Color(0xFF000000)
-val Arsenic = Color(0xFF202C33)
-val SlateGray = Color(0xFF8696A0)
-val KindaBlack = Color(0xFF111B21)
-val Jade = Color(0xFF00A884)
+val LighterErrorRed = Color(0XFFCF6679)

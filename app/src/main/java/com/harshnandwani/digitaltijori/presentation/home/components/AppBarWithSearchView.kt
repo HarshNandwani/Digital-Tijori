@@ -154,7 +154,7 @@ fun SearchAppBar(
             ),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
-                cursorColor = Color.White.copy(alpha = ContentAlpha.medium)
+                cursorColor = MaterialTheme.colors.onPrimary.copy(alpha = ContentAlpha.medium)
             )
         )
         LaunchedEffect(Unit) {

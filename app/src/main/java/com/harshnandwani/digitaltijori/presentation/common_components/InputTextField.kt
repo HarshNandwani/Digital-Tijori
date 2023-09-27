@@ -47,13 +47,15 @@ fun InputTextField(
                 onImeAction()
             }
         ),
-        modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
+        modifier = modifier
+            .padding(top = 12.dp)
+            .fillMaxWidth(),
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colors.secondaryVariant,
-            focusedLabelColor = MaterialTheme.colors.secondaryVariant,
-            cursorColor = MaterialTheme.colors.secondaryVariant
+            focusedBorderColor = MaterialTheme.colors.secondary,
+            cursorColor = MaterialTheme.colors.secondary,
+            focusedLabelColor = MaterialTheme.colors.secondary
         )
     )
 

@@ -20,7 +20,7 @@ fun RoundedOutlineButton(
         onClick = onClick,
         shape = RoundedCornerShape(4.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colors.primary),
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colors.secondary),
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(text = text)

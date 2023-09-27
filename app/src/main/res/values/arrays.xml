@@ -25,7 +25,7 @@
         <item>@drawable/amazon_icon</item>
         <item>@drawable/flipkart_icon</item>
         <item>@drawable/netflix_icon</item>
-        <item>@drawable/default_company_icon</item>
+        <item>@drawable/ic_default_company</item>
     </integer-array>
 
     <!-- Everytime a company is added in assets/companies.json add
@@ -53,7 +53,7 @@
         <item>-1</item>
         <item>-1</item>
         <item>-1</item>
-        <item>@drawable/default_company_icon</item>
+        <item>@drawable/ic_default_company</item>
     </integer-array>
 
 </resources>
