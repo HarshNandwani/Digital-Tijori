@@ -115,7 +115,7 @@ fun RestoreScreen(
             when (restoreStatus) {
                 RestoreStatus.NOT_STARTED, RestoreStatus.FAILED -> {
                     if (restoreStatus == RestoreStatus.FAILED)
-                        Text(text = uiState.restoreErrorMessage, color = Color.Red)
+                        Text(text = uiState.restoreErrorMessage)
                     RoundedFilledButton(
                         onClick = {
                             viewModel.onEvent(StartupEvent.StartRestore)

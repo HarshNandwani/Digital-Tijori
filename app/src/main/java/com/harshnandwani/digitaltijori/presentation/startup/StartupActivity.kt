@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
@@ -37,8 +36,7 @@ class StartupActivity : FragmentActivity() {
         setContent {
             DigitalTijoriTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     StartupScreen(viewModel, pickBackupFile, promptForAuth, nextAction)
                 }

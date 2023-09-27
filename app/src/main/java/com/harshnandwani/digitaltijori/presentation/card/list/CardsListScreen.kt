@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,7 +48,6 @@ fun CardsListScreen(viewModel: HomeViewModel) {
             Icon(
                 imageVector = Icons.Default.CreditCard,
                 contentDescription = "",
-                tint = MaterialTheme.colors.secondaryVariant,
                 modifier = Modifier.alpha(0.1f).fillMaxSize(0.5f)
             )
         }
@@ -63,7 +61,6 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                     Box(Modifier.clip(RoundedCornerShape(24.dp))) {
                         Swipeable(
                             swipeToLeftEnabled = true,
-                            rightColor = Color.Green,
                             rightIcon = Icons.Default.ContentCopy,
                             leftSwipeAction = {
                                 coroutineScope.launch {
@@ -84,7 +81,6 @@ fun CardsListScreen(viewModel: HomeViewModel) {
                                 }
                             },
                             swipeToRightEnabled = true,
-                            leftColor = Color.Magenta,
                             leftIcon = Icons.Default.Edit,
                             rightSwipeAction = {
                                 coroutineScope.launch {

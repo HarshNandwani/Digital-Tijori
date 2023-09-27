@@ -1,7 +1,6 @@
 package com.harshnandwani.digitaltijori.presentation.home.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,16 +13,13 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.R
-import com.harshnandwani.digitaltijori.presentation.ui.theme.SlateGray
 
 @Composable
 fun AboutAppDialog(
@@ -53,7 +49,6 @@ fun AboutAppDialog(
 
                         addStyle(
                             style = SpanStyle(
-                                color = Color.Blue,
                                 textDecoration = TextDecoration.Underline
                             ), start = startIndex, end = endIndex
                         )
@@ -69,7 +64,6 @@ fun AboutAppDialog(
 
                         addStyle(
                             style = SpanStyle(
-                                color = Color.Blue,
                                 textDecoration = TextDecoration.Underline
                             ), start = startIndex, end = endIndex
                         )
@@ -86,7 +80,6 @@ fun AboutAppDialog(
 
                     ClickableText(
                         text = annotatedLinkString,
-                        style = TextStyle(color = if(isSystemInDarkTheme())  SlateGray else Color.Black ),
                         onClick = { index ->
                             annotatedLinkString
                                 .getStringAnnotations("URL", index, index)

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
@@ -61,8 +60,7 @@ fun AppIconBackground() {
         Icon(
             imageVector = Icons.Default.Lock,
             contentDescription = "",
-            Modifier.fillMaxSize(0.2f),
-            tint = MaterialTheme.colors.secondaryVariant
+            Modifier.fillMaxSize(0.2f)
         )
     }
 }

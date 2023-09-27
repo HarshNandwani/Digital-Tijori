@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -81,7 +79,6 @@ fun BackupDialog(
                     Text(
                         text = "Know more",
                         fontSize = 12.sp,
-                        color = MaterialTheme.colors.primary,
                         modifier = Modifier.clickable { showMore = !showMore }
                     )
                 }
@@ -110,7 +107,7 @@ fun BackupDialog(
                     FAILED -> {
                         showMore = false
                         infoVisible = false
-                        Text(text = "Backup failed, try later!", color = Color.Red)
+                        Text(text = "Backup failed, try later!")
                     }
 
                     COMPLETED -> {

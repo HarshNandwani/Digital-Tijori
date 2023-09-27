@@ -16,7 +16,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEditBankAccountActivity
@@ -46,7 +45,6 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
             Icon(
                 imageVector = Icons.Default.AccountBalance,
                 contentDescription = "",
-                tint = MaterialTheme.colors.secondaryVariant,
                 modifier = Modifier.alpha(0.1f).fillMaxSize(0.5f)
             )
         }
@@ -59,7 +57,6 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
             item {
                 Swipeable(
                     swipeToLeftEnabled = true,
-                    rightColor = Color.Green,
                     rightIcon = Icons.Default.Share,
                     leftSwipeAction = {
                         /*
@@ -86,7 +83,6 @@ fun BankAccountsListScreen(viewModel: HomeViewModel) {
                         }
                     },
                     swipeToRightEnabled = true,
-                    leftColor = Color.Magenta,
                     leftIcon = Icons.Default.Edit,
                     rightSwipeAction = {
                         /*

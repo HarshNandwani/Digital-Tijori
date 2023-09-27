@@ -17,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harshnandwani.digitaltijori.presentation.common_components.Swipeable
@@ -46,7 +45,6 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
             Icon(
                 imageVector = Icons.Default.Lock,
                 contentDescription = "",
-                tint = MaterialTheme.colors.secondaryVariant,
                 modifier = Modifier.alpha(0.1f).fillMaxSize(0.5f)
             )
         }
@@ -58,7 +56,6 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
             item {
                 Swipeable(
                     swipeToLeftEnabled = true,
-                    rightColor = Color.Green,
                     rightIcon = Icons.Default.ContentCopy,
                     leftSwipeAction = {
                         coroutineScope.launch {
@@ -79,7 +76,6 @@ fun CredentialsListScreen(viewModel: HomeViewModel) {
                         }
                     },
                     swipeToRightEnabled = true,
-                    leftColor = Color.Magenta,
                     leftIcon = Icons.Default.Edit,
                     rightSwipeAction = {
                         coroutineScope.launch {

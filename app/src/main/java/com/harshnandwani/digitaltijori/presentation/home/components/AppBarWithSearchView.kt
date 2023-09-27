@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -66,13 +65,11 @@ fun AppBar(
         title = {
             Text(text = title)
         },
-        backgroundColor = MaterialTheme.colors.primary,
         actions = {
             IconButton(onClick = { onSearchIconClicked() }) {
                 Icon(
                     Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = MaterialTheme.colors.onPrimary
+                    contentDescription = "Search Icon"
                 )
             }
             actions()
@@ -95,8 +92,7 @@ fun SearchAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
-        elevation = AppBarDefaults.TopAppBarElevation,
-        color = MaterialTheme.colors.primary
+        elevation = AppBarDefaults.TopAppBarElevation
     ) {
         TextField(
             value = text,
@@ -139,8 +135,7 @@ fun SearchAppBar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close Icon",
-                        tint = MaterialTheme.colors.onPrimary
+                        contentDescription = "Close Icon"
                     )
                 }
             },
@@ -151,10 +146,6 @@ fun SearchAppBar(
                 onSearch = {
                     onSearchImeClicked(text)
                 }
-            ),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                cursorColor = Color.White.copy(alpha = ContentAlpha.medium)
             )
         )
         LaunchedEffect(Unit) {

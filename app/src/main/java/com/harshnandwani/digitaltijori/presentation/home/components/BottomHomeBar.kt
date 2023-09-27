@@ -22,9 +22,7 @@ fun BottomHomeBar(navHostController: NavHostController) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary
-    ) {
+    BottomNavigation {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -56,7 +54,6 @@ fun RowScope.AddItem(
                 popUpTo(navHostController.graph.findStartDestination().id)
                 launchSingleTop = true
             }
-        },
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+        }
     )
 }
