@@ -85,7 +85,7 @@ fun AboutAppDialog(
 
                     ClickableText(
                         text = annotatedLinkString,
-                        style = TextStyle.Default.copy(color = MaterialTheme.colors.onSurface),
+                        style = TextStyle.Default.copy(color = MaterialTheme.colors.onSecondary),
                         onClick = { index ->
                             annotatedLinkString
                                 .getStringAnnotations("URL", index, index)

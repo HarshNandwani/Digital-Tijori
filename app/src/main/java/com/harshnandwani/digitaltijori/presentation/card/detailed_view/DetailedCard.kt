@@ -16,7 +16,7 @@ import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.presentation.card.FlipCardLayout
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
-import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
+import com.harshnandwani.digitaltijori.presentation.common_components.DeleteConfirmationDialog
 import com.harshnandwani.digitaltijori.presentation.util.CardHelperFunctions
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
@@ -68,26 +68,16 @@ fun DetailedCard(
             )
         }
 
-        ConfirmationAlertDialog(
+        DeleteConfirmationDialog(
             visible = showDialog,
             onDismiss = { showDialog = false },
             title = "You are deleting ${issuer.name} ${card.cardType.name}",
             text = "This action cannot be undone, do you want to proceed?",
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onDeleteAction()
-                        showDialog = false
-                    }
-                ) {
-                    Text(text = "Yes, delete")
-                }
+            onDelete = {
+                onDeleteAction()
+                showDialog = false
             },
-            dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(text = "Cancel")
-                }
-            }
+            onCancel = { showDialog = false }
         )
 
         FlipCardLayout(

@@ -21,7 +21,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.AddEdi
 import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.util.DetailedBankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCard
-import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
+import com.harshnandwani.digitaltijori.presentation.common_components.DeleteConfirmationDialog
 import com.harshnandwani.digitaltijori.presentation.common_components.DetailedCardView
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
@@ -109,26 +109,16 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
                     }
                 }
 
-                ConfirmationAlertDialog(
+                DeleteConfirmationDialog(
                     visible = showAccountDialog,
                     onDismiss = { showAccountDialog = false },
                     title = "Do you want to delete ${uiState.bank.name} account",
                     text = "This action cannot be undone, do you want to proceed?",
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                viewModel.onEvent(DetailedBankAccountEvent.DeleteBankAccount)
-                                showAccountDialog = false
-                            }
-                        ) {
-                            Text(text = "Yes, delete")
-                        }
+                    onDelete = {
+                        viewModel.onEvent(DetailedBankAccountEvent.DeleteBankAccount)
+                        showAccountDialog = false
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showAccountDialog = false }) {
-                            Text(text = "Cancel")
-                        }
-                    }
+                    onCancel = { showAccountDialog = false }
                 )
 
             }

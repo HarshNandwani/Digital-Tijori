@@ -53,7 +53,6 @@ fun InputTextField(
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colors.onPrimary,
             focusedBorderColor = MaterialTheme.colors.secondary,
             cursorColor = MaterialTheme.colors.secondary,
             focusedLabelColor = MaterialTheme.colors.secondary

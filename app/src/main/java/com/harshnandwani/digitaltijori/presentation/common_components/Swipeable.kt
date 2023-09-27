@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.harshnandwani.digitaltijori.presentation.ui.theme.DarkGreen
+import com.harshnandwani.digitaltijori.presentation.ui.theme.LightGreen
 import kotlinx.coroutines.launch
 import java.lang.Math.random
 
@@ -28,15 +31,16 @@ import java.lang.Math.random
 @Composable
 fun Swipeable(
     swipeToLeftEnabled: Boolean,
-    rightColor: Color? = null,
     rightIcon: ImageVector? = null,
     leftSwipeAction: () -> Unit = {},
     swipeToRightEnabled: Boolean,
-    leftColor: Color? = null,
     leftIcon: ImageVector? = null,
     rightSwipeAction: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
+
+    val leftColor = MaterialTheme.colors.secondary
+    val rightColor = if (isSystemInDarkTheme()) DarkGreen else LightGreen
 
     val coroutineScope = rememberCoroutineScope()
     val dismissState = rememberDismissState(
@@ -74,16 +78,19 @@ fun Swipeable(
             val dismissDirection = dismissState.dismissDirection ?: return@SwipeToDismiss
             val color by animateColorAsState(
                 targetValue = when (dismissState.targetValue) {
-                    DismissValue.DismissedToStart -> rightColor ?: Color.DarkGray
-                    DismissValue.DismissedToEnd -> leftColor ?: Color.DarkGray
+                    DismissValue.DismissedToStart -> rightColor
+                    DismissValue.DismissedToEnd -> leftColor
                     DismissValue.Default -> Color.DarkGray
-                }
+                }, label = "SwipeAnimation"
             )
             val icon = when (dismissDirection) {
                 DismissDirection.StartToEnd -> leftIcon
                 DismissDirection.EndToStart -> rightIcon
             }
-            val scale = animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f)
+            val scale = animateFloatAsState(
+                targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f,
+                label = "SwipeIconEnlargeAnimation"
+            )
             val alignment = when (dismissDirection) {
                 DismissDirection.StartToEnd -> Alignment.CenterStart
                 DismissDirection.EndToStart -> Alignment.CenterEnd
@@ -106,7 +113,10 @@ fun Swipeable(
         dismissContent = {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = animateDpAsState(targetValue = if (dismissState.dismissDirection != null) 6.dp else 0.dp).value
+                elevation = animateDpAsState(
+                    targetValue = if (dismissState.dismissDirection != null) 6.dp else 0.dp,
+                    label = "SwipeCardElevationAnimation"
+                ).value
             ) {
                 content()
             }

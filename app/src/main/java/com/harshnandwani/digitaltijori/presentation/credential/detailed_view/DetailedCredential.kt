@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
-import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
+import com.harshnandwani.digitaltijori.presentation.common_components.DeleteConfirmationDialog
 import com.harshnandwani.digitaltijori.presentation.common_components.DetailedCardView
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -105,26 +105,16 @@ fun DetailedCredential(
             }
         }
 
-        ConfirmationAlertDialog(
+        DeleteConfirmationDialog(
             visible = showDialog,
             onDismiss = { showDialog = false },
             title = "You are deleting ${entity.name} credentials of ${credential.username}",
             text = "This action cannot be undone, do you want to proceed?",
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onDeleteAction()
-                        showDialog = false
-                    }
-                ) {
-                    Text(text = "Yes, delete")
-                }
+            onDelete = {
+                onDeleteAction()
+                showDialog = false
             },
-            dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(text = "Cancel")
-                }
-            }
+            onCancel = { showDialog = false }
         )
 
     }

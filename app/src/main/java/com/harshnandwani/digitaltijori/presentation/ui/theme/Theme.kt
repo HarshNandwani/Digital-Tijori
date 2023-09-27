@@ -11,6 +11,7 @@ private val DarkColorPalette = darkColors(
     primaryVariant = EerieBlack,
     onPrimary = LighterSilver,
     secondary = LighterRoyalBlue,
+    onSecondary = LighterSilver,
     background = Black,
     onBackground = LighterSilver,
     error = LighterErrorRed
