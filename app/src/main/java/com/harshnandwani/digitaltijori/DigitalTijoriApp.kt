@@ -19,7 +19,7 @@ class DigitalTijoriApp : Application() {
         * and it cannot be hardcoded as they might change
         * */
         updateCompanies.execute()
-
+//test commit
     }
 
 }
