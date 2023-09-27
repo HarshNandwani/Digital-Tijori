@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class DigitalTijoriApp : Application() {
-
+//Test commit
     @Inject
     lateinit var updateCompanies: UpdateCompaniesOnAppStart
 
