@@ -18,7 +18,7 @@ class DigitalTijoriApp : Application() {
         * Called everytime app starts as icons and logos are drawable resources
         * and it cannot be hardcoded as they might change
         * */
-        updateCompanies.execute()
+        updateCompanies.execute() //test commit
 
     }
 
