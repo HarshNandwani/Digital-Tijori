@@ -10,6 +10,7 @@ import com.harshnandwani.digitaltijori.data.repository.*
 import com.harshnandwani.digitaltijori.domain.repository.*
 import com.harshnandwani.digitaltijori.domain.use_case.auth.*
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.DoesAnyDataExistsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.IsEligibleForRestoreUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.EncryptDecryptDataUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.GetAllDataInJsonUseCase
@@ -313,18 +314,21 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideEligibleForRestoreUseCase(
-        preferenceRepository: PreferenceRepository,
+    fun provideDoesAnyDataExistsUseCase(
         bankAccountRepository: BankAccountRepository,
         cardRepository: CardRepository,
         credentialRepository: CredentialRepository
+    ): DoesAnyDataExistsUseCase {
+        return DoesAnyDataExistsUseCase(bankAccountRepository, cardRepository, credentialRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEligibleForRestoreUseCase(
+        preferenceRepository: PreferenceRepository,
+        doesAnyDataExistsUseCase: DoesAnyDataExistsUseCase
     ): IsEligibleForRestoreUseCase {
-        return IsEligibleForRestoreUseCase(
-            preferenceRepository,
-            bankAccountRepository,
-            cardRepository,
-            credentialRepository
-        )
+        return IsEligibleForRestoreUseCase(preferenceRepository, doesAnyDataExistsUseCase)
     }
 
     @Provides

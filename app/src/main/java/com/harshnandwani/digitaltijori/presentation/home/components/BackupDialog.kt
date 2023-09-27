@@ -69,6 +69,7 @@ fun BackupDialog(
                     STARTED -> "Creating backup"
                     FAILED -> "Failed"
                     COMPLETED -> "Backup file created, please save it"
+                    else -> ""
                 }
             )
         },
@@ -116,6 +117,7 @@ fun BackupDialog(
                         infoVisible = false
                         Text(text = stringResource(id = R.string.backup_completed_message))
                     }
+                    else -> {}
                 }
             }
         },
@@ -136,7 +138,11 @@ fun BackupDialog(
         },
         dismissButton = {
             TextButton(
-                onClick = { onDismissRequest(true, false, "") },
+                onClick = {
+                    val message = if (backupStatus == COMPLETED) "Backup file not saved" else "Backup cancelled"
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    onDismissRequest(true, false, "")
+                },
                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary)
             ) {
                 Text(text = "Cancel")

@@ -18,4 +18,4 @@ data class HomeScreenState(
     val backupStatus: BackupStatus = BackupStatus.NOT_STARTED
 )
 
-enum class BackupStatus { NOT_STARTED, STARTED, FAILED, COMPLETED }
+enum class BackupStatus { NO_DATA, NOT_STARTED, STARTED, FAILED, COMPLETED }

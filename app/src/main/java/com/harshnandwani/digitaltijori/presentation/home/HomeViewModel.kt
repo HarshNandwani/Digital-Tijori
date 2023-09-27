@@ -6,6 +6,7 @@ import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.CreateBackupUseCase
+import com.harshnandwani.digitaltijori.domain.use_case.backup_restore.DoesAnyDataExistsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetAllAccountsUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.bank_account.GetBankAccountUseCase
 import com.harshnandwani.digitaltijori.domain.use_case.card.GetAllCardsUseCase
@@ -39,6 +40,7 @@ class HomeViewModel @Inject constructor(
     private val getCredentialUseCase: GetCredentialUseCase,
     private val shouldShowAboutApp: ShouldShowAboutAppUseCase,
     private val setDoNotShowAboutApp: SetDoNotShowAboutAppUseCase,
+    private val doesAnyDataExist: DoesAnyDataExistsUseCase,
     private val createBackup: CreateBackupUseCase
 ) : ViewModel() {
 
@@ -117,7 +119,13 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenEvent.ShowBackupToggle -> {
-                _state.update { it.copy(showBackup = event.show) }
+                viewModelScope.launch(Dispatchers.IO) {
+                    if (doesAnyDataExist()) {
+                        _state.update { it.copy(showBackup = event.show) }
+                    } else {
+                        _state.update { it.copy(backupStatus = BackupStatus.NO_DATA) }
+                    }
+                }
             }
             is HomeScreenEvent.CreateBackup -> {
                 _state.update { it.copy(backupStatus = BackupStatus.STARTED) }

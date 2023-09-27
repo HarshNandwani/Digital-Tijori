@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.presentation.home
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -23,6 +24,7 @@ import com.harshnandwani.digitaltijori.presentation.home.components.AppBarWithSe
 import com.harshnandwani.digitaltijori.presentation.home.components.BackupDialog
 import com.harshnandwani.digitaltijori.presentation.home.components.BottomHomeBar
 import com.harshnandwani.digitaltijori.presentation.home.components.HomeNavGraph
+import com.harshnandwani.digitaltijori.presentation.home.util.BackupStatus
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreenEvent
 import com.harshnandwani.digitaltijori.presentation.home.util.HomeScreens
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
@@ -157,6 +159,11 @@ fun HomeScreen(viewModel: HomeViewModel) {
             putExtra(Intent.EXTRA_STREAM, backupFileURI)
             context.startActivity(Intent.createChooser(this, "Save your encrypted backup file"))
         }
+    }
+
+    if (uiState.backupStatus == BackupStatus.NO_DATA) {
+        Toast.makeText(context, "No data to backup", Toast.LENGTH_SHORT).show()
+        viewModel.onEvent(HomeScreenEvent.BackupCancelled)
     }
 
     BackupDialog(
