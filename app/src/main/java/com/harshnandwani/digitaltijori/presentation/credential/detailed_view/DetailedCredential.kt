@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
+import com.harshnandwani.digitaltijori.presentation.common_components.DetailedCardView
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.util.Parameters
 
@@ -38,11 +38,7 @@ fun DetailedCredential(
     val icon = if (passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
     var showDialog by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = modifier,
-        elevation = 16.dp,
-        shape = RoundedCornerShape(16.dp)
-    ) {
+    DetailedCardView(modifier) {
         Column(Modifier.padding(24.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically

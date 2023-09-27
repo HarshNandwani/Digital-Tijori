@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
@@ -16,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -49,6 +52,7 @@ fun AboutAppDialog(
 
                         addStyle(
                             style = SpanStyle(
+                                color = MaterialTheme.colors.secondary,
                                 textDecoration = TextDecoration.Underline
                             ), start = startIndex, end = endIndex
                         )
@@ -64,6 +68,7 @@ fun AboutAppDialog(
 
                         addStyle(
                             style = SpanStyle(
+                                color = MaterialTheme.colors.secondary,
                                 textDecoration = TextDecoration.Underline
                             ), start = startIndex, end = endIndex
                         )
@@ -80,6 +85,7 @@ fun AboutAppDialog(
 
                     ClickableText(
                         text = annotatedLinkString,
+                        style = TextStyle.Default.copy(color = MaterialTheme.colors.onSurface),
                         onClick = { index ->
                             annotatedLinkString
                                 .getStringAnnotations("URL", index, index)
@@ -105,7 +111,10 @@ fun AboutAppDialog(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { onDismissRequest(donotShowAgainChecked) }) {
+                TextButton(
+                    onClick = { onDismissRequest(donotShowAgainChecked) },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary)
+                ) {
                     Text(text = "Close")
                 }
             }

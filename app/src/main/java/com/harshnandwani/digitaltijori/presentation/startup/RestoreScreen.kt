@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -62,10 +63,10 @@ fun RestoreScreen(
             title = {
                 Text(
                     text = "Restore digital tijori backup",
-                    fontSize = 18.sp,
-                    //style = MaterialTheme.typography.h1
+                    fontSize = 18.sp
                 )
-            }
+            },
+            backgroundColor = MaterialTheme.colors.primary
         )
 
         Column(
@@ -115,7 +116,7 @@ fun RestoreScreen(
             when (restoreStatus) {
                 RestoreStatus.NOT_STARTED, RestoreStatus.FAILED -> {
                     if (restoreStatus == RestoreStatus.FAILED)
-                        Text(text = uiState.restoreErrorMessage)
+                        Text(text = uiState.restoreErrorMessage, color = MaterialTheme.colors.error)
                     RoundedFilledButton(
                         onClick = {
                             viewModel.onEvent(StartupEvent.StartRestore)

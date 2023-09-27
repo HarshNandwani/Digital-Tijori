@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,6 +22,7 @@ import com.harshnandwani.digitaltijori.presentation.bank_account.detailed_view.u
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
 import com.harshnandwani.digitaltijori.presentation.card.detailed_view.DetailedCard
 import com.harshnandwani.digitaltijori.presentation.common_components.ConfirmationAlertDialog
+import com.harshnandwani.digitaltijori.presentation.common_components.DetailedCardView
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.credential.add_edit.AddEditCredentialActivity
 import com.harshnandwani.digitaltijori.presentation.credential.detailed_view.DetailedCredential
@@ -42,12 +42,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
     ) {
         Text(text = "Account: ", style = MaterialTheme.typography.h1)
         Spacer(modifier = Modifier.size(16.dp))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            elevation = 16.dp,
-            shape = RoundedCornerShape(16.dp)
-        ) {
+        DetailedCardView {
             Column(Modifier.padding(24.dp)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -140,12 +135,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
 
         }
 
-        // Not the best way to show dotted line/border :P But am yet to learn Canvas, so here we go
-        Text(
-            text = "- ".repeat(100),
-            maxLines = 1,
-            modifier = Modifier.padding(vertical = 24.dp)
-        )
+        Spacer(modifier = Modifier.size(24.dp))
 
         if (uiState.bank.issuesCards) {
             Text(text = "Linked Cards:", style = MaterialTheme.typography.h1)
@@ -176,12 +166,7 @@ fun DetailedBankAccountScreen(viewModel: DetailedBankAccountViewModel) {
             )
         }
 
-        // Oh Again? Sorry, its the last time!
-        Text(
-            text = "- ".repeat(100),
-            maxLines = 1,
-            modifier = Modifier.padding(vertical = 24.dp)
-        )
+        Spacer(modifier = Modifier.size(24.dp))
 
         if (uiState.bank.hasCredentials) {
             Text(text = "Linked Credentials:", style = MaterialTheme.typography.h1)

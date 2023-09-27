@@ -54,7 +54,8 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     IconButton(onClick = { showMenu = !showMenu }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = MaterialTheme.colors.onPrimary
                         )
                     }
                     DropdownMenu(

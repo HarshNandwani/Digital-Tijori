@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -23,6 +22,7 @@ import com.harshnandwani.digitaltijori.R
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountEvent
 import com.harshnandwani.digitaltijori.presentation.bank_account.add_edit.util.BankAccountSubmitResultEvent
 import com.harshnandwani.digitaltijori.presentation.card.add_edit.AddEditCardActivity
+import com.harshnandwani.digitaltijori.presentation.common_components.BottomSheetLayout
 import com.harshnandwani.digitaltijori.presentation.common_components.InputTextField
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedFilledButton
 import com.harshnandwani.digitaltijori.presentation.common_components.RoundedOutlineButton
@@ -43,7 +43,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
     val focusManager = LocalFocusManager.current
     var addCardsClicked by remember { mutableStateOf(false) }
 
-    ModalBottomSheetLayout(
+    BottomSheetLayout(
         sheetContent = {
             CompaniesList(
                 titleText = "Select a bank",
@@ -56,8 +56,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
                 }
             )
         },
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+        sheetState = bottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -75,7 +74,7 @@ fun AddEditBankAccountScreen(viewModel: AddEditBankAccountViewModel, onDone: () 
                 }
             ) {
                 Image(
-                    painter = painterResource(id = uiState.selectedBank?.iconResId ?: R.drawable.default_company_icon),
+                    painter = painterResource(id = uiState.selectedBank?.iconResId ?: R.drawable.ic_default_company),
                     contentDescription = "Bank Icon",
                     modifier = Modifier.size(40.dp)
                 )

@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -14,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -72,19 +73,19 @@ fun BackupDialog(
             )
         },
         text = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column {
 
                 if (infoVisible) {
                     Text(text = "Your backup will be encrypted and secure!")
+                    if (showMore)
+                        Text(text = stringResource(id = R.string.backup_description))
                     Text(
-                        text = "Know more",
+                        text = if (showMore) "show less" else "Know more",
                         fontSize = 12.sp,
-                        modifier = Modifier.clickable { showMore = !showMore }
+                        modifier = Modifier.clickable { showMore = !showMore },
+                        color = MaterialTheme.colors.secondary
                     )
                 }
-
-                if (showMore)
-                    Text(text = stringResource(id = R.string.backup_description))
 
                 when (backupStatus) {
                     NOT_STARTED -> {
@@ -134,7 +135,10 @@ fun BackupDialog(
             )
         },
         dismissButton = {
-            TextButton(onClick = { onDismissRequest(true, false, "") }) {
+            TextButton(
+                onClick = { onDismissRequest(true, false, "") },
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary)
+            ) {
                 Text(text = "Cancel")
             }
         }
