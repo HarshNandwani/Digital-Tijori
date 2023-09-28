@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.presentation.util
 
 import android.content.res.TypedArray
+import com.harshnandwani.digitaltijori.domain.model.Company
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
 import com.harshnandwani.digitaltijori.domain.use_case.company.ConvertJsonToCompaniesUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -32,18 +33,38 @@ class UpdateCompaniesOnAppStart(
             val companiesFromJson = convertJsonToCompanies(companiesJson)
             val companiesInDb = companyRepository.getAll()
 
-            companiesFromJson.forEachIndexed { index, company ->
-                val finalCompany = company.copy(
+            companiesFromJson.forEachIndexed { index, companyFromJson ->
+                val companyWithResIds = companyFromJson.copy(
                     iconResId = companyIconResIds.getResourceId(index, -1),
                     logoResId = companyLogoResIds.getResourceId(index, -1)
                 )
-                if (companiesInDb.size <= index) {
-                    companyRepository.add(finalCompany)
+
+                if (index < companiesInDb.size) {
+
+                    // This will be true 99.99% times
+                    if (companyWithResIds.name == companiesInDb[index].name) {
+                        val finalCompany = companyWithResIds.copy(
+                            companyId = companiesInDb[index].companyId
+                        )
+                        companyRepository.update(finalCompany)
+                        return@forEachIndexed
+                    }
+
+                    // Just in case the companies we not added sequentially and their ids are not sequential.
+                    val companyInDb = companiesInDb.find { it.name == companyWithResIds.name }
+                    companyInDb?.let {
+                        val finalCompany = companyWithResIds.copy(companyId = it.companyId)
+                        companyRepository.update(finalCompany)
+                    } ?: addNewCompany(companyWithResIds)
                 } else {
-                    companyRepository.update(finalCompany)
+                    addNewCompany(companyWithResIds)
                 }
+
             }
         }
     }
 
+    private suspend fun addNewCompany(company: Company) {
+        companyRepository.add(company)
+    }
 }
