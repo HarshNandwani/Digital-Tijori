@@ -15,6 +15,14 @@ class EncryptDecryptDataUseCase {
 
     @Throws(Exception::class) // Multiple exception types thrown
     operator fun invoke(mode: Mode, secretKey: String, data: String): String {
+        if (secretKey.isBlank()) {
+            throw IllegalArgumentException("Secret key cannot be black")
+        }
+
+        if (data.isBlank()) {
+            throw IllegalArgumentException("There is no data to encrypt/decrypt")
+        }
+
         val digest = MessageDigest.getInstance("SHA-256")
         val hash = digest.digest(secretKey.toByteArray())
 
