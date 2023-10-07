@@ -13,7 +13,7 @@ import com.harshnandwani.digitaltijori.data.util.DummyCompanies.cardIssuer
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.entity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -45,7 +45,7 @@ class CompanyDaoTest {
     }
 
     @Test
-    fun addAndGetAllCompaniesTest() = runBlockingTest {
+    fun addAndGetAllCompaniesTest() = runTest {
         addDummyData()
         val allCompanies = dao.getAll()
         assertThat(allCompanies).containsExactly(
@@ -58,7 +58,7 @@ class CompanyDaoTest {
     }
 
     @Test
-    fun getAllBanksTest() = runBlockingTest {
+    fun getAllBanksTest() = runTest {
         addDummyData()
         val allBanks = dao.getAllBanks().first()
         assertThat(allBanks).containsExactly(
@@ -69,7 +69,7 @@ class CompanyDaoTest {
     }
 
     @Test
-    fun getAllCardIssuersTest() = runBlockingTest {
+    fun getAllCardIssuersTest() = runTest {
         addDummyData()
         val allIssuers = dao.getAllCardIssuers().first()
         assertThat(allIssuers).containsExactly(
@@ -80,7 +80,7 @@ class CompanyDaoTest {
     }
 
     @Test
-    fun getAllCompaniesWithCredentialsTest() = runBlockingTest {
+    fun getAllCompaniesWithCredentialsTest() = runTest {
         addDummyData()
         val allCompaniesWithCredentials = dao.getAllCompaniesWithCredentials().first()
         assertThat(allCompaniesWithCredentials).containsExactly(
@@ -90,7 +90,7 @@ class CompanyDaoTest {
     }
 
     @Test
-    fun updateCompanyTest() = runBlockingTest {
+    fun updateCompanyTest() = runTest {
         dao.add(bank)
         val updatedCompany = bank.copy(name = "Updated Bank Name!")
         dao.update(updatedCompany)

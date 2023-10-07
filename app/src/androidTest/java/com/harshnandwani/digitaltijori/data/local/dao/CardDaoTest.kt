@@ -24,7 +24,7 @@ import com.harshnandwani.digitaltijori.domain.util.CardNetwork
 import com.harshnandwani.digitaltijori.domain.util.CardType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -48,7 +48,7 @@ class CardDaoTest {
             DigitalTijoriDatabase::class.java
         ).allowMainThreadQueries().build()
         dao = database.cardDao
-        runBlockingTest {
+        runTest {
             addIssuersAndAccounts()
         }
     }
@@ -62,7 +62,7 @@ class CardDaoTest {
     * Test to check the companyId foreign key constraint of Card
     * */
     @Test
-    fun addCardWithInvalidIssuerTest() = runBlockingTest {
+    fun addCardWithInvalidIssuerTest() = runTest {
         try {
             dao.add(cardWithInvalidCompany)
         } catch (e: SQLiteConstraintException) {
@@ -76,7 +76,7 @@ class CardDaoTest {
     * Test to check the bankAccountId foreign key constraint of Card
     * */
     @Test
-    fun addCardWithInvalidBankAccountTest() = runBlockingTest {
+    fun addCardWithInvalidBankAccountTest() = runTest {
         try {
             dao.add(cardWithInvalidAccount)
         } catch (e: SQLiteConstraintException) {
@@ -87,7 +87,7 @@ class CardDaoTest {
     }
 
     @Test
-    fun addAndGetCardsTest() = runBlockingTest {
+    fun addAndGetCardsTest() = runTest {
         dao.add(cardWithIssuer1)
         dao.add(card2WithIssuer1)
         val allCards = dao.getAll().first()
@@ -95,7 +95,7 @@ class CardDaoTest {
     }
 
     @Test
-    fun addCardsFromDifferentIssuers() = runBlockingTest {
+    fun addCardsFromDifferentIssuers() = runTest {
         addAllCards()
         val allCards = dao.getAll().first()
         assertThat(allCards).containsExactly(
@@ -109,13 +109,13 @@ class CardDaoTest {
     }
 
     @Test
-    fun getCardTest() = runBlockingTest {
+    fun getCardTest() = runTest {
         dao.add(cardWithIssuer1)
         assertThat(dao.get(cardWithIssuer1.cardId)).isEqualTo(cardWithIssuer1)
     }
 
     @Test
-    fun updateCardTest() = runBlockingTest {
+    fun updateCardTest() = runTest {
         dao.add(cardWithIssuer2)
         val updatedCard = cardWithIssuer2.copy(
             isLinkedToBank = true,
@@ -136,7 +136,7 @@ class CardDaoTest {
     }
 
     @Test
-    fun deleteCardTest() = runBlockingTest {
+    fun deleteCardTest() = runTest {
         addAllCards()
         dao.delete(cardWithIssuer2)
         val allCards = dao.getAll().first()
@@ -144,7 +144,7 @@ class CardDaoTest {
     }
 
     @Test
-    fun getCardsLinkedToABankTest() = runBlockingTest {
+    fun getCardsLinkedToABankTest() = runTest {
         val card = cardWithIssuer3.copy(
             isLinkedToBank = true,
             bankAccountId = accountWithBank3.bankAccountId
@@ -156,7 +156,7 @@ class CardDaoTest {
     }
 
     @Test
-    fun getCardsWithIssuerDetailsTest() = runBlockingTest {
+    fun getCardsWithIssuerDetailsTest() = runTest {
         addAllCards()
         val cards = dao.getCardsWithIssuerDetails().first()
 

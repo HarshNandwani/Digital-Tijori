@@ -19,7 +19,7 @@ import com.harshnandwani.digitaltijori.data.util.DummyCredentials.credsWithInval
 import com.harshnandwani.digitaltijori.data.util.DummyCredentials.credsWithInvalidCompany
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -43,7 +43,7 @@ class CredentialDaoTest {
             DigitalTijoriDatabase::class.java
         ).allowMainThreadQueries().build()
         dao = database.credentialDao
-        runBlockingTest {
+        runTest {
             addEntitiesAndAccounts()
         }
     }
@@ -57,7 +57,7 @@ class CredentialDaoTest {
     * Test to check the companyId foreign key constraint
     * */
     @Test
-    fun addCredentialWithInvalidEntity() = runBlockingTest {
+    fun addCredentialWithInvalidEntity() = runTest {
         try {
             dao.add(credsWithInvalidCompany)
         } catch (e: SQLiteConstraintException) {
@@ -71,7 +71,7 @@ class CredentialDaoTest {
     * Test to check the bankAccountId foreign key constraint
     * */
     @Test
-    fun addCredentialWithInvalidAccount() = runBlockingTest {
+    fun addCredentialWithInvalidAccount() = runTest {
         try {
             dao.add(credsWithInvalidAccount)
         } catch (e: SQLiteConstraintException) {
@@ -82,7 +82,7 @@ class CredentialDaoTest {
     }
 
     @Test
-    fun addAndGetCredentialsTest() = runBlockingTest {
+    fun addAndGetCredentialsTest() = runTest {
         dao.add(credsWithEntity1)
         dao.add(creds2WithEntity1)
         val allCreds = dao.getAll().first()
@@ -90,7 +90,7 @@ class CredentialDaoTest {
     }
 
     @Test
-    fun addCredentialsFromDifferentEntities() = runBlockingTest {
+    fun addCredentialsFromDifferentEntities() = runTest {
         addAllCredentials()
         val allCreds = dao.getAll().first()
         assertThat(allCreds).containsExactly(
@@ -103,13 +103,13 @@ class CredentialDaoTest {
     }
 
     @Test
-    fun getCredentialTest() = runBlockingTest {
+    fun getCredentialTest() = runTest {
         dao.add(credsWithEntity1)
         assertThat(dao.get(credsWithEntity1.credentialId)).isEqualTo(credsWithEntity1)
     }
 
     @Test
-    fun updateCredentialTest() = runBlockingTest {
+    fun updateCredentialTest() = runTest {
         dao.add(credsWithEntity2)
         val updatedCredentials = credsWithEntity2.copy(
             isLinkedToBank = true,
@@ -123,7 +123,7 @@ class CredentialDaoTest {
     }
 
     @Test
-    fun deleteCredentialTest() = runBlockingTest {
+    fun deleteCredentialTest() = runTest {
         addAllCredentials()
         dao.delete(credsWithEntity2)
         val allCreds = dao.getAll().first()
@@ -131,14 +131,14 @@ class CredentialDaoTest {
     }
 
     @Test
-    fun getCredentialsLinkedToAccountTest() = runBlockingTest {
+    fun getCredentialsLinkedToAccountTest() = runTest {
         addAllCredentials()
         val creds = dao.getCredentialsLinkedToAccount(accountWithBank3.bankAccountId).first()
         assertThat(creds).containsExactly(creds2WithEntity2, creds3WithEntity2)
     }
 
     @Test
-    fun getAllCredentialsWithEntityDetailsTest() = runBlockingTest {
+    fun getAllCredentialsWithEntityDetailsTest() = runTest {
         addAllCredentials()
         val creds = dao.getAllCredentialsWithEntityDetails().first()
         assertThat(creds[entity]).containsExactly(credsWithEntity1, creds2WithEntity1)

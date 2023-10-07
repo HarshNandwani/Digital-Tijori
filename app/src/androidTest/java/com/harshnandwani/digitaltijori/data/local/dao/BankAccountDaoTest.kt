@@ -19,7 +19,7 @@ import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCards
 import com.harshnandwani.digitaltijori.data.util.DummyCompanies.bankIssuesCardsHasCredentials
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -43,7 +43,7 @@ class BankAccountDaoTest {
             DigitalTijoriDatabase::class.java
         ).allowMainThreadQueries().build()
         dao = database.bankAccountDao
-        runBlockingTest {
+        runTest {
             addBanks()
         }
     }
@@ -57,7 +57,7 @@ class BankAccountDaoTest {
     * Test to check the foreign key constraint of BankAccount
     * */
     @Test
-    fun addAccountWithoutBankTest() = runBlockingTest {
+    fun addAccountWithoutBankTest() = runTest {
         try {
             dao.add(account)
         } catch (e: SQLiteConstraintException) {
@@ -69,7 +69,7 @@ class BankAccountDaoTest {
     }
 
     @Test
-    fun addAndGetAllAccountTest() = runBlockingTest {
+    fun addAndGetAllAccountTest() = runTest {
         dao.add(accountWithBank1)
         dao.add(account2WithBank1)
         val allAccounts = dao.getAll().first()
@@ -77,7 +77,7 @@ class BankAccountDaoTest {
     }
 
     @Test
-    fun addAccountsFromDifferentBanksTest() = runBlockingTest {
+    fun addAccountsFromDifferentBanksTest() = runTest {
         addAllAccounts()
         val allAccounts = dao.getAll().first()
         assertThat(allAccounts).containsExactly(
@@ -91,13 +91,13 @@ class BankAccountDaoTest {
     }
 
     @Test
-    fun getBankAccountTest() = runBlockingTest {
+    fun getBankAccountTest() = runTest {
         dao.add(accountWithBank1)
         assertThat(dao.get(accountWithBank1.bankAccountId)).isEqualTo(accountWithBank1)
     }
 
     @Test
-    fun updateBankAccountTest() = runBlockingTest {
+    fun updateBankAccountTest() = runTest {
         dao.add(accountWithBank1)
         val updatedAccount = accountWithBank1.copy(
             holderName = "Updated name",
@@ -111,7 +111,7 @@ class BankAccountDaoTest {
     }
 
     @Test
-    fun deleteBankAccountTest() = runBlockingTest {
+    fun deleteBankAccountTest() = runTest {
         addAllAccounts()
         dao.delete(accountWithBank2)
         val allAccounts = dao.getAll().first()
@@ -119,7 +119,7 @@ class BankAccountDaoTest {
     }
 
     @Test
-    fun getAccountsWithBankDetailsTest() = runBlockingTest {
+    fun getAccountsWithBankDetailsTest() = runTest {
         addAllAccounts()
         val accounts = dao.getAccountsWithBankDetails().first()
 
