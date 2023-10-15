@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.dao.CardDao
 import com.harshnandwani.digitaltijori.data.local.entity.CardEntity
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
 import com.harshnandwani.digitaltijori.domain.model.Card
 import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CardRepository
@@ -24,12 +25,7 @@ class CardRepositoryImpl(
     }
 
     override fun getAll(): Flow<List<Card>> {
-        return dao.getCardsWithIssuerDetails().transform {
-            val result = it.flatMap { entry ->
-                entry.value.map { cardEntity -> mapEntityToDomain(cardEntity) }
-            }
-            emit(result.filterNotNull())
-        }
+        return transformFlowToDomain(dao.getCardsWithIssuerDetails())
     }
 
     override fun getCardsLinkedToABank(bankAccountId: Int): Flow<List<Card>> {
@@ -59,6 +55,15 @@ class CardRepositoryImpl(
             val linkedCompany = companyRepository.get(it) ?: return null
             return cardEntity.toDomain(null, linkedCompany)
         } ?: return null
+    }
+
+    private fun transformFlowToDomain(entityFlow: Flow<Map<CompanyEntity, List<CardEntity>>>): Flow<List<Card>> {
+        return entityFlow.transform {
+            val cards = it.flatMap { entry ->
+                entry.value.mapNotNull { cardEntity -> mapEntityToDomain(cardEntity) }
+            }
+            emit(cards)
+        }
     }
 
 }

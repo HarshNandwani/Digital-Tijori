@@ -1,6 +1,7 @@
 package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.dao.CredentialDao
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
 import com.harshnandwani.digitaltijori.data.local.entity.CredentialEntity
 import com.harshnandwani.digitaltijori.domain.model.Credential
 import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
@@ -24,12 +25,7 @@ class CredentialRepositoryImpl(
     }
 
     override fun getAll(): Flow<List<Credential>> {
-        return dao.getAllCredentialsWithEntityDetails().transform {
-            val result = it.flatMap { entry ->
-                entry.value.map { credentialEntity -> mapEntityToDomain(credentialEntity) }
-            }
-            emit(result.filterNotNull())
-        }
+        return transformFlowToDomain(dao.getAllCredentialsWithEntityDetails())
     }
 
     override fun getCredentialsLinkedToAccount(bankAccountId: Int): Flow<List<Credential>> {
@@ -60,4 +56,14 @@ class CredentialRepositoryImpl(
             return credentialEntity.toDomain(null, linkedCompany)
         } ?: return null
     }
+
+    private fun transformFlowToDomain(entityFlow: Flow<Map<CompanyEntity, List<CredentialEntity>>>): Flow<List<Credential>> {
+        return entityFlow.transform {
+            val result = it.flatMap { entry ->
+                entry.value.mapNotNull { credentialEntity -> mapEntityToDomain(credentialEntity) }
+            }
+            emit(result)
+        }
+    }
+
 }

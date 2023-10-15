@@ -2,6 +2,7 @@ package com.harshnandwani.digitaltijori.data.repository
 
 import com.harshnandwani.digitaltijori.data.local.dao.BankAccountDao
 import com.harshnandwani.digitaltijori.data.local.entity.BankAccountEntity
+import com.harshnandwani.digitaltijori.data.local.entity.CompanyEntity
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
 import com.harshnandwani.digitaltijori.domain.repository.BankAccountRepository
 import com.harshnandwani.digitaltijori.domain.repository.CompanyRepository
@@ -23,13 +24,7 @@ class BankAccountRepositoryImpl(
     }
 
     override fun getAll(): Flow<List<BankAccount>> {
-        //TODO: Try to convert below flow transformation to util function
-        return dao.getAccountsWithBankDetails().transform {
-            val result = it.flatMap { entry ->
-                entry.value.map { account -> account.toDomain(entry.key.toDomain()) }
-            }
-            emit(result)
-        }
+        return transformFlowToDomain(dao.getAccountsWithBankDetails())
     }
 
     override suspend fun update(account: BankAccount) {
@@ -43,4 +38,14 @@ class BankAccountRepositoryImpl(
     override suspend fun dataExists(): Boolean {
         return dao.dataExists()
     }
+
+    private fun transformFlowToDomain(entityFlow: Flow<Map<CompanyEntity, List<BankAccountEntity>>>): Flow<List<BankAccount>> {
+        return entityFlow.transform {
+            val bankAccounts = it.flatMap { entry ->
+                entry.value.map { account -> account.toDomain(entry.key.toDomain()) }
+            }
+            emit(bankAccounts)
+        }
+    }
+
 }
