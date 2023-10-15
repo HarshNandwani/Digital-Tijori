@@ -1,8 +1,8 @@
-package com.harshnandwani.digitaltijori.domain.use_case.bank_account.util
+package com.harshnandwani.digitaltijori.domain.util
 
 import com.harshnandwani.digitaltijori.domain.model.BankAccount
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyCompanies.bank
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyCompanies.invalidCompany
+import com.harshnandwani.digitaltijori.domain.util.DummyCompanies.bank
+import com.harshnandwani.digitaltijori.domain.util.DummyCompanies.invalidCompany
 
 object DummyAccounts {
     val accountWithInvalidCompanyId = BankAccount(

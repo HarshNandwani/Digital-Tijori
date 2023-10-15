@@ -1,14 +1,14 @@
 package com.harshnandwani.digitaltijori.domain.use_case.bank_account
 
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyAccounts.accountWithInvalidCompanyId
+import com.harshnandwani.digitaltijori.domain.util.DummyAccounts.accountWithInvalidCompanyId
 import com.harshnandwani.digitaltijori.domain.util.InvalidBankAccountException
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyAccounts.accountWithInvalidAccountNumber
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyAccounts.accountWithInvalidHolderName
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyAccounts.accountWithInvalidIFSC
-import com.harshnandwani.digitaltijori.domain.use_case.bank_account.util.DummyAccounts.validAccount
+import com.harshnandwani.digitaltijori.domain.util.DummyAccounts.accountWithInvalidAccountNumber
+import com.harshnandwani.digitaltijori.domain.util.DummyAccounts.accountWithInvalidHolderName
+import com.harshnandwani.digitaltijori.domain.util.DummyAccounts.accountWithInvalidIFSC
+import com.harshnandwani.digitaltijori.domain.util.DummyAccounts.validAccount
 
 
 class ValidateBankAccountUseCaseTest {

@@ -1,4 +1,4 @@
-package com.harshnandwani.digitaltijori.domain.use_case.bank_account.util
+package com.harshnandwani.digitaltijori.domain.util
 
 import com.harshnandwani.digitaltijori.domain.model.Company
 
