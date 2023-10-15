@@ -28,15 +28,10 @@ class DetailedBankAccountActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            var eventSent by remember { mutableStateOf(false) }
-
-            if (!eventSent) {
-                val bank = intent.serializable<Company>(Parameters.KEY_BANK)
-                val account = intent.serializable<BankAccount>(Parameters.KEY_BANK_ACCOUNT)
-                viewModel.onEvent(DetailedBankAccountEvent.LoadBank(bank))
-                viewModel.onEvent(DetailedBankAccountEvent.LoadAccount(account))
-                eventSent = true //fixme:  setContent is being refreshed repeatedly
-            }
+            val bank = intent.serializable<Company>(Parameters.KEY_BANK)
+            val account = intent.serializable<BankAccount>(Parameters.KEY_BANK_ACCOUNT)
+            viewModel.onEvent(DetailedBankAccountEvent.LoadBank(bank))
+            viewModel.onEvent(DetailedBankAccountEvent.LoadAccount(account))
 
             DigitalTijoriTheme {
                 TopAppBarScaffold(
