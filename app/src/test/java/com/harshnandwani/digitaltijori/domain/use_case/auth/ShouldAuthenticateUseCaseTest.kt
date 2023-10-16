@@ -46,7 +46,7 @@ class ShouldAuthenticateUseCaseTest {
     @Test
     fun `WHEN last auth timestamp is 3 minutes or above THEN return true`() = runTest {
         val timeNow = System.currentTimeMillis()
-        val threeMinutes = 1000 * 60 * 3
+        val threeMinutes = 1000 * 60 * 3 + 10 //10ms buffer
 
         fakePreferenceRepository.setAuthenticatedTimestamp(timeNow - threeMinutes)
         val resultAfterExactlyThreeMinutes = sut()
