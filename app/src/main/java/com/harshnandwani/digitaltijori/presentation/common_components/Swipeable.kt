@@ -43,7 +43,8 @@ fun Swipeable(
     val rightColor = if (isSystemInDarkTheme()) DarkGreen else LightGreen
 
     val coroutineScope = rememberCoroutineScope()
-    val dismissState = rememberDismissState(
+    val dismissState = DismissState(
+        initialValue = DismissValue.Default,
         confirmStateChange = { dismissValue ->
             when (dismissValue) {
                 DismissValue.DismissedToStart -> {
